@@ -361,6 +361,23 @@
             document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
         });
     });
+
+    const menuToggle = document.querySelector('#mobile-menu');
+const navList = document.querySelector('.nav-list');
+
+// Ouvrir/Fermer le menu au clic sur le burger
+menuToggle.addEventListener('click', () => {
+    menuToggle.classList.toggle('active');
+    navList.classList.toggle('active');
+});
+
+// Fermer le menu automatiquement quand on clique sur un lien
+document.querySelectorAll('.nav-list a').forEach(link => {
+    link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        navList.classList.remove('active');
+    });
+});
 </script>
 
 </body>
