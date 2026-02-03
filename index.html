@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netgen Systems | Ingénierie & Infrastructures</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --accent: #38bdf8;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 8%;
+            background: rgba(15, 23, 42, 0.95);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: 1px; }
+        .logo span { color: var(--accent); }
+
+        nav ul { display: flex; list-style: none; gap: 25px; }
+        nav a { color: var(--text-main); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: 0.3s; }
+        nav a:hover { color: var(--accent); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            padding: 0 10%;
+            margin-top: 60px;
+        }
+
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; line-height: 1.1; }
+        .hero p { color: var(--text-dim); font-size: 1.2rem; max-width: 700px; }
+
+        /* --- SECTION COMMUNE --- */
+        section { padding: 100px 10%; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .section-title h2 { font-size: 2.5rem; color: var(--accent); }
+        .section-title p { color: var(--text-dim); }
+
+        /* --- GRILLE SERVICES --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 20px; }
+        .card h3 { margin-bottom: 15px; font-size: 1.4rem; }
+        .card p { color: var(--text-dim); font-size: 0.95rem; }
+
+        /* --- FOCUS SOLUTION (L'APP WEB) --- */
+        .solution-highlight {
+            background: linear-gradient(90deg, #38bdf8 0%, #0ea5e9 100%);
+            color: var(--bg-dark);
+            border-radius: 20px;
+            padding: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .sol-text { flex: 2; min-width: 300px; }
+        .sol-btn { 
+            flex: 1; 
+            text-align: center; 
+            background: var(--bg-dark); 
+            color: white; 
+            padding: 15px 30px; 
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer { text-align: center; padding: 40px; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-dim); }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            nav ul { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">NETGEN<span>SYSTEMS</span></div>
+        <ul>
+            <li><a href="#infra">Infrastructure</a></li>
+            <li><a href="#reseau">Réseaux</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#solution">Logiciel</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <h1>L'Infrastucture Réseau <br>Redéfinie.</h1>
+        <p>Expertise en conception de bâtiments connectés, cybersécurité et automatisation de configurations Cisco.</p>
+    </section>
+
+    <section id="infra">
+        <div class="section-title">
+            <h2>Conception & Infrastructure</h2>
+            <p>Le socle solide de votre système d'information</p>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <i class="fas fa-building"></i>
+                <h3>Bâtiment & Câblage</h3>
+                <p>Plan de câblage structuré, architecture des locaux techniques et conception du bâtiment pour une connectivité optimale.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-snowflake"></i>
+                <h3>Refroidissement</h3>
+                <p>Gestion thermique avancée et systèmes de refroidissement optimisés pour la pérennité de vos équipements.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-server"></i>
+                <h3>Datacenters</h3>
+                <p>Design et implémentation de salles serveurs haute disponibilité et sécurisées.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="reseau" style="background: rgba(255,255,255,0.02);">
+        <div class="section-title">
+            <h2>Ingénierie Réseaux</h2>
+            <p>Adressage précis et routage performant</p>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <i class="fas fa-address-card"></i>
+                <h3>IPv4 & IPv6</h3>
+                <p>Plan d'adressage complet et transition vers le déploiement IPv6 natif.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-sitemap"></i>
+                <h3>LAN & WAN</h3>
+                <p>Segmentation LAN (VLANs), routage inter-VLAN et interconnexion WAN multi-sites.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-route"></i>
+                <h3>Routage Extérieur</h3>
+                <p>Configuration BGP et gestion de la connectivité opérateur externe.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="services">
+        <div class="section-title">
+            <h2>Services & Sécurité</h2>
+            <p>Communications unifiées et protection des données</p>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <i class="fas fa-shield-virus"></i>
+                <h3>Sécurité Réseau</h3>
+                <p>Firewalling, ACLs avancées et protocoles de sécurisation des accès distants.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-phone-volume"></i>
+                <h3>VoIP & Vidéo IP</h3>
+                <p>Téléphonie sur IP via IPBX et solutions de visioconférence haute définition.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-users-cog"></i>
+                <h3>Active Directory & WiFi</h3>
+                <p>Gestion des identités (AD) et déploiement de bornes WiFi Mesh sécurisées.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="solution">
+        <div class="solution-highlight">
+            <div class="sol-text">
+                <h2>Netgen Config Tool</h2>
+                <p>Notre application web exclusive permet de générer automatiquement vos configurations Cisco. Simplifiez vos déploiements et éliminez les erreurs humaines.</p>
+            </div>
+            <a href="#" class="sol-btn">Lancer l'App Web</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Netgen Systems Project. Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        // Effet de scroll fluide pour les liens de navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Animation simple au scroll pour faire apparaître les cartes
+        window.addEventListener('scroll', () => {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const cardTop = card.getBoundingClientRect().top;
+                if(cardTop < window.innerHeight - 100) {
+                    card.style.opacity = '1';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
