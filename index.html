@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netgen Systems | Ingénierie & Infrastructures</title>
-    
+    <title>Netgen Systems | Ingénierie & Automation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;800&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #0f172a;
@@ -15,205 +13,204 @@
             --accent: #38bdf8;
             --text-main: #f8fafc;
             --text-dim: #94a3b8;
+            --terminal-bg: #000000;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-main); line-height: 1.7; scroll-behavior: smooth; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            line-height: 1.6;
-            scroll-behavior: smooth;
-        }
-
-        /* --- NAVIGATION & LOGO --- */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 8%;
-            background: rgba(15, 23, 42, 0.95);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-        }
-
+        /* --- NAVIGATION --- */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 8%; background: rgba(15, 23, 42, 0.98); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(12px); }
         .logo-container { display: flex; align-items: center; gap: 12px; }
-        
-        /* Reproduction du logo en CSS */
-        .logo-icon {
-            width: 35px;
-            height: 35px;
-            background: var(--accent);
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--bg-dark);
-            font-weight: 900;
-            font-size: 1.2rem;
-        }
-
-        .logo-text { font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; text-transform: uppercase; }
-        .logo-text span { color: var(--accent); font-weight: 300; margin-left: 5px; border-left: 1px solid #444; padding-left: 10px; }
-
-        nav ul { display: flex; list-style: none; gap: 20px; }
-        nav a { color: var(--text-main); text-decoration: none; font-size: 0.8rem; font-weight: 500; text-transform: uppercase; transition: 0.3s; }
+        .logo-icon { width: 38px; height: 38px; background: var(--accent); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); display: flex; align-items: center; justify-content: center; color: var(--bg-dark); font-weight: 900; font-size: 1.3rem; }
+        .logo-text { font-weight: 800; font-size: 1.3rem; letter-spacing: 1px; text-transform: uppercase; }
+        .logo-text span { color: var(--accent); font-weight: 300; border-left: 1px solid #334155; margin-left: 10px; padding-left: 10px; }
+        nav ul { display: flex; list-style: none; gap: 25px; }
+        nav a { color: var(--text-main); text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; transition: 0.3s; }
         nav a:hover { color: var(--accent); }
 
         /* --- HERO --- */
-        .hero {
-            height: 70vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-            padding: 0 10%;
-        }
-
-        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; letter-spacing: -1px; }
-        .hero p { color: var(--text-dim); font-size: 1.1rem; max-width: 600px; }
+        .hero { height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%); padding: 0 10%; }
+        .hero h1 { font-size: 4rem; margin-bottom: 1.5rem; letter-spacing: -2px; line-height: 1; }
+        .hero p { color: var(--text-dim); font-size: 1.3rem; max-width: 800px; margin-bottom: 2rem; }
 
         /* --- SECTIONS --- */
-        section { padding: 80px 10%; }
-        .section-title { text-align: center; margin-bottom: 50px; }
-        .section-title h2 { font-size: 2rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); }
+        section { padding: 120px 10%; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .section-header { margin-bottom: 70px; }
+        .section-header h2 { font-size: 2.2rem; text-transform: uppercase; letter-spacing: 3px; color: var(--accent); margin-bottom: 10px; }
+        .section-header p { color: var(--text-dim); font-size: 1.1rem; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        /* --- GRIDS & CARDS --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .card { background: var(--bg-card); padding: 45px; border-radius: 8px; transition: 0.4s; position: relative; overflow: hidden; }
+        .card:hover { transform: translateY(-10px); background: #24334d; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .card i { color: var(--accent); font-size: 2rem; margin-bottom: 20px; }
+        .card h3 { font-size: 1.4rem; margin-bottom: 15px; color: var(--text-main); }
+        .card ul { list-style: none; color: var(--text-dim); font-size: 0.95rem; }
+        .card ul li { margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .card ul li::before { content: '→'; color: var(--accent); font-weight: bold; }
 
-        .card {
-            background: var(--bg-card);
-            padding: 30px;
-            border-radius: 4px;
-            border-left: 3px solid transparent;
-            transition: 0.3s;
-        }
+        /* --- APPLICATION CONSOLE SECTION --- */
+        .app-section { background: #070b14; }
+        .console-container { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; }
+        .console-text { flex: 1; min-width: 300px; }
+        .console-window { flex: 1; min-width: 350px; background: var(--terminal-bg); border-radius: 10px; border: 1px solid #334155; box-shadow: 0 30px 60px rgba(0,0,0,0.6); font-family: 'Fira Code', monospace; font-size: 0.85rem; overflow: hidden; }
+        .console-header { background: #1e293b; padding: 10px 15px; display: flex; gap: 8px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
+        .console-body { padding: 20px; color: #a5b4fc; }
+        .cursor { display: inline-block; width: 8px; height: 15px; background: var(--accent); animation: blink 1s infinite; vertical-align: middle; }
+        
+        @keyframes blink { 50% { opacity: 0; } }
 
-        .card:hover { border-left-color: var(--accent); background: #24334d; transform: translateX(5px); }
-        .card i { color: var(--accent); font-size: 1.5rem; margin-bottom: 15px; }
-        .card h3 { font-size: 1.1rem; margin-bottom: 10px; text-transform: uppercase; }
-        .card p { color: var(--text-dim); font-size: 0.9rem; }
+        .btn-cta { display: inline-block; background: var(--accent); color: var(--bg-dark); padding: 18px 40px; border-radius: 4px; text-decoration: none; font-weight: 800; text-transform: uppercase; margin-top: 30px; transition: 0.3s; }
+        .btn-cta:hover { transform: scale(1.05); filter: brightness(1.1); }
 
         /* --- FOOTER --- */
-        footer {
-            text-align: center;
-            padding: 40px 10%;
-            background: #0a101f;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
+        footer { padding: 60px 10%; background: #020617; text-align: center; }
+        .copy { font-size: 0.9rem; color: var(--text-dim); }
+        .team { font-size: 0.7rem; color: #475569; margin-top: 15px; letter-spacing: 2px; text-transform: uppercase; }
 
-        .copyright { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 5px; }
-        .credits { font-size: 0.65rem; color: #4b5563; letter-spacing: 1px; text-transform: uppercase; }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2rem; }
-            nav ul { display: none; }
-        }
+        @media (max-width: 768px) { .hero h1 { font-size: 2.5rem; } nav ul { display: none; } }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo-container">
-            <div class="logo-icon">N</div>
-            <div class="logo-text">Netgen<span>Systems</span></div>
+<nav>
+    <div class="logo-container">
+        <div class="logo-icon">N</div>
+        <div class="logo-text">Netgen<span>Systems</span></div>
+    </div>
+    <ul>
+        <li><a href="#infra">Infrastructure</a></li>
+        <li><a href="#reseau">Réseaux</a></li>
+        <li><a href="#logiciel">Application</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <h1>Architecture Réseau<br>Haute Performance.</h1>
+    <p>Leader en ingénierie de systèmes critiques, de la conception structurelle du datacenter à l'automatisation logicielle des infrastructures Cisco.</p>
+    <a href="#infra" class="btn-cta" style="background: transparent; border: 1px solid var(--accent); color: var(--accent);">Découvrir l'expertise</a>
+</section>
+
+<section id="infra">
+    <div class="section-header">
+        <h2>Infrastructure & Conception</h2>
+        <p>Maîtrise complète de l'environnement physique et thermique.</p>
+    </div>
+    <div class="grid">
+        <div class="card">
+            <i class="fas fa-layer-group"></i>
+            <h3>Conception Bâtiment</h3>
+            <ul>
+                <li>Plans de câblage structuré (VDI)</li>
+                <li>Cheminement de câbles & colonnes montantes</li>
+                <li>Architecture des locaux techniques (TR)</li>
+            </ul>
         </div>
-        <ul>
-            <li><a href="#infra">Infra</a></li>
-            <li><a href="#reseau">Réseaux</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#solution">Solution</a></li>
-        </ul>
-    </nav>
+        <div class="card">
+            <i class="fas fa-snowflake"></i>
+            <h3>Systèmes de Refroidissement</h3>
+            <ul>
+                <li>Confinement en allée chaude/froide</li>
+                <li>Optimisation des flux d'air (CRAC/CRAH)</li>
+                <li>Efficacité énergétique (PUE ciblé < 1.3)</li>
+            </ul>
+        </div>
+        <div class="card">
+            <i class="fas fa-server"></i>
+            <h3>Datacenter & Énergie</h3>
+            <ul>
+                <li>Urbanisation de salles serveurs</li>
+                <li>Distribution électrique redondée (2N)</li>
+                <li>Gestion des onduleurs & baies serveurs</li>
+            </ul>
+        </div>
+    </div>
+</section>
 
-    <section class="hero">
-        <h1>INGÉNIERIE & INFRASTRUCTURES</h1>
-        <p>Expertise globale en conception de réseaux critiques, sécurité et automatisation Cisco.</p>
-    </section>
+<section id="reseau" style="background: rgba(255,255,255,0.01);">
+    <div class="section-header">
+        <h2>Expertise Réseaux & Sécurité</h2>
+        <p>Une connectivité robuste, segmentée et ultra-sécurisée.</p>
+    </div>
+    <div class="grid">
+        <div class="card">
+            <i class="fas fa-address-book"></i>
+            <h3>Adressage & Routage</h3>
+            <ul>
+                <li>Plan d'adressage IPv4/IPv6 Dual Stack</li>
+                <li>Routage extérieur dynamique via BGP</li>
+                <li>Optimisation des tables de routage</li>
+            </ul>
+        </div>
+        <div class="card">
+            <i class="fas fa-network-wired"></i>
+            <h3>Segmentation & WAN</h3>
+            <ul>
+                <li>VLANs, Trunking & Spanning-Tree</li>
+                <li>Implémentation WAN & VPN Site-to-Site</li>
+                <li>Inter-VLAN Routing & QoS</li>
+            </ul>
+        </div>
+        <div class="card">
+            <i class="fas fa-shield-halved"></i>
+            <h3>Sécurité & VoIP</h3>
+            <ul>
+                <li>Filtrage par ACLs & Firewalling</li>
+                <li>ToIP/VoIP via IPBX & flux vidéo</li>
+                <li>Active Directory & Wi-Fi sécurisé</li>
+            </ul>
+        </div>
+    </div>
+</section>
 
-    <section id="infra">
-        <div class="section-title"><h2>Infrastructure Physique</h2></div>
-        <div class="grid">
-            <div class="card">
-                <i class="fas fa-drafting-compass"></i>
-                <h3>Câblage & Bâtiment</h3>
-                <p>Plans de câblage structurés et optimisation architecturale des infrastructures.</p>
+<section id="logiciel" class="app-section">
+    <div class="console-container">
+        <div class="console-text">
+            <div class="section-header" style="text-align: left;">
+                <h2>Netgen Config Tool</h2>
+                <p>L'automatisation au service de l'administrateur réseau.</p>
             </div>
-            <div class="card">
-                <i class="fas fa-snowflake"></i>
-                <h3>Cooling System</h3>
-                <p>Gestion thermique et refroidissement haute performance pour Datacenters.</p>
+            <p style="color: var(--text-dim); margin-bottom: 20px;">Notre solution web propriétaire élimine les erreurs de frappe en générant dynamiquement des scripts de configuration Cisco IOS prêts à l'emploi.</p>
+            <ul style="list-style: none; color: var(--accent); font-weight: 600;">
+                <li><i class="fas fa-check-circle"></i> Conformité syntaxique garantie</li>
+                <li><i class="fas fa-check-circle"></i> Rapidité de déploiement accrue</li>
+                <li><i class="fas fa-check-circle"></i> Interface intuitive et moderne</li>
+            </ul>
+            <a href="#" class="btn-cta">Lancer l'application web</a>
+        </div>
+        <div class="console-window">
+            <div class="console-header">
+                <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
             </div>
-            <div class="card">
-                <i class="fas fa-server"></i>
-                <h3>Salles Serveurs</h3>
-                <p>Conception et aménagement de datacenters sécurisés et redondés.</p>
+            <div class="console-body">
+                <p>> netgen-config --generate --cisco-switch</p>
+                <p style="color: #4ade80;">[SUCCESS] Configuration d'interface générée.</p>
+                <p style="color: #fff;">interface GigabitEthernet0/1</p>
+                <p style="color: #fff;">&nbsp;&nbsp;switchport mode access</p>
+                <p style="color: #fff;">&nbsp;&nbsp;switchport access vlan 10</p>
+                <p style="color: #fff;">&nbsp;&nbsp;spanning-tree portfast</p>
+                <p>> waiting for next command...<span class="cursor"></span></p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id="reseau" style="background: rgba(255,255,255,0.01);">
-        <div class="section-title"><h2>Architecture Réseaux</h2></div>
-        <div class="grid">
-            <div class="card">
-                <i class="fas fa-network-wired"></i>
-                <h3>Adressage IP</h3>
-                <p>Plans complets en IPv4 et implémentation native de l'IPv6.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-project-diagram"></i>
-                <h3>LAN / WAN / BGP</h3>
-                <p>Segmentation LAN, interconnexion WAN et routage extérieur dynamique.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-shield-alt"></i>
-                <h3>Sécurité Réseau</h3>
-                <p>Firewalling, filtrage et protocoles de sécurisation avancés.</p>
-            </div>
-        </div>
-    </section>
+<footer>
+    <p class="copy">&copy; 2026 Netgen Systems. Tous droits réservés.</p>
+    <p class="team">Farrokhian - Poisson - Elena</p>
+</footer>
 
-    <section id="services">
-        <div class="section-title"><h2>Services IP & Systèmes</h2></div>
-        <div class="grid">
-            <div class="card">
-                <i class="fas fa-phone"></i>
-                <h3>VoIP & Vidéo</h3>
-                <p>Communications unifiées via IPBX et flux vidéo sur IP sécurisés.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-wifi"></i>
-                <h3>Wi-Fi & AD</h3>
-                <p>Déploiement Wi-Fi professionnel et gestion Active Directory.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-code"></i>
-                <h3>Netgen Config</h3>
-                <p>Application web d'automatisation des configurations équipements Cisco.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <p class="copyright">&copy; 2026 Netgen Systems. Tous droits réservés.</p>
-        <p class="credits">Farrokhian - Poisson - Elena</p>
-    </footer>
-
-    <script>
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
+<script>
+    document.querySelectorAll('nav a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
         });
-    </script>
+    });
+</script>
+
 </body>
 </html>
