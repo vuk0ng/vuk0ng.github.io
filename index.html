@@ -128,6 +128,56 @@
     @media (max-width: 600px) {
         .form-grid { grid-template-columns: 1fr; }
     }
+        /* Style du bouton Burger */
+.menu-toggle {
+    display: none; /* Caché par défaut sur PC */
+    flex-direction: column;
+    cursor: pointer;
+    gap: 6px;
+}
+
+.bar {
+    width: 25px;
+    height: 3px;
+    background-color: var(--accent);
+    transition: 0.3s;
+    border-radius: 2px;
+}
+
+/* --- MEDIA QUERIES MOBILE --- */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex; /* Apparaît sur mobile */
+        z-index: 1001;
+    }
+
+    .nav-list {
+        display: none; /* Caché par défaut sur mobile */
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--bg-dark);
+        padding: 20px 0;
+        border-bottom: 1px solid var(--accent);
+        text-align: center;
+    }
+
+    /* Classe activée par le JS */
+    .nav-list.active {
+        display: flex;
+    }
+
+    .nav-list li {
+        margin: 15px 0;
+    }
+
+    /* Animation du bouton burger en "X" quand actif */
+    .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
+    .menu-toggle.active .bar:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+    .menu-toggle.active .bar:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+}
     </style>
 </head>
 <body>
@@ -137,7 +187,14 @@
         <div class="logo-icon">N</div>
         <div class="logo-text">Netgen<span>Systems</span></div>
     </div>
-    <ul>
+    
+    <div class="menu-toggle" id="mobile-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+
+    <ul class="nav-list">
         <li><a href="#infra">Infrastructure</a></li>
         <li><a href="#reseau">Réseaux</a></li>
         <li><a href="#logiciel">Application</a></li>
