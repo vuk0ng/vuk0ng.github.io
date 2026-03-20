@@ -6,30 +6,26 @@
   <title>Portfolio — Quentin Farrokhian</title>
   <style>
     :root {
-      --bg-1: #cfe8ff;
-      --bg-2: #b9ddff;
-      --bg-3: #d7d0ff;
-      --bg-4: #ffd6e8;
-      --bg-5: #ffe2b8;
-      --bg-6: #c7f2e6;
-      --text: #182230;
-      --muted: #4f6074;
-      --line: rgba(66, 92, 128, 0.2);
-      --white: rgba(255, 255, 255, 0.74);
-      --white-strong: rgba(255, 255, 255, 0.9);
-      --shadow: 0 20px 48px rgba(73, 99, 145, 0.2);
-      --accent-a: #4ea8ff;
-      --accent-b: #45d6a8;
-      --accent-c: #ffbf47;
-      --accent-d: #ff7faa;
-      --accent-e: #8d7dff;
-      --accent-f: #5b8cff;
-      --accent-g: #ff9f6e;
-      --accent-h: #63d5ff;
-      --center-size: clamp(220px, 24vw, 310px);
-      --bubble-size: clamp(100px, 10vw, 142px);
-      --bubble-open-w: min(420px, calc(100vw - 32px));
-      --bubble-open-h: min(520px, calc(100vh - 32px));
+      --bg-1: #0f1726;
+      --bg-2: #152238;
+      --bg-3: #1e2f4b;
+      --bg-4: #2c2347;
+      --bg-5: #4a2740;
+      --bg-6: #5d3a2e;
+      --text: #f7f1ea;
+      --muted: #d8c9bd;
+      --line: rgba(255, 214, 166, 0.28);
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+      --accent-a: #58d6ff;
+      --accent-b: #37e0a9;
+      --accent-c: #ffbc57;
+      --accent-d: #ff7ca8;
+      --accent-e: #9c84ff;
+      --accent-f: #ff9966;
+      --center-size: clamp(240px, 24vw, 320px);
+      --bubble-size: clamp(124px, 12vw, 168px);
+      --bubble-open-w: min(460px, calc(100vw - 32px));
+      --bubble-open-h: min(540px, calc(100vh - 32px));
     }
 
     * { box-sizing: border-box; }
@@ -42,44 +38,43 @@
       font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 12% 15%, rgba(99, 213, 255, 0.42), transparent 24%),
-        radial-gradient(circle at 85% 18%, rgba(141, 125, 255, 0.32), transparent 26%),
-        radial-gradient(circle at 82% 82%, rgba(255, 127, 170, 0.28), transparent 28%),
-        radial-gradient(circle at 18% 82%, rgba(69, 214, 168, 0.26), transparent 24%),
-        linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 20%, var(--bg-3) 44%, var(--bg-4) 68%, var(--bg-5) 84%, var(--bg-6) 100%);
+        radial-gradient(circle at 12% 18%, rgba(88, 214, 255, 0.22), transparent 24%),
+        radial-gradient(circle at 82% 16%, rgba(156, 132, 255, 0.20), transparent 28%),
+        radial-gradient(circle at 78% 78%, rgba(255, 124, 168, 0.18), transparent 30%),
+        radial-gradient(circle at 18% 84%, rgba(255, 188, 87, 0.16), transparent 26%),
+        linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 22%, var(--bg-3) 42%, var(--bg-4) 64%, var(--bg-5) 82%, var(--bg-6) 100%);
     }
 
     body::before,
     body::after {
       content: "";
       position: fixed;
-      inset: auto;
-      width: 38vw;
-      height: 38vw;
+      width: 42vw;
+      height: 42vw;
       border-radius: 50%;
-      filter: blur(78px);
+      filter: blur(88px);
       pointer-events: none;
-      opacity: 0.48;
+      opacity: 0.5;
       z-index: 0;
       animation: drift 16s ease-in-out infinite alternate;
     }
 
     body::before {
-      top: -9vw;
-      left: -7vw;
-      background: radial-gradient(circle, rgba(78, 168, 255, 0.48), rgba(99, 213, 255, 0.22), transparent 68%);
+      top: -12vw;
+      left: -10vw;
+      background: radial-gradient(circle, rgba(88, 214, 255, 0.34), rgba(55, 224, 169, 0.14), transparent 68%);
     }
 
     body::after {
-      right: -10vw;
-      bottom: -10vw;
-      background: radial-gradient(circle, rgba(255, 127, 170, 0.42), rgba(255, 191, 71, 0.2), transparent 68%);
+      right: -12vw;
+      bottom: -12vw;
+      background: radial-gradient(circle, rgba(255, 153, 102, 0.30), rgba(255, 124, 168, 0.14), transparent 68%);
       animation-duration: 18s;
     }
 
     @keyframes drift {
       from { transform: translate3d(0, 0, 0) scale(1); }
-      to { transform: translate3d(20px, -18px, 0) scale(1.08); }
+      to { transform: translate3d(18px, -18px, 0) scale(1.08); }
     }
 
     #portfolio {
@@ -93,11 +88,11 @@
     .grain {
       position: absolute;
       inset: 0;
-      opacity: 0.08;
+      opacity: 0.1;
       pointer-events: none;
       background-image:
-        radial-gradient(circle at 20% 20%, rgba(0,0,0,0.15) 0 0.5px, transparent 0.6px),
-        radial-gradient(circle at 70% 60%, rgba(0,0,0,0.1) 0 0.5px, transparent 0.6px);
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.16) 0 0.5px, transparent 0.6px),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.1) 0 0.5px, transparent 0.6px);
       background-size: 18px 18px, 24px 24px;
       z-index: 0;
     }
@@ -107,7 +102,7 @@
       inset: 0;
       pointer-events: none;
       z-index: 1;
-      opacity: 0.92;
+      opacity: 0.96;
     }
 
     #bubble-layer {
@@ -123,27 +118,26 @@
       height: var(--center-size);
       transform: translate(-50%, -50%);
       border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(230,240,255,0.6));
-      border: 1px solid rgba(255,255,255,0.6);
-      box-shadow: 0 26px 60px rgba(62, 85, 123, 0.22);
-      backdrop-filter: blur(18px) saturate(130%);
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
+      border: 2px solid rgba(255,255,255,0.18);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.36), 0 0 0 16px rgba(255,255,255,0.03);
+      backdrop-filter: blur(18px) saturate(145%);
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 10px;
       padding: 16px;
       z-index: 6;
       text-align: center;
     }
 
     .photo-wrap {
-      width: clamp(92px, 9vw, 122px);
-      height: clamp(92px, 9vw, 122px);
+      width: clamp(150px, 15vw, 210px);
+      height: clamp(150px, 15vw, 210px);
       border-radius: 50%;
-      padding: 5px;
-      background: linear-gradient(135deg, var(--accent-a), var(--accent-e), var(--accent-d), var(--accent-c));
-      box-shadow: 0 16px 34px rgba(86, 110, 152, 0.26);
+      padding: 6px;
+      background: linear-gradient(135deg, var(--accent-a), var(--accent-e), var(--accent-d), var(--accent-c), var(--accent-f));
+      box-shadow: 0 20px 42px rgba(0, 0, 0, 0.34), 0 0 30px rgba(88, 214, 255, 0.18);
+      display: block;
     }
 
     .photo {
@@ -151,12 +145,12 @@
       height: 100%;
       border-radius: 50%;
       overflow: hidden;
-      background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(217,234,255,0.9));
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.22), rgba(18, 28, 46, 0.88));
       display: grid;
       place-items: center;
-      color: #4d5f75;
+      color: #fff3e8;
       font-weight: 800;
-      font-size: clamp(1.5rem, 2.2vw, 2rem);
+      font-size: clamp(2rem, 3vw, 2.7rem);
       letter-spacing: 0.08em;
     }
 
@@ -167,51 +161,11 @@
       display: block;
     }
 
-    .center-card h1 {
-      margin: 2px 0 0;
-      font-size: clamp(1.3rem, 2vw, 2rem);
-      line-height: 1.05;
-      letter-spacing: 0.02em;
-      color: #122033;
-    }
-
-    .center-card .role {
-      margin: 0;
-      font-size: clamp(0.92rem, 1.2vw, 1rem);
-      color: var(--muted);
-      max-width: 24ch;
-      line-height: 1.4;
-    }
-
+    .quick-links,
     .badge-row,
-    .quick-links {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .badge,
-    .quick-link {
-      border-radius: 999px;
-      padding: 9px 12px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.78), rgba(230,239,255,0.58));
-      border: 1px solid rgba(255,255,255,0.44);
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.82rem;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-      box-shadow: 0 10px 22px rgba(83, 108, 147, 0.14);
-      backdrop-filter: blur(10px);
-    }
-
-    .badge:hover,
-    .quick-link:hover {
-      transform: translateY(-2px);
-      border-color: rgba(78, 168, 255, 0.58);
-      box-shadow: 0 12px 24px rgba(83, 108, 147, 0.18);
-      background: linear-gradient(135deg, rgba(255,255,255,0.86), rgba(238,245,255,0.72));
+    .center-card h1,
+    .center-card .role {
+      display: none !important;
     }
 
     .bubble {
@@ -219,15 +173,15 @@
       width: var(--bubble-size);
       height: var(--bubble-size);
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.55);
-      background: linear-gradient(160deg, rgba(255,255,255,0.74), rgba(233,242,255,0.44));
-      backdrop-filter: blur(18px) saturate(130%);
+      border: 1px solid rgba(255,255,255,0.18);
+      background: linear-gradient(165deg, rgba(255,255,255,0.20), rgba(255,255,255,0.08));
+      backdrop-filter: blur(18px) saturate(140%);
       box-shadow: var(--shadow);
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 14px;
+      padding: 16px;
       cursor: pointer;
       transition:
         width 0.45s cubic-bezier(.2,.9,.2,1),
@@ -247,19 +201,19 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at top left, rgba(255,255,255,0.78), transparent 48%);
+      background: radial-gradient(circle at top left, rgba(255,255,255,0.24), transparent 46%);
       pointer-events: none;
     }
 
     .bubble:hover {
-      transform: scale(1.08);
-      box-shadow: 0 24px 44px rgba(73, 99, 145, 0.24);
+      transform: scale(1.1);
+      box-shadow: 0 28px 52px rgba(0, 0, 0, 0.34);
     }
 
     .bubble.active {
       width: var(--bubble-open-w);
       height: var(--bubble-open-h);
-      border-radius: 30px;
+      border-radius: 32px;
       padding: 22px;
       justify-content: flex-start;
       align-items: flex-start;
@@ -267,9 +221,9 @@
       cursor: default;
       z-index: 20;
       transform: none;
-      background: linear-gradient(160deg, rgba(255,255,255,0.92), rgba(233,242,255,0.76));
-      border-color: rgba(255,255,255,0.62);
-      box-shadow: 0 34px 82px rgba(58, 84, 126, 0.28);
+      background: linear-gradient(160deg, rgba(27, 38, 59, 0.92), rgba(49, 34, 67, 0.9));
+      border-color: rgba(255,255,255,0.14);
+      box-shadow: 0 40px 90px rgba(0, 0, 0, 0.42);
     }
 
     .bubble-shell {
@@ -291,28 +245,29 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
       width: 100%;
       text-align: center;
       pointer-events: none;
     }
 
     .bubble-icon {
-      font-size: 1.55rem;
+      font-size: 1.9rem;
       line-height: 1;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
+      filter: drop-shadow(0 4px 14px rgba(0,0,0,0.24));
     }
 
     .bubble-title {
       margin: 0;
-      font-size: 0.95rem;
+      font-size: 1.02rem;
       font-weight: 700;
       line-height: 1.15;
+      color: #fff6ee;
     }
 
     .bubble-sub {
-      font-size: 0.72rem;
-      color: var(--muted);
+      font-size: 0.76rem;
+      color: #eedfcf;
       line-height: 1.2;
       max-width: 14ch;
     }
@@ -348,27 +303,27 @@
 
     .bubble-top h2 {
       margin: 0 0 6px;
-      font-size: clamp(1.15rem, 1.5vw, 1.4rem);
-      color: #162235;
+      font-size: clamp(1.2rem, 1.5vw, 1.45rem);
+      color: #fff6ee;
     }
 
     .bubble-top p {
       margin: 0;
-      color: var(--muted);
+      color: #d9cabd;
       line-height: 1.45;
-      font-size: 0.93rem;
+      font-size: 0.95rem;
     }
 
     .close-btn {
       border: none;
-      background: linear-gradient(135deg, rgba(255,255,255,0.84), rgba(227,236,255,0.62));
-      border: 1px solid rgba(255,255,255,0.5);
-      width: 38px;
-      height: 38px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.14);
+      width: 40px;
+      height: 40px;
       border-radius: 12px;
       cursor: pointer;
       font-size: 1.25rem;
-      color: #4b5970;
+      color: #fff0df;
       flex: 0 0 auto;
       transition: transform 0.2s ease, background 0.2s ease;
       backdrop-filter: blur(8px);
@@ -376,7 +331,7 @@
 
     .close-btn:hover {
       transform: scale(1.05);
-      background: linear-gradient(135deg, rgba(255,255,255,0.94), rgba(236,243,255,0.78));
+      background: linear-gradient(135deg, rgba(255,255,255,0.26), rgba(255,255,255,0.12));
     }
 
     .scroll-area {
@@ -393,31 +348,31 @@
     }
 
     .scroll-area::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, rgba(78, 168, 255, 0.48), rgba(141, 125, 255, 0.48));
+      background: linear-gradient(180deg, rgba(88, 214, 255, 0.54), rgba(255, 124, 168, 0.54));
       border-radius: 999px;
     }
 
     .content-card {
-      border-radius: 18px;
-      background: linear-gradient(155deg, rgba(255,255,255,0.78), rgba(230,239,255,0.52));
-      border: 1px solid rgba(255,255,255,0.48);
-      padding: 14px;
-      box-shadow: 0 12px 28px rgba(73, 99, 145, 0.12);
+      border-radius: 20px;
+      background: linear-gradient(155deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 15px;
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
       backdrop-filter: blur(10px);
     }
 
     .content-card h3 {
       margin: 0 0 8px;
-      font-size: 0.97rem;
-      color: #162235;
+      font-size: 1rem;
+      color: #fff5ea;
     }
 
     .content-card p,
     .content-card li {
       margin: 0;
-      color: #2d3d52;
+      color: #eadfd4;
       line-height: 1.5;
-      font-size: 0.92rem;
+      font-size: 0.94rem;
     }
 
     .content-card ul {
@@ -436,64 +391,47 @@
     .chip {
       padding: 8px 10px;
       border-radius: 999px;
-      font-size: 0.8rem;
-      background: linear-gradient(135deg, rgba(255,255,255,0.86), rgba(231,240,255,0.68));
-      border: 1px solid rgba(255,255,255,0.54);
-      box-shadow: 0 8px 18px rgba(73, 99, 145, 0.08);
+      font-size: 0.82rem;
+      color: #fff3e7;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
       backdrop-filter: blur(8px);
     }
 
-    .accent-a {
-      background: linear-gradient(160deg, rgba(78, 168, 255, 0.5), rgba(255,255,255,0.42));
-      box-shadow: 0 18px 45px rgba(78, 168, 255, 0.28);
-    }
-    .accent-b {
-      background: linear-gradient(160deg, rgba(69, 214, 168, 0.46), rgba(255,255,255,0.42));
-      box-shadow: 0 18px 45px rgba(69, 214, 168, 0.24);
-    }
-    .accent-c {
-      background: linear-gradient(160deg, rgba(255, 191, 71, 0.48), rgba(255,255,255,0.42));
-      box-shadow: 0 18px 45px rgba(255, 191, 71, 0.24);
-    }
-    .accent-d {
-      background: linear-gradient(160deg, rgba(255, 127, 170, 0.46), rgba(255,255,255,0.42));
-      box-shadow: 0 18px 45px rgba(255, 127, 170, 0.24);
-    }
-    .accent-e {
-      background: linear-gradient(160deg, rgba(141, 125, 255, 0.46), rgba(255,255,255,0.42));
-      box-shadow: 0 18px 45px rgba(141, 125, 255, 0.24);
-    }
-    .accent-f {
-      background: linear-gradient(160deg, rgba(91, 140, 255, 0.46), rgba(255,255,255,0.42));
-      box-shadow: 0 18px 45px rgba(91, 140, 255, 0.24);
-    }
+    .accent-a { background: linear-gradient(160deg, rgba(88, 214, 255, 0.32), rgba(255,255,255,0.08)); box-shadow: 0 18px 45px rgba(88, 214, 255, 0.18); }
+    .accent-b { background: linear-gradient(160deg, rgba(55, 224, 169, 0.28), rgba(255,255,255,0.08)); box-shadow: 0 18px 45px rgba(55, 224, 169, 0.18); }
+    .accent-c { background: linear-gradient(160deg, rgba(255, 188, 87, 0.30), rgba(255,255,255,0.08)); box-shadow: 0 18px 45px rgba(255, 188, 87, 0.18); }
+    .accent-d { background: linear-gradient(160deg, rgba(255, 124, 168, 0.30), rgba(255,255,255,0.08)); box-shadow: 0 18px 45px rgba(255, 124, 168, 0.18); }
+    .accent-e { background: linear-gradient(160deg, rgba(156, 132, 255, 0.30), rgba(255,255,255,0.08)); box-shadow: 0 18px 45px rgba(156, 132, 255, 0.18); }
+    .accent-f { background: linear-gradient(160deg, rgba(255, 153, 102, 0.30), rgba(255,255,255,0.08)); box-shadow: 0 18px 45px rgba(255, 153, 102, 0.18); }
 
-    .bubble[data-accent="a"] { outline: 2px solid rgba(78, 168, 255, 0.25); }
-    .bubble[data-accent="b"] { outline: 2px solid rgba(69, 214, 168, 0.25); }
-    .bubble[data-accent="c"] { outline: 2px solid rgba(255, 191, 71, 0.25); }
-    .bubble[data-accent="d"] { outline: 2px solid rgba(255, 127, 170, 0.25); }
-    .bubble[data-accent="e"] { outline: 2px solid rgba(141, 125, 255, 0.25); }
-    .bubble[data-accent="f"] { outline: 2px solid rgba(91, 140, 255, 0.25); }
+    .bubble[data-accent="a"] { outline: 2px solid rgba(88, 214, 255, 0.18); }
+    .bubble[data-accent="b"] { outline: 2px solid rgba(55, 224, 169, 0.18); }
+    .bubble[data-accent="c"] { outline: 2px solid rgba(255, 188, 87, 0.18); }
+    .bubble[data-accent="d"] { outline: 2px solid rgba(255, 124, 168, 0.18); }
+    .bubble[data-accent="e"] { outline: 2px solid rgba(156, 132, 255, 0.18); }
+    .bubble[data-accent="f"] { outline: 2px solid rgba(255, 153, 102, 0.18); }
 
     .legend {
       position: absolute;
       left: 18px;
       bottom: 18px;
       z-index: 13;
-      padding: 10px 12px;
+      padding: 11px 14px;
       border-radius: 16px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.72), rgba(228,239,255,0.5));
+      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.44);
-      box-shadow: 0 10px 24px rgba(73, 99, 145, 0.14);
-      color: var(--muted);
-      font-size: 0.78rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+      color: #ecdccc;
+      font-size: 0.8rem;
     }
 
     .overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(132, 176, 255, 0.18), rgba(255, 144, 183, 0.14));
+      background: linear-gradient(135deg, rgba(88, 214, 255, 0.10), rgba(255, 124, 168, 0.08));
       backdrop-filter: blur(6px) saturate(115%);
       opacity: 0;
       pointer-events: none;
@@ -509,32 +447,23 @@
     @media (max-width: 980px) {
       :root {
         --center-size: 220px;
-        --bubble-size: 96px;
+        --bubble-size: 110px;
       }
 
-      .bubble-title { font-size: 0.86rem; }
+      .bubble-title { font-size: 0.92rem; }
       .bubble-sub { display: none; }
       .legend { display: none; }
     }
 
     @media (max-width: 720px) {
       .center-card {
-        top: 50%;
-        left: 50%;
-        width: min(92vw, 290px);
-        min-height: auto;
-        padding: 16px;
+        width: min(72vw, 260px);
+        height: min(72vw, 260px);
       }
 
-      .center-card .quick-links,
-      .center-card .badge-row {
-        gap: 6px;
-      }
-
-      .badge,
-      .quick-link {
-        padding: 8px 10px;
-        font-size: 0.75rem;
+      .photo-wrap {
+        width: min(54vw, 180px);
+        height: min(54vw, 180px);
       }
 
       .bubble.active {
@@ -560,17 +489,6 @@
           QF
         </div>
       </a>
-
-      <h1>Quentin Farrokhian</h1>
-      <p class="role">Alternant en BUT Réseaux &amp; Télécom — parcours cyber, entre Luminy et La Mutuelle Verte.</p>
-
-      
-
-      <div class="quick-links">
-        <a class="quick-link" href="mailto:qfarrokhpro@gmail.com">Mail</a>
-        <a class="quick-link" href="https://github.com/vuk0ng" target="_blank" rel="noreferrer">GitHub</a>
-        <a class="quick-link" href="https://www.linkedin.com/in/quentin-farrokhian-68b31a2b1/" target="_blank" rel="noreferrer">LinkedIn</a>
-      </div>
     </div>
 
     <div id="bubble-layer"></div>
@@ -942,11 +860,11 @@
       const leftCount = Math.ceil(bubbles.length / 2);
       const rightCount = bubbles.length - leftCount;
 
-      const leftYs = distribute(leftCount, 90, h - 90);
-      const rightYs = distribute(rightCount, 90, h - 90);
+      const leftYs = distribute(leftCount, 120, h - 120);
+      const rightYs = distribute(rightCount, 120, h - 120);
 
-      const leftXs = [w * 0.12, w * 0.23, w * 0.16, w * 0.26, w * 0.11];
-      const rightXs = [w * 0.88, w * 0.77, w * 0.84, w * 0.74, w * 0.89];
+      const leftXs = [w * 0.14, w * 0.24, w * 0.16, w * 0.26, w * 0.13];
+      const rightXs = [w * 0.86, w * 0.76, w * 0.84, w * 0.74, w * 0.87];
 
       bubbles.forEach((bubble, index) => {
         const side = index < leftCount ? 'left' : 'right';
@@ -954,12 +872,12 @@
         const x = side === 'left' ? leftXs[sideIndex % leftXs.length] : rightXs[sideIndex % rightXs.length];
         const y = side === 'left' ? leftYs[sideIndex] : rightYs[sideIndex];
 
-        bubble.dataset.homeLeft = `${x - bubble.offsetWidth / 2}`;
-        bubble.dataset.homeTop = `${y - bubble.offsetHeight / 2}`;
+        bubble.dataset.homeLeft = `${Math.round(x - bubble.offsetWidth / 2)}`;
+        bubble.dataset.homeTop = `${Math.round(y - bubble.offsetHeight / 2)}`;
 
         if (!bubble.classList.contains('active')) {
-          bubble.style.left = `${x - bubble.offsetWidth / 2}px`;
-          bubble.style.top = `${y - bubble.offsetHeight / 2}px`;
+          bubble.style.left = `${Math.round(x - bubble.offsetWidth / 2)}px`;
+          bubble.style.top = `${Math.round(y - bubble.offsetHeight / 2)}px`;
         }
       });
 
@@ -982,29 +900,50 @@
       bubbles.forEach((bubble, i) => {
         const bx = parseFloat(bubble.style.left) + bubble.offsetWidth / 2;
         const by = parseFloat(bubble.style.top) + bubble.offsetHeight / 2;
+        const dx = bx - center.x;
+        const dy = by - center.y;
+        const distance = Math.hypot(dx, dy) || 1;
+        const startOffset = document.getElementById('centerCard').offsetWidth / 2 + 10;
+        const endOffset = bubble.offsetWidth / 2 + 8;
+        const x1 = center.x + (dx / distance) * startOffset;
+        const y1 = center.y + (dy / distance) * startOffset;
+        const x2 = bx - (dx / distance) * endOffset;
+        const y2 = by - (dy / distance) * endOffset;
+
+        const curve = 0.08;
+        const c1x = x1 + dx * curve;
+        const c1y = y1 + dy * 0.18;
+        const c2x = x2 - dx * curve;
+        const c2y = y2 - dy * 0.18;
 
         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        const d = `M ${center.x} ${center.y} L ${bx} ${by}`;
+        const d = `M ${x1} ${y1} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${x2} ${y2}`;
         path.setAttribute('d', d);
-        path.setAttribute('stroke', 'rgba(124,198,255,0.35)');
-        path.setAttribute('stroke-width', '1.5');
-        path.setAttribute('stroke-dasharray', '4 8');
+        path.setAttribute('id', `path-${i}`);
+        path.setAttribute('stroke', 'rgba(255, 214, 166, 0.30)');
+        path.setAttribute('stroke-width', '1.8');
+        path.setAttribute('stroke-dasharray', '6 10');
         path.setAttribute('fill', 'none');
         linesSvg.appendChild(path);
 
-        // paquet réseau (petit point animé)
+        const glow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        glow.setAttribute('d', d);
+        glow.setAttribute('stroke', 'rgba(88, 214, 255, 0.16)');
+        glow.setAttribute('stroke-width', '4');
+        glow.setAttribute('fill', 'none');
+        glow.setAttribute('stroke-linecap', 'round');
+        linesSvg.appendChild(glow);
+
         const packet = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        packet.setAttribute('r', '3');
-        packet.setAttribute('fill', 'rgba(78,168,255,0.9)');
+        packet.setAttribute('r', '4');
+        packet.setAttribute('fill', i % 2 === 0 ? 'rgba(88,214,255,0.95)' : 'rgba(255,188,87,0.95)');
 
         const motion = document.createElementNS('http://www.w3.org/2000/svg', 'animateMotion');
-        motion.setAttribute('dur', `${3 + Math.random() * 3}s`);
+        motion.setAttribute('dur', `${2.6 + Math.random() * 2.2}s`);
         motion.setAttribute('repeatCount', 'indefinite');
 
         const mpath = document.createElementNS('http://www.w3.org/2000/svg', 'mpath');
         mpath.setAttributeNS('http://www.w3.org/1999/xlink', 'href', `#path-${i}`);
-
-        path.setAttribute('id', `path-${i}`);
         motion.appendChild(mpath);
         packet.appendChild(motion);
         linesSvg.appendChild(packet);
