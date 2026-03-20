@@ -3,292 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quentin Farrokhian | Portfolio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Portfolio - Quentin Farrokhian</title>
     <style>
         :root {
-            --bg: #0a0a0c;
-            --accent: #00d2ff;
-            --glass: rgba(255, 255, 255, 0.05);
-            --text: #ffffff;
-            --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --accent-color: #007bff;
+            --text-dark: #2d3436;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: radial-gradient(circle at center, #1a1a2e 0%, #0a0a0c 100%);
-            color: var(--text);
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
             height: 100vh;
-            overflow: hidden;
+            overflow: hidden; /* Empêche le scroll */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
         }
 
-        /* --- CONTAINER PRINCIPAL --- */
-        .universe {
+        /* Conteneur principal */
+        #network-container {
             position: relative;
-            width: 95vw;
+            width: 90vw;
             height: 90vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        /* --- PROFIL CENTRAL --- */
-        .center-profile {
-            z-index: 10;
-            text-align: center;
-            transition: var(--transition);
-        }
-        
-        .profile-img {
-            width: 160px; height: 160px;
-            border-radius: 50%;
-            border: 4px solid var(--accent);
-            box-shadow: 0 0 30px rgba(0, 210, 255, 0.3);
-            object-fit: cover;
-            margin-bottom: 15px;
-        }
-
-        .social-links { margin-top: 15px; display: flex; justify-content: center; gap: 15px; }
-        .social-links a { color: white; font-size: 1.2rem; transition: 0.3s; }
-        .social-links a:hover { color: var(--accent); transform: translateY(-3px); }
-
-        /* --- SYSTÈME DE BULLES --- */
+        /* Style de base des bulles */
         .bubble {
             position: absolute;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             display: flex;
-            align-items: center;
             justify-content: center;
-            flex-direction: column;
+            align-items: center;
             cursor: pointer;
-            transition: var(--transition);
-            z-index: 5;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
             text-align: center;
             padding: 20px;
+            overflow: hidden;
+            z-index: 1;
         }
 
-        .bubble:hover { transform: scale(1.1); border-color: var(--accent); box-shadow: 0 0 20px rgba(0,210,255,0.2); }
-        .bubble i { font-size: 2rem; margin-bottom: 8px; color: var(--accent); }
-        .bubble h3 { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .bubble:hover {
+            transform: scale(1.1);
+            border-color: var(--accent-color);
+        }
 
-        /* Positions spécifiques */
-        .b-xp { top: 10%; left: 15%; width: 140px; height: 140px; }
-        .b-skills { top: 15%; right: 10%; width: 160px; height: 160px; }
-        .b-edu { bottom: 15%; left: 10%; width: 150px; height: 150px; }
-        .b-projects { bottom: 10%; right: 15%; width: 145px; height: 145px; }
-        .b-hobbies { bottom: 2%; left: 45%; width: 120px; height: 120px; }
+        /* Titres dans les bulles fermées */
+        .bubble h2 {
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin: 0;
+        }
 
-        /* --- ÉTAT ACTIF (EXPANSION) --- */
+        /* Contenu caché par défaut */
+        .content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 0.9rem;
+            text-align: left;
+            width: 100%;
+        }
+
+        /* État de la bulle ouverte */
         .bubble.active {
-            width: 85vw;
-            height: 80vh;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            border-radius: 30px;
+            border-radius: 20px;
+            width: 450px !important;
+            height: auto !important;
+            min-height: 300px;
             z-index: 100;
             cursor: default;
-            display: block;
-            overflow-y: auto;
-            padding: 60px;
-            background: rgba(10, 10, 12, 0.95);
+            transform: scale(1) !important;
         }
+
+        .bubble.active .content {
+            display: block;
+            opacity: 1;
+        }
+
+        .bubble.active h2 {
+            border-bottom: 2px solid var(--accent-color);
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            width: 100%;
+        }
+
+        /* Positionnement des bulles (DA "Node" Réseau) */
+        #me { top: 40%; left: 40%; width: 180px; height: 180px; background: white; border: 2px solid var(--accent-color); }
+        #exp { top: 10%; left: 15%; width: 120px; height: 120px; }
+        #skills { top: 15%; left: 70%; width: 130px; height: 130px; }
+        #projets { top: 70%; left: 20%; width: 125px; height: 125px; }
+        #loisirs { top: 75%; left: 65%; width: 110px; height: 110px; }
 
         .close-btn {
-            position: absolute; top: 25px; right: 30px;
-            display: none; cursor: pointer; font-size: 2rem; color: var(--accent);
+            display: none;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            color: red;
         }
-        .active .close-btn { display: block; }
-        .content-hidden { display: none; margin-top: 20px; animation: fadeIn 0.5s ease; }
-        .active .content-hidden { display: block; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* --- CONTENU DES BULLES --- */
-        h2 { font-size: 2.2rem; margin-bottom: 25px; border-bottom: 2px solid var(--accent); display: inline-block; padding-bottom: 5px; }
-        .item { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; margin-bottom: 15px; border-left: 4px solid var(--accent); text-align: left; }
-        .tag { display: inline-block; background: var(--accent); color: #000; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; margin: 4px; }
-        
-        .cv-btn {
-            display: inline-block; margin-top: 20px; padding: 15px 30px;
-            background: var(--accent); color: #000; text-decoration: none;
-            border-radius: 50px; font-weight: 800; transition: 0.3s;
-        }
-        .cv-btn:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(0,210,255,0.5); }
-
-        /* Responsivité Mobile */
-        @media (max-width: 768px) {
-            .bubble { width: 110px !important; height: 110px !important; }
-            .bubble i { font-size: 1.5rem; }
-            .profile-img { width: 120px; height: 120px; }
-            .center-profile h1 { font-size: 1.2rem; }
-            .b-xp { top: 2%; left: 2%; }
-            .b-skills { top: 2%; right: 2%; }
-            .b-edu { bottom: 2%; left: 2%; }
-            .b-projects { bottom: 2%; right: 2%; }
-        }
+        .bubble.active .close-btn { display: block; }
     </style>
 </head>
 <body>
 
-<div class="universe">
-    <div class="center-profile">
-        <img src="https://media.licdn.com/dms/image/v2/D4E03AQE-KInp6qUo8A/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1715011749733?e=1747872000&v=beta&t=U8W6W3-S_6-o9Z_S-6-o9Z" class="profile-img">
-        <h1>Quentin Farrokhian</h1>
-        <p style="opacity: 0.7">Alternant Administrateur Réseaux & Systèmes</p>
-        <div class="social-links">
-            <a href="https://www.linkedin.com/in/quentin-farrokhian-68b31a2b1/" target="_blank"><i class="fab fa-linkedin"></i></a>
-            <a href="mailto:qfarrokhpro@gmail.com"><i class="fas fa-envelope"></i></a>
+<div id="network-container">
+    <div class="bubble" id="me" onclick="openBubble(this)">
+        <span class="close-btn">×</span>
+        <div class="header-info">
+            <h2>Quentin Farrokhian</h2>
+        </div>
+        <div class="content">
+            <p><strong>Alternant en BUT R&T</strong> à l'IUT de Luminy (Aix-Marseille)[cite: 51].</p>
+            <p>Après 2 ans à Annecy pour découvrir l'autonomie [cite: 52], je suis en alternance chez <strong>La Mutuelle Verte</strong> en tant qu'Administrateur Réseaux et Systèmes[cite: 12, 13].</p>
+            <p>Objectif : Valider mon BUT et poursuivre en Master l'année prochaine.</p>
         </div>
     </div>
 
-    <div class="bubble b-xp" onclick="openBubble(this)">
-        <i class="fas fa-briefcase"></i>
-        <h3>Expériences</h3>
-        <span class="close-btn">&times;</span>
-        <div class="content-hidden">
-            <h2>Expériences Professionnelles</h2>
-            <div class="item">
-                <strong>Administrateur Réseaux & Systèmes (Alternant) [cite: 12]</strong><br>
-                <em>La Mutuelle Verte, Toulon | Sept. 2025 - Présent [cite: 13]</em><br>
-                Administration Active Directory, gestion VMware ESXi, maintenance serveurs Windows 2025. [cite: 36, 37, 38]
-            </div>
-            <div class="item">
-                <strong>Administrateur Réseaux & Systèmes (Stagiaire) [cite: 39]</strong><br>
-                <em>La Mutuelle Verte, Toulon | Avril 2025 - Août 2025 [cite: 14, 15]</em><br>
-                Monitoring (PRTG/GLPI), Configuration Cisco VLAN (802.1x), Sauvegardes Veeam. [cite: 41, 43, 45]
-            </div>
-            <div class="item">
-                <strong>Responsable Communication [cite: 46]</strong><br>
-                <em>BDE R&T Annecy | 2024 - 2025 [cite: 16]</em><br>
-                Gestion des réseaux sociaux, partenariats et design événementiel. [cite: 47, 49, 50]
-            </div>
+    <div class="bubble" id="exp" onclick="openBubble(this)">
+        <span class="close-btn">×</span>
+        <h2>Expériences</h2>
+        <div class="content">
+            <ul>
+                <li><strong>Alternant Admin Systèmes & Réseaux</strong> - La Mutuelle Verte (Depuis Sept 2025)[cite: 12].</li>
+                <li>Gestion Active Directory, VMWare, GPO, et cybersécurité[cite: 37, 38].</li>
+                <li>Support niveau 1 & 2 et maintenance du parc[cite: 34, 35].</li>
+            </ul>
         </div>
     </div>
 
-    <div class="bubble b-skills" onclick="openBubble(this)">
-        <i class="fas fa-code-branch"></i>
-        <h3>Skills</h3>
-        <span class="close-btn">&times;</span>
-        <div class="content-hidden">
-            <h2>Compétences Techniques</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                <div>
-                    <h3>Réseaux & Sécurité [cite: 57]</h3>
-                    <span class="tag">Cisco (CCNA/CCNP)</span><span class="tag">Stormshield (CSNA/CSNE)</span>
-                    <span class="tag">Wazuh SIEM</span><span class="tag">Wireshark</span><span class="tag">OSINT</span>
-                </div>
-                <div>
-                    <h3>Systèmes & Cloud [cite: 57]</h3>
-                    <span class="tag">VMware ESXi</span><span class="tag">Docker</span><span class="tag">Proxmox</span>
-                    <span class="tag">Windows Server</span><span class="tag">AWS</span>
-                </div>
-                <div>
-                    <h3>Développement [cite: 56]</h3>
-                    <span class="tag">Python</span><span class="tag">Bash</span><span class="tag">PowerShell</span>
-                    <span class="tag">PHP/SQL</span><span class="tag">JS/AJAX</span>
-                </div>
-            </div>
+    <div class="bubble" id="skills" onclick="openBubble(this)">
+        <span class="close-btn">×</span>
+        <h2>Compétences</h2>
+        <div class="content">
+            <p><strong>Réseau :</strong> Cisco (CCNA 1/2/3, CCNP), Stormshield, TCP/IP[cite: 57].</p>
+            <p><strong>Cybersécurité :</strong> Wazuh (SIEM), Graylog, Wireshark, OSINT[cite: 58].</p>
+            <p><strong>Dev :</strong> Python, PowerShell, Bash, PHP, SQL[cite: 56].</p>
         </div>
     </div>
 
-    <div class="bubble b-edu" onclick="openBubble(this)">
-        <i class="fas fa-graduation-cap"></i>
-        <h3>Parcours</h3>
-        <span class="close-btn">&times;</span>
-        <div class="content-hidden">
-            <h2>Formation & Diplômes</h2>
-            <div class="item">
-                <strong>BUT Réseaux Informatique & Télécoms (Cyber) [cite: 51]</strong><br>
-                <em>Université Aix-Marseille (IUT Luminy) | 2025 - 2026 [cite: 20]</em><br>
-                Dernière année de BUT effectuée en alternance.
-            </div>
-            <div class="item">
-                <strong>BUT Réseaux Informatique & Télécoms [cite: 52]</strong><br>
-                <em>Université Savoie Mont-Blanc (Annecy) | 2023 - 2025 [cite: 22]</em><br>
-                Deux premières années pour découvrir la vie loin du cocon familial.
-            </div>
-            <p style="margin-top: 15px;">Langues : Anglais (TOEIC 880 [cite: 27]), Mandarin (HSK2 [cite: 29]).</p>
-            <a href="Quentin Farrokhian.pdf" target="_blank" class="cv-btn">
-                <i class="fas fa-file-pdf"></i> Télécharger mon CV (PDF)
-            </a>
+    <div class="bubble" id="projets" onclick="openBubble(this)">
+        <span class="close-btn">×</span>
+        <h2>Projets</h2>
+        <div class="content">
+            <ul>
+                <li><strong>Config Generator :</strong> Web App de création de templates .cfg pour Switch/Routeurs Cisco[cite: 59].</li>
+                <li><strong>Libris :</strong> Application mobile via Apache Cordova pour gestion de bibliothèque[cite: 60].</li>
+                <li><strong>Camping Web :</strong> Site dynamique sécurisé lié à une BDD[cite: 61].</li>
+            </ul>
         </div>
     </div>
 
-    <div class="bubble b-projects" onclick="openBubble(this)">
-        <i class="fas fa-terminal"></i>
-        <h3>Projets</h3>
-        <span class="close-btn">&times;</span>
-        <div class="content-hidden">
-            <h2>Projets Majeurs</h2>
-            <div class="item">
-                <strong>Cisco Config Tool [cite: 59]</strong><br>
-                Générateur d'application web de templates de configuration pour équipements réseaux.
-            </div>
-            <div class="item">
-                <strong>Application Mobile Cordova [cite: 60]</strong><br>
-                Réalisation d'une application hybride de gestion de bibliothèque en ligne.
-            </div>
-            <div class="item">
-                <strong>Site Web Camping [cite: 61]</strong><br>
-                Plateforme dynamique avec base de données sécurisée.
-            </div>
-        </div>
-    </div>
-
-    <div class="bubble b-hobbies" onclick="openBubble(this)">
-        <i class="fas fa-heart"></i>
-        <h3>Loisirs</h3>
-        <span class="close-btn">&times;</span>
-        <div class="content-hidden">
-            <h2>Passions Personnelles</h2>
-            <p>En dehors de l'informatique et de la cybersécurité, je suis passionné par :</p>
-            <div style="display: flex; justify-content: space-around; margin-top: 40px; text-align: center;">
-                <div><i class="fas fa-skiing" style="font-size: 3rem; color: var(--accent)"></i><br>Ski [cite: 31]</div>
-                <div><i class="fas fa-car" style="font-size: 3rem; color: var(--accent)"></i><br>Automobile [cite: 32]</div>
-                <div><i class="fas fa-gamepad" style="font-size: 3rem; color: var(--accent)"></i><br>Jeux-Vidéos [cite: 33]</div>
-                <div><i class="fas fa-music" style="font-size: 3rem; color: var(--accent)"></i><br>Musique</div>
-            </div>
-            <p style="margin-top: 40px; font-style: italic;">"Actuellement en alternance à La Mutuelle Verte, je prépare mon entrée en Master pour l'année prochaine." [cite: 9]</p>
+    <div class="bubble" id="loisirs" onclick="openBubble(this)">
+        <span class="close-btn">×</span>
+        <h2>Loisirs</h2>
+        <div class="content">
+            <p>🎵 Musique & 🏎️ Automobile [cite: 32]</p>
+            <p>🎿 Ski & 🏉 Rugby [cite: 31]</p>
+            <p>🎮 Jeux-Vidéos [cite: 33]</p>
         </div>
     </div>
 </div>
 
 <script>
-    function openBubble(el) {
-        if (!el.classList.contains('active')) {
-            // Ferme toutes les bulles avant d'ouvrir la nouvelle
-            document.querySelectorAll('.bubble').forEach(b => b.classList.remove('active'));
-            el.classList.add('active');
-            // Cache le profil central pour laisser de la place
-            document.querySelector('.center-profile').style.opacity = '0.1';
-        }
+    function openBubble(element) {
+        // Empêche la propagation si on clique sur la bulle déjà active
+        if (element.classList.contains('active')) return;
+
+        // Ferme les autres bulles
+        document.querySelectorAll('.bubble').forEach(b => {
+            b.classList.remove('active');
+        });
+
+        // Ouvre la bulle sélectionnée
+        element.classList.add('active');
     }
 
-    // Gestion de la fermeture
+    // Gestion du bouton de fermeture
     document.querySelectorAll('.close-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Empêche de ré-ouvrir la bulle
+            e.stopPropagation(); // Empêche de ré-ouvrir immédiatement
             btn.parentElement.classList.remove('active');
-            document.querySelector('.center-profile').style.opacity = '1';
         });
-    });
-
-    // Fermeture avec la touche Échap
-    document.addEventListener('keydown', (e) => {
-        if (e.key === "Escape") {
-            document.querySelectorAll('.bubble').forEach(b => b.classList.remove('active'));
-            document.querySelector('.center-profile').style.opacity = '1';
-        }
     });
 </script>
 
