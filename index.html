@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quentin Farrokhian | Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #ffffff;
             --text-main: #1d1d1f;
-            --text-secondary: #86868b;
+            --text-secondary: #6e6e73;
             --accent: #0066cc;
             --card-bg: #f5f5f7;
             --border: #d2d2d7;
@@ -18,88 +18,94 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            font-family: 'Inter', -apple-system, sans-serif; 
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; 
             background-color: var(--bg); 
             color: var(--text-main);
             -webkit-font-smoothing: antialiased;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
-        /* --- NAV --- */
+        /* --- NAVIGATION --- */
         nav {
             position: fixed; width: 100%; top: 0; z-index: 100;
             background: rgba(255,255,255,0.8);
             backdrop-filter: saturate(180%) blur(20px);
             border-bottom: 1px solid rgba(0,0,0,0.1);
-            display: flex; justify-content: center; padding: 15px 0;
+            display: flex; justify-content: center; padding: 18px 0;
         }
-        nav ul { display: flex; list-style: none; gap: 35px; }
+        nav ul { display: flex; list-style: none; gap: 40px; }
         nav a { 
             text-decoration: none; color: var(--text-main); font-size: 13px; 
             font-weight: 500; opacity: 0.7; transition: 0.3s;
         }
         nav a:hover { opacity: 1; color: var(--accent); }
 
-        .container { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 25px; }
 
         /* --- HERO --- */
         .hero {
-            padding-top: 140px; padding-bottom: 80px;
+            padding-top: 160px; padding-bottom: 80px;
             text-align: center;
         }
         .profile-img {
-            width: 130px; height: 130px; border-radius: 50%;
-            object-fit: cover; margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 140px; height: 140px; border-radius: 50%;
+            object-fit: cover; margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 5px solid var(--card-bg);
         }
-        .hero h1 { font-size: 48px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 15px; }
-        .hero p { font-size: 21px; color: var(--text-secondary); max-width: 700px; margin: 0 auto 35px; }
+        .hero h1 { font-size: 52px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 15px; }
+        .hero p { font-size: 22px; color: var(--text-secondary); max-width: 750px; margin: 0 auto 40px; }
 
-        /* --- SECTION HEADERS --- */
-        section { padding: 80px 0; border-top: 1px solid var(--border); }
-        .label { color: var(--accent); font-weight: 600; font-size: 14px; text-transform: uppercase; margin-bottom: 30px; display: block; letter-spacing: 0.05em; }
+        /* --- SECTIONS --- */
+        section { padding: 90px 0; border-top: 1px solid var(--border); }
+        .label { color: var(--accent); font-weight: 700; font-size: 13px; text-transform: uppercase; margin-bottom: 40px; display: block; letter-spacing: 0.1em; }
 
-        /* --- LANGUES (GRID 4) --- */
-        .lang-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+        /* --- LANGUES (AVEC DRAPEAUX) --- */
+        .lang-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
         .lang-card { 
-            display: flex; align-items: center; gap: 12px; 
-            background: var(--card-bg); padding: 15px 20px; border-radius: 14px;
+            display: flex; align-items: center; gap: 15px; 
+            background: var(--card-bg); padding: 18px 24px; border-radius: 18px;
+            transition: 0.3s;
         }
-        .flag { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd; }
-        .lang-info span { display: block; font-size: 14px; font-weight: 600; }
-        .lang-info small { color: var(--text-secondary); font-size: 12px; }
+        .flag { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .lang-info span { display: block; font-size: 15px; font-weight: 600; }
+        .lang-info small { color: var(--text-secondary); font-size: 13px; }
 
-        /* --- SKILLS (CARDS) --- */
-        .skills-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .skill-group { background: var(--card-bg); padding: 30px; border-radius: 20px; }
-        .skill-group h3 { font-size: 17px; margin-bottom: 20px; border-bottom: 1px solid #d2d2d7; padding-bottom: 10px; }
-        .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
-        .tag { background: white; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; border: 1px solid #e5e5e7; }
+        /* --- COMPÉTENCES (CARDS ÉPURÉES) --- */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .skill-category { background: var(--card-bg); padding: 35px; border-radius: 24px; }
+        .skill-category h3 { font-size: 18px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+        .skill-category i { color: var(--accent); }
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; padding: 7px 16px; border-radius: 10px; font-size: 13.5px; font-weight: 500; border: 1px solid #e5e5e7; color: #3a3a3c; }
 
         /* --- PROJETS --- */
         .project-card { 
-            background: var(--card-bg); padding: 40px; border-radius: 24px; margin-bottom: 30px;
-            display: flex; flex-direction: column; gap: 15px; transition: 0.3s;
+            background: var(--card-bg); padding: 45px; border-radius: 28px; margin-bottom: 35px;
+            position: relative; overflow: hidden; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .project-card:hover { background: #f0f0f2; }
-        .project-card h3 { font-size: 24px; }
-        .project-card p { color: var(--text-secondary); font-size: 16px; max-width: 800px; }
-        .project-tech { display: flex; gap: 10px; margin-top: 10px; }
-        .tech-pill { font-size: 12px; font-weight: 600; color: var(--accent); }
+        .project-card:hover { transform: scale(1.01); background: #f0f0f2; }
+        .project-type { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 15px; display: block; }
+        .project-card h3 { font-size: 28px; margin-bottom: 15px; }
+        .project-card p { color: var(--text-secondary); font-size: 17px; max-width: 850px; line-height: 1.6; }
+        .project-footer { display: flex; gap: 12px; margin-top: 25px; }
 
-        /* --- CTA --- */
+        /* --- BUTTONS --- */
         .btn {
-            padding: 12px 25px; border-radius: 980px; font-size: 16px; font-weight: 500;
+            padding: 14px 30px; border-radius: 980px; font-size: 17px; font-weight: 600;
             text-decoration: none; display: inline-block; transition: 0.3s;
         }
-        .btn-primary { background: var(--text-main); color: white; }
-        .btn-primary:hover { opacity: 0.8; }
+        .btn-black { background: var(--text-main); color: white; }
+        .btn-black:hover { opacity: 0.85; transform: translateY(-2px); }
+        .btn-outline { border: 1px solid var(--border); color: var(--text-main); }
+        .btn-outline:hover { background: var(--white); border-color: var(--text-main); }
 
-        footer { text-align: center; padding: 60px 0; color: var(--text-secondary); font-size: 12px; }
+        footer { text-align: center; padding: 80px 0; color: var(--text-secondary); font-size: 13px; border-top: 1px solid var(--border); }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 34px; }
-            .skills-container { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 38px; }
+            .hero p { font-size: 18px; }
+            .project-card { padding: 30px; }
         }
     </style>
 </head>
@@ -108,7 +114,7 @@
 <nav>
     <ul>
         <li><a href="#langues">Langues</a></li>
-        <li><a href="#competences">Expertise</a></li>
+        <li><a href="#competences">Compétences</a></li>
         <li><a href="#projets">Projets</a></li>
         <li><a href="#contact">Contact</a></li>
     </ul>
@@ -116,111 +122,111 @@
 
 <div class="container">
     <header class="hero">
-        <img src="https://media.licdn.com/dms/image/v2/D4E03AQE-KInp6qUo8A/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1715011749733?e=1747872000&v=beta&t=U8W6W3-S_6-o9Z_S-6-o9Z" alt="Portrait" class="profile-img">
+        <img src="https://media.licdn.com/dms/image/v2/D4E03AQE-KInp6qUo8A/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1715011749733?e=1747872000&v=beta&t=U8W6W3-S_6-o9Z_S-6-o9Z" alt="Portrait Quentin Farrokhian" class="profile-img">
         <h1>Quentin Farrokhian</h1>
-        <p>Administrateur Réseaux & Systèmes. Passionné par l'architecture des systèmes critiques et la cybersécurité.</p>
-        <a href="Quentin Farrokhian-1.pdf" class="btn btn-primary" download>Télécharger mon CV (PDF)</a>
+        <p>Administrateur Réseaux & Systèmes en alternance chez La Mutuelle Verte. Futur expert en infrastructures critiques et cybersécurité.</p>
+        <div style="display: flex; justify-content: center; gap: 15px;">
+            <a href="Quentin Farrokhian-1.pdf" class="btn btn-black" download><i class="fas fa-file-pdf"></i> Télécharger CV</a>
+            <a href="https://www.linkedin.com/in/quentin-farrokhian-68b31a2b1/" target="_blank" class="btn btn-outline"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        </div>
     </header>
 
     <section id="langues">
-        <span class="label">Langues</span>
+        <span class="label">Langues & Certifications</span>
         <div class="lang-grid">
             <div class="lang-card">
-                <img src="https://flagcdn.com/w40/fr.png" class="flag" alt="France">
-                <div class="lang-info"><span>Français</span><small>Maternel</small></div>
+                <img src="https://flagcdn.com/w80/fr.png" class="flag" alt="France">
+                <div class="lang-info"><span>Français</span><small>Langue maternelle</small></div>
             </div>
             <div class="lang-card">
-                <img src="https://flagcdn.com/w40/gb.png" class="flag" alt="UK">
+                <img src="https://flagcdn.com/w80/gb.png" class="flag" alt="UK">
                 <div class="lang-info"><span>Anglais</span><small>TOEIC 880 (B2+)</small></div>
             </div>
             <div class="lang-card">
-                <img src="https://flagcdn.com/w40/cn.png" class="flag" alt="China">
+                <img src="https://flagcdn.com/w80/cn.png" class="flag" alt="China">
                 <div class="lang-info"><span>Mandarin</span><small>Niveau HSK2</small></div>
             </div>
             <div class="lang-card">
-                <img src="https://flagcdn.com/w40/es.png" class="flag" alt="Spain">
+                <img src="https://flagcdn.com/w80/es.png" class="flag" alt="Spain">
                 <div class="lang-info"><span>Espagnol</span><small>Niveau Terminale</small></div>
             </div>
         </div>
     </section>
 
     <section id="competences">
-        <span class="label">Compétences Techniques</span>
-        <div class="skills-container">
-            <div class="skill-group">
-                <h3>Réseaux & Sécurité</h3>
-                <div class="tag-list">
+        <span class="label">Expertise Technique</span>
+        <div class="skills-grid">
+            <div class="skill-category">
+                <h3><i class="fas fa-network-wired"></i> Réseaux & Sécurité</h3>
+                <div class="tag-cloud">
                     <span class="tag">Cisco (CCNA/CCNP)</span>
                     <span class="tag">Stormshield (CSNA/CSNE)</span>
                     <span class="tag">802.1x / NPS</span>
-                    <span class="tag">TCP/IP</span>
-                    <span class="tag">Wazuh (SIEM)</span>
+                    <span class="tag">Wazuh SIEM</span>
                     <span class="tag">Wireshark</span>
+                    <span class="tag">OSINT</span>
                 </div>
             </div>
-            <div class="skill-group">
-                <h3>Système & Virtualisation</h3>
-                <div class="tag-list">
+            <div class="skill-category">
+                <h3><i class="fas fa-server"></i> Systèmes & Cloud</h3>
+                <div class="tag-cloud">
                     <span class="tag">VMware ESXi / vCenter</span>
-                    <span class="tag">Docker</span>
                     <span class="tag">Windows Server (AD/GPO)</span>
+                    <span class="tag">Docker</span>
                     <span class="tag">Proxmox</span>
                     <span class="tag">AWS</span>
                     <span class="tag">Veeam Backup</span>
                 </div>
             </div>
-            <div class="skill-group">
-                <h3>Programmation & Web</h3>
-                <div class="tag-list">
+            <div class="skill-category">
+                <h3><i class="fas fa-code"></i> Développement</h3>
+                <div class="tag-cloud">
                     <span class="tag">Python</span>
-                    <span class="tag">PowerShell / Bash</span>
+                    <span class="tag">Bash</span>
+                    <span class="tag">PowerShell</span>
                     <span class="tag">PHP / SQL / AJAX</span>
-                    <span class="tag">HTML5 / CSS3</span>
-                    <span class="tag">JSON / JS</span>
+                    <span class="tag">HTML / CSS / JS</span>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="projets">
-        <span class="label">Projets Majeurs</span>
+        <span class="label">Projets Sélectionnés</span>
         
         <div class="project-card">
-            <div class="tech-pill">AUTOMATISATION RÉSEAU</div>
+            <span class="project-type">Automatisation / Réseau</span>
             <h3>Cisco Config Template Tool</h3>
-            <p>Conception d'une application web interactive permettant aux administrateurs de générer instantanément des fichiers de configuration (.cfg) sans erreur de syntaxe pour switchs et routeurs Cisco.</p>
-            <div class="project-tech">
-                <span class="tag">PHP</span><span class="tag">JS</span><span class="tag">Cisco IOS</span>
+            <p>Développement d'une application web métier permettant de générer dynamiquement des scripts de configuration Cisco (.cfg). L'outil sécurise les déploiements en éliminant les erreurs de syntaxe manuelles pour les switchs et routeurs.</p>
+            <div class="project-footer">
+                <span class="tag">PHP</span><span class="tag">JavaScript</span><span class="tag">Cisco IOS</span>
             </div>
         </div>
 
         <div class="project-card">
-            <div class="tech-pill">DÉVELOPPEMENT MOBILE</div>
+            <span class="project-type">Mobile / Cross-Platform</span>
             <h3>Application Apache Cordova</h3>
-            <p>Réalisation d'une solution mobile cross-platform optimisée pour la gestion de données en temps réel, intégrant une interface utilisateur fluide et réactive.</p>
-            <div class="project-tech">
-                <span class="tag">Cordova</span><span class="tag">Javascript</span><span class="tag">Webview</span>
+            <p>Conception et réalisation d'une application mobile hybride optimisée pour la consultation de données distantes, avec une attention particulière portée sur l'expérience utilisateur et la légèreté du package.</p>
+            <div class="project-footer">
+                <span class="tag">Cordova</span><span class="tag">Webview</span><span class="tag">JSON</span>
             </div>
         </div>
 
         <div class="project-card">
-            <div class="tech-pill">WEB & COMMERCE</div>
-            <h3>Site de réservation - Camping</h3>
-            <p>Développement complet d'une plateforme de réservation en ligne avec gestion de base de données SQL pour les disponibilités et interface client intuitive.</p>
-            <div class="project-tech">
-                <span class="tag">SQL</span><span class="tag">Architecture MVC</span><span class="tag">Frontend</span>
+            <span class="project-type">Web / E-Commerce</span>
+            <h3>Plateforme de Réservation Camping</h3>
+            <p>Création d'un système complet de gestion de réservations incluant une base de données relationnelle SQL, un tunnel d'achat client et un back-office administrateur pour la gestion des stocks.</p>
+            <div class="project-footer">
+                <span class="tag">MVC</span><span class="tag">MySQL</span><span class="tag">Frontend</span>
             </div>
         </div>
     </section>
 
     <section id="contact" style="text-align: center; border-bottom: none;">
         <span class="label">Contact</span>
-        <h2 style="font-size: 32px; margin-bottom: 30px;">Prêt pour de nouveaux défis.</h2>
-        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-            <a href="mailto:qfarrokhpro@gmail.com" class="btn btn-primary">Me contacter par Email</a>
-            <a href="https://www.linkedin.com/in/quentin-farrokhian-68b31a2b1/" target="_blank" class="btn" style="border: 1px solid var(--border);">Profil LinkedIn</a>
-        </div>
-        <p style="margin-top: 40px; color: var(--text-secondary);">Marseille · Paris · Toulon</p>
+        <h2 style="font-size: 42px; margin-bottom: 20px; letter-spacing: -0.02em;">On en discute ?</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 40px; font-size: 18px;">Basé à Marseille, Paris ou Toulon. Mobilité totale.</p>
+        <a href="mailto:qfarrokhpro@gmail.com" class="btn btn-black">Envoyer un Email</a>
     </section>
 </div>
 
@@ -229,6 +235,7 @@
 </footer>
 
 <script>
+    // Smooth scroll
     document.querySelectorAll('nav a').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
