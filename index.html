@@ -113,27 +113,27 @@
     #bubble-layer {
       position: absolute;
       inset: 0;
-      z-index: 3;
+      z-index: 12;
     }
 
     .center-card {
       position: absolute;
       inset: 50% auto auto 50%;
       width: var(--center-size);
-      min-height: var(--center-size);
+      height: var(--center-size);
       transform: translate(-50%, -50%);
-      border-radius: 34px;
-      background: linear-gradient(160deg, rgba(255,255,255,0.82), rgba(238,245,255,0.58));
-      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(230,240,255,0.6));
+      border: 1px solid rgba(255,255,255,0.6);
       box-shadow: 0 26px 60px rgba(62, 85, 123, 0.22);
       backdrop-filter: blur(18px) saturate(130%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      padding: 18px;
-      z-index: 4;
+      gap: 10px;
+      padding: 16px;
+      z-index: 6;
       text-align: center;
     }
 
@@ -479,7 +479,7 @@
       position: absolute;
       left: 18px;
       bottom: 18px;
-      z-index: 5;
+      z-index: 13;
       padding: 10px 12px;
       border-radius: 16px;
       background: linear-gradient(135deg, rgba(255,255,255,0.72), rgba(228,239,255,0.5));
@@ -498,7 +498,7 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s ease;
-      z-index: 10;
+      z-index: 8;
     }
 
     .overlay.visible {
@@ -564,11 +564,7 @@
       <h1>Quentin Farrokhian</h1>
       <p class="role">Alternant en BUT Réseaux &amp; Télécom — parcours cyber, entre Luminy et La Mutuelle Verte.</p>
 
-      <div class="badge-row">
-        <span class="badge">Réseaux</span>
-        <span class="badge">Cybersécurité</span>
-        <span class="badge">Systèmes</span>
-      </div>
+      
 
       <div class="quick-links">
         <a class="quick-link" href="mailto:qfarrokhpro@gmail.com">Mail</a>
@@ -983,19 +979,35 @@
       linesSvg.setAttribute('height', window.innerHeight);
       linesSvg.innerHTML = '';
 
-      bubbles.forEach(bubble => {
+      bubbles.forEach((bubble, i) => {
         const bx = parseFloat(bubble.style.left) + bubble.offsetWidth / 2;
         const by = parseFloat(bubble.style.top) + bubble.offsetHeight / 2;
-        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttribute('x1', center.x);
-        line.setAttribute('y1', center.y);
-        line.setAttribute('x2', bx);
-        line.setAttribute('y2', by);
-        line.setAttribute('stroke', 'rgba(124, 198, 255, 0.30)');
-        line.setAttribute('stroke-width', '1.5');
-        line.setAttribute('stroke-linecap', 'round');
-        line.setAttribute('stroke-dasharray', '4 8');
-        linesSvg.appendChild(line);
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        const d = `M ${center.x} ${center.y} L ${bx} ${by}`;
+        path.setAttribute('d', d);
+        path.setAttribute('stroke', 'rgba(124,198,255,0.35)');
+        path.setAttribute('stroke-width', '1.5');
+        path.setAttribute('stroke-dasharray', '4 8');
+        path.setAttribute('fill', 'none');
+        linesSvg.appendChild(path);
+
+        // paquet réseau (petit point animé)
+        const packet = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        packet.setAttribute('r', '3');
+        packet.setAttribute('fill', 'rgba(78,168,255,0.9)');
+
+        const motion = document.createElementNS('http://www.w3.org/2000/svg', 'animateMotion');
+        motion.setAttribute('dur', `${3 + Math.random() * 3}s`);
+        motion.setAttribute('repeatCount', 'indefinite');
+
+        const mpath = document.createElementNS('http://www.w3.org/2000/svg', 'mpath');
+        mpath.setAttributeNS('http://www.w3.org/1999/xlink', 'href', `#path-${i}`);
+
+        path.setAttribute('id', `path-${i}`);
+        motion.appendChild(mpath);
+        packet.appendChild(motion);
+        linesSvg.appendChild(packet);
       });
     }
 
