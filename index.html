@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netgen Systems</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+:root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --accent: #38bdf8;
+    --text: #f8fafc;
+    --dim: #94a3b8;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 8%;
+    position: fixed;
+    width: 100%;
+    background: #020617;
+}
+
+nav a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+.hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 10%;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+}
+
+section {
+    padding: 80px 10%;
+}
+
+h2 {
+    color: var(--accent);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+    gap: 20px;
+}
+
+.card {
+    background: var(--card);
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.card i {
+    color: var(--accent);
+    font-size: 2rem;
+}
+
+footer {
+    text-align: center;
+    padding: 40px;
+    background: #020617;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div><strong>Netgen Systems</strong></div>
+    <div>
+        <a href="#infra">Infra</a>
+        <a href="#reseau">Réseau</a>
+        <a href="#securite">Sécurité</a>
+        <a href="#logiciel">Logiciel</a>
+        <a href="#contact">Contact</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <h1>Concevoir l’infrastructure numérique</h1>
+    <p>Réseaux, cybersécurité et datacenter pour les environnements critiques.</p>
+</section>
+
+<section id="infra">
+    <h2>Infrastructure</h2>
+    <div class="grid">
+        <div class="card">
+            <i class="fas fa-building"></i>
+            <h3>Bâtiment intelligent</h3>
+            <p>Conception réseau multi-étages avec locaux techniques et câblage structuré.</p>
+        </div>
+
+        <div class="card">
+            <i class="fas fa-server"></i>
+            <h3>Datacenter</h3>
+            <p>Virtualisation Proxmox et haute disponibilité des services.</p>
+        </div>
+
+        <div class="card">
+            <i class="fas fa-bolt"></i>
+            <h3>Énergie</h3>
+            <p>Gestion électrique, onduleurs et optimisation énergétique.</p>
+        </div>
+    </div>
+</section>
+
+<section id="reseau">
+    <h2>Réseaux</h2>
+    <div class="grid">
+        <div class="card">
+            <i class="fas fa-network-wired"></i>
+            <h3>LAN/WAN</h3>
+            <p>Architecture cœur / distribution / accès avec routage OSPF.</p>
+        </div>
+
+        <div class="card">
+            <i class="fas fa-globe"></i>
+            <h3>Internet</h3>
+            <p>Double FAI, VPN sécurisé et haute disponibilité.</p>
+        </div>
+
+        <div class="card">
+            <i class="fas fa-wifi"></i>
+            <h3>Wi-Fi</h3>
+            <p>Solution Cisco Meraki avec gestion cloud et segmentation.</p>
+        </div>
+    </div>
+</section>
+
+<section id="securite">
+    <h2>Cybersécurité</h2>
+    <div class="grid">
+        <div class="card">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Firewall</h3>
+            <p>Protection NGFW avec inspection avancée des flux.</p>
+        </div>
+
+        <div class="card">
+            <i class="fas fa-user-lock"></i>
+            <h3>Accès sécurisé</h3>
+            <p>Authentification 802.1X et segmentation dynamique VLAN.</p>
+        </div>
+
+        <div class="card">
+            <i class="fas fa-eye"></i>
+            <h3>Supervision</h3>
+            <p>SIEM Wazuh pour la détection des menaces.</p>
+        </div>
+    </div>
+</section>
+
+<section id="logiciel">
+    <h2>Solutions Logicielles</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Active Directory</h3>
+            <p>Gestion centralisée avec Samba4.</p>
+        </div>
+
+        <div class="card">
+            <h3>Applications</h3>
+            <p>Nextcloud, Moodle, GLPI pour la collaboration.</p>
+        </div>
+
+        <div class="card">
+            <h3>Automatisation</h3>
+            <p>Configuration réseau automatisée et déploiement rapide.</p>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <h2>Contact</h2>
+    <p>Email : contact@netgen-systems.fr</p>
+    <p>Téléphone : 01 23 45 67 89</p>
+</section>
+
+<footer>
+    <p>© 2026 Netgen Systems</p>
+</footer>
+
+</body>
+</html>
