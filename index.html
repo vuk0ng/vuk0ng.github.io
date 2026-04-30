@@ -12,317 +12,299 @@
 </svg>">
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
-:root {
-    --bg-main: #020617;
-    --bg-secondary: #0f172a;
-    --card: rgba(15, 23, 42, 0.7);
-    --accent: #38bdf8;
-    --text-main: #f8fafc;
-    --text-dim: #94a3b8;
-    --border: rgba(255,255,255,0.05);
+:root{
+--bg:#020617;
+--card:#0f172a;
+--accent:#38bdf8;
+--text:#f8fafc;
+--dim:#94a3b8;
 }
 
-* { margin:0; padding:0; box-sizing:border-box; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter;background:var(--bg);color:var(--text);overflow-x:hidden}
 
-body {
-    font-family: 'Inter', sans-serif;
-    background: radial-gradient(circle at top, #0f172a 0%, #020617 80%);
-    color: var(--text-main);
-    line-height: 1.7;
+/* 🌌 BACKGROUND */
+canvas{position:fixed;top:0;left:0;z-index:-1}
+
+/* NAV */
+nav{
+display:flex;
+justify-content:space-between;
+padding:12px 5%;
+position:fixed;
+width:100%;
+background:rgba(2,6,23,0.85);
+backdrop-filter:blur(10px);
+z-index:1000;
 }
 
-nav {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:1.2rem 8%;
-    position:fixed;
-    width:100%;
-    background: rgba(2,6,23,0.9);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    z-index:1000;
+.logo{display:flex;gap:8px;font-weight:700}
+.logo-icon{
+width:26px;height:26px;background:var(--accent);
+display:flex;align-items:center;justify-content:center;
+border-radius:5px;color:black;font-weight:bold;
 }
 
-.logo {
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-weight:800;
+nav a{color:var(--dim);font-size:0.75rem;margin-left:12px;text-decoration:none}
+nav a:hover{color:var(--accent)}
+
+/* HERO */
+.hero{padding:110px 5% 30px}
+.hero h1{font-size:2.2rem;margin-bottom:10px}
+.hero p{color:var(--dim);max-width:700px}
+
+/* SECTION */
+section{padding:35px 5%}
+h2{color:var(--accent);margin-bottom:12px}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:12px;
 }
 
-.logo-icon {
-    width:34px;
-    height:34px;
-    border-radius:8px;
-    background: var(--accent);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#020617;
+.card{
+background:var(--card);
+padding:16px;
+border-radius:8px;
+transition:0.3s;
 }
 
-nav a {
-    color: var(--text-main);
-    text-decoration:none;
-    margin-left:20px;
-    font-size:0.8rem;
-    text-transform:uppercase;
+.card:hover{transform:translateY(-4px)}
+
+.card h3{font-size:0.9rem;margin-bottom:6px}
+.card p{font-size:0.78rem;color:var(--dim);line-height:1.4}
+
+/* SOC */
+.console{
+background:black;
+padding:15px;
+border-radius:8px;
+font-family:'Fira Code';
+font-size:0.75rem;
+color:#4ade80;
+height:180px;
+overflow:hidden;
 }
 
-nav a:hover { color: var(--accent); }
-
-.hero {
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    padding:0 10%;
+/* STORY */
+.story{display:flex;gap:15px;flex-wrap:wrap}
+.story div{
+flex:1;
+background:var(--card);
+padding:15px;
+border-radius:8px;
 }
 
-.hero h1 {
-    font-size:3.5rem;
-    margin-bottom:20px;
-}
+/* FOOTER */
+footer{padding:20px;text-align:center;color:#94a3b8;font-size:0.7rem}
 
-.hero p {
-    color:var(--text-dim);
-    max-width:750px;
-}
-
-section {
-    padding:100px 10%;
-}
-
-h2 {
-    font-size:2rem;
-    margin-bottom:30px;
-    color:var(--accent);
-}
-
-.grid {
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:25px;
-}
-
-.card {
-    background: var(--card);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:30px;
-    backdrop-filter: blur(12px);
-    transition:0.3s;
-}
-
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 0 25px rgba(56,189,248,0.2);
-}
-
-.card i {
-    font-size:1.8rem;
-    color:var(--accent);
-    margin-bottom:15px;
-}
-
-.card p {
-    color:var(--text-dim);
-}
-
-.console {
-    background:#000;
-    border-radius:10px;
-    padding:20px;
-    font-family:'Fira Code', monospace;
-    color:#4ade80;
-}
-
-footer {
-    text-align:center;
-    padding:40px;
-    background:#01040a;
-    color:var(--text-dim);
-}
 </style>
 </head>
 
 <body>
 
+<canvas id="bg"></canvas>
+
 <nav>
-<div class="logo">
-<div class="logo-icon">N</div>
-Netgen Systems
-</div>
+<div class="logo"><div class="logo-icon">N</div>Netgen Systems</div>
 <div>
 <a href="#infra">Infra</a>
-<a href="#reseau">Réseau</a>
-<a href="#securite">Sécurité</a>
-<a href="#stockage">Stockage</a>
-<a href="#supervision">SOC</a>
+<a href="#lan">LAN</a>
+<a href="#wan">WAN</a>
+<a href="#sec">Sécurité</a>
+<a href="#stock">Stockage</a>
+<a href="#soc">SOC</a>
 </div>
 </nav>
 
 <section class="hero">
-<h1>Netgen Systems</h1>
+<h1>Conception d’Infrastructures Complètes</h1>
 <p>
-Netgen Systems accompagne les organisations dans la conception, le déploiement et la sécurisation de leurs infrastructures informatiques.
-Notre approche repose sur la performance, la résilience et la cybersécurité afin de garantir un système d’information fiable et durable.
+Netgen Systems conçoit, déploie et sécurise des systèmes d’information complets,
+depuis le câblage physique jusqu’à la supervision avancée.
+Chaque projet est pensé pour être performant, évolutif et sécurisé.
 </p>
 </section>
 
 <section id="infra">
 <h2>Infrastructure & Datacenter</h2>
 <div class="grid">
-
 <div class="card">
-<i class="fas fa-server"></i>
-<h3>Virtualisation & Serveurs</h3>
-<p>
-Nous mettons en place des infrastructures virtualisées basées sur Proxmox permettant d’optimiser l’utilisation des ressources matérielles tout en garantissant une haute disponibilité des services. 
-Les machines virtuelles peuvent être migrées à chaud afin d’éviter toute interruption.
-</p>
+<h3>Architecture physique</h3>
+<p>Conception des salles techniques, baies de brassage et câblage structuré permettant une organisation claire et évolutive du réseau.</p>
 </div>
-
 <div class="card">
-<i class="fas fa-bolt"></i>
-<h3>Alimentation Électrique</h3>
-<p>
-L’infrastructure est protégée par des systèmes d’onduleurs permettant d’assurer la continuité de service en cas de coupure électrique. 
-Cette architecture garantit la stabilité et la protection des équipements critiques.
-</p>
+<h3>Énergie & refroidissement</h3>
+<p>Gestion thermique optimisée et alimentation sécurisée avec onduleurs pour garantir la continuité de service.</p>
 </div>
-
 <div class="card">
-<i class="fas fa-snowflake"></i>
-<h3>Refroidissement</h3>
-<p>
-Nous intégrons des solutions de refroidissement intelligentes afin de maintenir une température optimale dans les salles serveurs, réduisant les risques de surchauffe et augmentant la durée de vie du matériel.
-</p>
+<h3>Datacenter</h3>
+<p>Virtualisation, stockage centralisé et haute disponibilité des services critiques.</p>
 </div>
-
 </div>
 </section>
 
-<section id="reseau">
-<h2>Architecture Réseau</h2>
+<section id="lan">
+<h2>Réseau LAN</h2>
 <div class="grid">
-
 <div class="card">
-<i class="fas fa-network-wired"></i>
-<h3>Réseau Local (LAN)</h3>
-<p>
-Le réseau est structuré en plusieurs couches (cœur, distribution, accès) permettant une gestion efficace du trafic et une évolutivité optimale. 
-La segmentation en VLAN assure l’isolation des flux et améliore la sécurité.
-</p>
+<h3>Architecture hiérarchique</h3>
+<p>Organisation en couches cœur, distribution et accès pour optimiser les performances et la résilience.</p>
 </div>
-
 <div class="card">
-<i class="fas fa-globe"></i>
-<h3>Accès Internet & WAN</h3>
-<p>
-L’infrastructure dispose de plusieurs accès Internet afin de garantir une redondance. 
-Un système de bascule automatique permet d’assurer la continuité des services même en cas de défaillance d’un fournisseur.
-</p>
+<h3>Segmentation VLAN</h3>
+<p>Isolation des flux utilisateurs, serveurs et invités pour renforcer la sécurité interne.</p>
 </div>
-
 <div class="card">
-<i class="fas fa-wifi"></i>
-<h3>Wi-Fi Entreprise</h3>
-<p>
-Le réseau sans fil est basé sur une solution Cisco Meraki, offrant une gestion centralisée, une surveillance en temps réel et une sécurité renforcée grâce à l’authentification des utilisateurs.
-</p>
+<h3>Wi-Fi sécurisé</h3>
+<p>Déploiement de bornes Cisco Meraki avec gestion cloud et authentification sécurisée.</p>
 </div>
-
 </div>
 </section>
 
-<section id="securite">
-<h2>Cybersécurité</h2>
+<section id="wan">
+<h2>WAN & Accès distant</h2>
 <div class="grid">
-
 <div class="card">
-<i class="fas fa-shield-alt"></i>
-<h3>Pare-feu & Protection</h3>
-<p>
-Nous déployons des pare-feux de nouvelle génération permettant d’inspecter les flux réseau en profondeur et de détecter les comportements suspects.
-</p>
+<h3>Double FAI</h3>
+<p>Redondance Internet avec bascule automatique pour assurer la continuité de service.</p>
 </div>
-
 <div class="card">
-<i class="fas fa-user-lock"></i>
-<h3>Gestion des Accès</h3>
-<p>
-L’accès au réseau est contrôlé via des mécanismes d’authentification forte basés sur Active Directory et RADIUS, garantissant que seuls les utilisateurs autorisés puissent accéder aux ressources.
-</p>
+<h3>VPN sécurisé</h3>
+<p>Accès distant chiffré permettant aux utilisateurs de se connecter en toute sécurité.</p>
 </div>
-
 <div class="card">
-<i class="fas fa-lock"></i>
-<h3>Approche Zero Trust</h3>
-<p>
-Chaque flux est contrôlé et sécurisé, empêchant les mouvements latéraux et limitant les risques d’intrusion au sein du système d’information.
-</p>
+<h3>Routage intelligent</h3>
+<p>Gestion dynamique des flux réseau et optimisation des performances WAN.</p>
 </div>
-
 </div>
 </section>
 
-<section id="stockage">
+<section id="sec">
+<h2>Sécurité</h2>
+<div class="grid">
+<div class="card">
+<h3>Zero Trust</h3>
+<p>Chaque accès est vérifié, aucun utilisateur n’est considéré comme fiable par défaut.</p>
+</div>
+<div class="card">
+<h3>Firewall & IDS</h3>
+<p>Inspection des flux réseau et détection des intrusions en temps réel.</p>
+</div>
+<div class="card">
+<h3>Contrôle d’accès</h3>
+<p>Authentification 802.1X et gestion centralisée via Active Directory.</p>
+</div>
+</div>
+</section>
+
+<section id="stock">
 <h2>Stockage & Sauvegarde</h2>
 <div class="grid">
-
 <div class="card">
-<i class="fas fa-database"></i>
-<h3>Stockage Haute Disponibilité</h3>
-<p>
-Nous utilisons des solutions NAS permettant de garantir un accès constant aux données, même en cas de panne matérielle.
-</p>
+<h3>Haute disponibilité</h3>
+<p>Cluster de stockage assurant la continuité de service même en cas de panne matérielle.</p>
 </div>
-
 <div class="card">
-<i class="fas fa-copy"></i>
-<h3>Stratégie de Sauvegarde</h3>
-<p>
-La mise en œuvre de la règle 3-2-1 assure la protection des données contre les pertes, les erreurs humaines et les cyberattaques.
-</p>
+<h3>Sauvegarde 3-2-1</h3>
+<p>Multiples copies des données avec externalisation pour garantir la résilience.</p>
 </div>
-
 <div class="card">
-<i class="fas fa-cloud"></i>
-<h3>Externalisation</h3>
-<p>
-Les sauvegardes sont externalisées afin de garantir une reprise rapide des activités en cas de sinistre majeur.
-</p>
+<h3>Protection ransomware</h3>
+<p>Snapshots et immutabilité des données pour éviter toute perte critique.</p>
 </div>
-
 </div>
 </section>
 
-<section id="supervision">
-<h2>Supervision & SOC</h2>
+<section id="soc">
+<h2>Supervision SOC</h2>
 
-<div class="console">
-> wazuh-monitor start  
-[OK] 250 agents actifs  
-[OK] Surveillance temps réel  
-[SECURE] Aucune menace détectée  
+<div class="console" id="logs">
+> Initialisation Wazuh...
 </div>
 
-<p style="margin-top:20px; color:#94a3b8;">
-Une supervision centralisée permet de détecter les incidents en temps réel et d’anticiper les risques avant qu’ils n’impactent les utilisateurs.
+<p style="margin-top:10px;color:var(--dim);font-size:0.8rem">
+La supervision repose sur Wazuh, permettant la collecte et l’analyse des logs en temps réel
+afin de détecter toute anomalie ou tentative d’intrusion.
 </p>
 
+</section>
+
+<section id="story">
+<h2>Transformation Client</h2>
+<div class="story">
+<div>
+<h3>Avant</h3>
+<p>Infrastructure dispersée, manque de sécurité et absence de supervision.</p>
+</div>
+<div>
+<h3>Après</h3>
+<p>Architecture centralisée, sécurisée et supervisée en temps réel.</p>
+</div>
+</div>
 </section>
 
 <footer>
-<p>© 2026 Netgen Systems — Tous droits réservés</p>
+Netgen Systems — Ingénierie & Cybersécurité
 </footer>
+
+<script>
+/* 🌌 ANIMATION BACKGROUND */
+const canvas=document.getElementById("bg");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let pts=[];
+for(let i=0;i<60;i++){
+pts.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:0.3,vy:0.3});
+}
+
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+pts.forEach(p=>{
+p.x+=p.vx;
+p.y+=p.vy;
+
+if(p.x>canvas.width||p.x<0)p.vx*=-1;
+if(p.y>canvas.height||p.y<0)p.vy*=-1;
+
+ctx.beginPath();
+ctx.arc(p.x,p.y,2,0,Math.PI*2);
+ctx.fillStyle="#38bdf8";
+ctx.fill();
+
+pts.forEach(p2=>{
+let dx=p.x-p2.x;
+let dy=p.y-p2.y;
+let dist=Math.sqrt(dx*dx+dy*dy);
+if(dist<120){
+ctx.beginPath();
+ctx.moveTo(p.x,p.y);
+ctx.lineTo(p2.x,p2.y);
+ctx.strokeStyle="rgba(56,189,248,0.1)";
+ctx.stroke();
+}
+});
+});
+
+requestAnimationFrame(draw);
+}
+draw();
+
+/* LOGS */
+const logs=document.getElementById("logs");
+setInterval(()=>{
+logs.innerHTML+="<br>[INFO] trafic analysé";
+logs.scrollTop=logs.scrollHeight;
+},1500);
+
+</script>
 
 </body>
 </html>
