@@ -5,765 +5,423 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Netgen Systems — Architecture Réseau & Cybersécurité</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <style>
-/* ── DESIGN TOKENS ── */
-:root{
-  --bg:#04070f;
-  --bg2:#070d1a;
-  --bg3:#0b1225;
-  --surface:#0e1830;
-  --accent:#00c6ff;
-  --accent2:#0075ff;
-  --accent3:#00ffa3;
-  --danger:#ff3e6c;
-  --text:#dce8f5;
-  --muted:#6b809a;
-  --border:rgba(0,198,255,0.12);
-  --border2:rgba(255,255,255,0.06);
-  --glow-blue:0 0 80px rgba(0,117,255,0.2);
-  --glow-cyan:0 0 40px rgba(0,198,255,0.25);
-  --r:12px;
-}
-
-/* ── RESET ── */
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  font-family:'DM Sans',sans-serif;
-  font-size:16px;
-  background:var(--bg);
-  color:var(--text);
-  overflow-x:hidden;
-  line-height:1.65;
-}
-a{color:inherit;text-decoration:none}
-ul{list-style:none}
-img{max-width:100%;display:block}
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--accent2);border-radius:2px}
-
-/* ── TYPOGRAPHY ── */
-h1,h2,h3,h4,.logo-name{font-family:'Syne',sans-serif}
-h1{font-size:clamp(2.4rem,6vw,4.8rem);font-weight:800;line-height:1.05;letter-spacing:-0.02em}
-h2{font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:700;letter-spacing:-0.01em}
-h3{font-size:1.15rem;font-weight:700}
-h4{font-size:.85rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
-
-/* ── UTILS ── */
-.container{max-width:1160px;margin:auto;padding:0 6%}
-.section{padding:120px 0}
-.tag{
-  display:inline-block;
-  font-family:'Syne',sans-serif;
-  font-size:.72rem;
-  font-weight:700;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--accent);
-  border:1px solid var(--border);
-  border-radius:99px;
-  padding:5px 14px;
-  margin-bottom:22px;
-}
-.gradient-text{
-  background:linear-gradient(90deg,#fff 30%,var(--accent));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-.gradient-text-green{
-  background:linear-gradient(90deg,var(--accent3),var(--accent));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-
-/* ── BUTTONS ── */
-.btn{
-  display:inline-flex;align-items:center;gap:8px;
-  font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:.04em;
-  padding:13px 26px;border-radius:var(--r);
-  border:none;cursor:pointer;transition:.25s ease;
-}
-.btn-primary{
-  background:linear-gradient(135deg,var(--accent2),var(--accent));
-  color:#000;
-}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--glow-cyan)}
-.btn-outline{
-  background:transparent;
-  border:1px solid var(--border);
-  color:var(--text);
-}
-.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
-
-/* ── NAV ── */
-nav{
-  position:fixed;top:0;width:100%;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:18px 6%;
-  background:rgba(4,7,15,.75);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border2);
-  transition:.3s;
-}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-icon{
-  width:36px;height:36px;border-radius:9px;
-  background:linear-gradient(135deg,var(--accent2),var(--accent));
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:#000;
-  flex-shrink:0;
-}
-.logo-name{font-weight:700;font-size:1rem;letter-spacing:.02em}
-.logo-name span{color:var(--accent)}
-.nav-links{display:flex;align-items:center;gap:32px}
-.nav-links a{font-size:.88rem;color:var(--muted);transition:.2s}
-.nav-links a:hover{color:var(--text)}
-.nav-cta{margin-left:8px}
-
-/* ── HERO ── */
-#hero{
-  min-height:100vh;
-  display:flex;align-items:center;
-  padding-top:100px;
-  position:relative;
-  overflow:hidden;
-}
-.hero-grid{
-  position:absolute;inset:0;
-  background-image:
-    linear-gradient(var(--border2) 1px,transparent 1px),
-    linear-gradient(90deg,var(--border2) 1px,transparent 1px);
-  background-size:60px 60px;
-  mask-image:radial-gradient(ellipse 80% 70% at 50% 40%,black,transparent);
-}
-.hero-glow{
-  position:absolute;top:-10%;left:50%;transform:translateX(-50%);
-  width:800px;height:500px;
-  background:radial-gradient(ellipse,rgba(0,117,255,.18) 0%,transparent 70%);
-  pointer-events:none;
-}
-.hero-content{position:relative;z-index:1;max-width:780px}
-.hero-sub{color:var(--muted);font-size:1.05rem;max-width:560px;margin:18px 0 36px}
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
-.hero-stats{
-  display:flex;gap:48px;margin-top:72px;
-  padding-top:36px;border-top:1px solid var(--border2);
-}
-.stat-val{
-  font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;
-  background:linear-gradient(90deg,var(--text),var(--accent));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.stat-label{font-size:.82rem;color:var(--muted);margin-top:4px}
-
-/* ── SCROLL BADGE ── */
-.scroll-badge{
-  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:10px;
-  color:var(--muted);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;
-}
-.scroll-line{
-  width:1px;height:52px;
-  background:linear-gradient(var(--accent),transparent);
-  animation:scrollAnim 1.8s ease-in-out infinite;
-}
-@keyframes scrollAnim{0%,100%{opacity:.3;transform:scaleY(0.6) translateY(-8px)}50%{opacity:1;transform:scaleY(1) translateY(0)}}
-
-/* ── MARQUEE ── */
-.marquee-wrap{
-  border-top:1px solid var(--border2);
-  border-bottom:1px solid var(--border2);
-  background:var(--bg2);
-  overflow:hidden;
-  padding:16px 0;
-}
-.marquee-track{
-  display:flex;gap:60px;
-  animation:marquee 25s linear infinite;
-  width:max-content;
-}
+:root{--bg:#060c18;--bg2:#09111f;--bg3:#0d1728;--surface:#111e35;--line:rgba(255,255,255,0.07);--accent:#2d7ff9;--accent-h:#1a6adf;--teal:#0fbfbf;--green:#10b981;--text:#e8edf5;--muted:#7a8fa8;--dim:#3d5068;--r:10px}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}ul{list-style:none}img{display:block;max-width:100%}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
+.wrap{width:100%;max-width:1320px;margin:0 auto;padding:0 48px}
+@media(max-width:768px){.wrap{padding:0 20px}}
+.section{padding:100px 0}.section-sm{padding:72px 0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.eyebrow::before{content:'';width:20px;height:2px;background:var(--accent);border-radius:2px}
+h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(2.4rem,4.5vw,3.8rem);font-weight:700;line-height:1.1;letter-spacing:-.01em;color:#fff}
+h2{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.7rem,2.8vw,2.4rem);font-weight:700;line-height:1.2;color:#fff}
+h3{font-size:1rem;font-weight:700;letter-spacing:.01em;color:#fff}
+p{color:var(--muted);font-size:.95rem;line-height:1.75}
+.accent-word{color:var(--accent)}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:.875rem;font-weight:600;letter-spacing:.02em;padding:12px 24px;border-radius:var(--r);border:none;cursor:pointer;transition:all .2s ease;white-space:nowrap}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-h);transform:translateY(-1px);box-shadow:0 8px 24px rgba(45,127,249,.3)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+/* NAV */
+nav{position:fixed;top:0;left:0;width:100%;z-index:200;background:rgba(6,12,24,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);transition:background .3s}
+.nav-inner{max-width:1320px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo-mark{width:32px;height:32px;background:var(--accent);border-radius:7px;display:grid;place-items:center}
+.logo-mark svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
+.logo-text{font-size:.95rem;font-weight:800;letter-spacing:.03em;color:#fff}
+.logo-text span{color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:.84rem;font-weight:500;color:var(--muted);transition:color .2s}
+.nav-links a:hover{color:#fff}
+@media(max-width:900px){.nav-links{display:none}}
+@media(max-width:768px){.nav-inner{padding:0 20px}}
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding-top:68px;position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 70% 80% at 60% 40%,black 30%,transparent 80%)}
+.hero-glow{position:absolute;top:-200px;right:-200px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(45,127,249,.12) 0%,transparent 65%);pointer-events:none}
+.hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;width:100%;max-width:1320px;margin:0 auto;padding:60px 48px}
+@media(max-width:960px){.hero-inner{grid-template-columns:1fr;gap:48px;padding:48px 20px}.hero-visual{display:none}}
+.hero-left p{font-size:1rem;max-width:480px;margin:16px 0 32px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);margin-top:48px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.stat{padding:18px 14px;border-right:1px solid var(--line);text-align:center}.stat:last-child{border-right:none}
+.stat-n{font-size:1.5rem;font-weight:800;color:#fff;line-height:1;margin-bottom:4px}
+.stat-l{font-size:.7rem;color:var(--muted);font-weight:500}
+/* RINGS */
+.hero-visual{display:flex;align-items:center;justify-content:center}
+.rings{position:relative;width:340px;height:340px}
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(45,127,249,.18)}
+.ring-1{inset:0;animation:spin 18s linear infinite}
+.ring-2{inset:30px;border-color:rgba(15,191,191,.15);animation:spin 24s linear infinite reverse}
+.ring-3{inset:70px;animation:spin 32s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ring::after{content:'';position:absolute;width:8px;height:8px;border-radius:50%;background:var(--accent);top:-4px;left:50%;transform:translateX(-50%)}
+.ring-2::after{background:var(--teal)}.ring-3::after{background:var(--green)}
+.ring-core{position:absolute;inset:100px;border-radius:50%;background:var(--bg3);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.ring-core-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ring-core-val{font-size:1.3rem;font-weight:800;color:var(--accent)}
+/* MARQUEE */
+.marquee-bar{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg2);padding:14px 0;overflow:hidden}
+.marquee-track{display:flex;gap:48px;width:max-content;animation:marquee 30s linear infinite}
 .marquee-track:hover{animation-play-state:paused}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.marquee-item{
-  display:flex;align-items:center;gap:10px;
-  font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;
-  color:var(--muted);white-space:nowrap;text-transform:uppercase;
-}
-.marquee-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
-
-/* ── SECTION HEADER ── */
-.section-header{margin-bottom:64px}
-.section-header p{color:var(--muted);max-width:520px;margin-top:14px;font-size:1rem}
-
-/* ── CARDS GRID ── */
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-
-/* ── FEATURE CARD ── */
-.feature-card{
-  background:var(--bg3);
-  border:1px solid var(--border2);
-  border-radius:16px;
-  padding:32px;
-  transition:.3s ease;
-  position:relative;overflow:hidden;
-}
-.feature-card::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(circle at 0 0,rgba(0,198,255,.06),transparent 60%);
-  opacity:0;transition:.3s;
-}
-.feature-card:hover{border-color:var(--border);transform:translateY(-4px);box-shadow:var(--glow-blue)}
-.feature-card:hover::before{opacity:1}
-.feature-icon{
-  width:46px;height:46px;border-radius:10px;
-  background:rgba(0,117,255,.15);border:1px solid rgba(0,117,255,.3);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.3rem;margin-bottom:20px;
-}
-.feature-card h3{margin-bottom:10px;font-size:1.05rem}
-.feature-card p{color:var(--muted);font-size:.92rem;line-height:1.6}
-
-/* ── SERVICES HERO SECTION ── */
-.services-hero{
-  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
-}
-.services-visual{
-  position:relative;
-  aspect-ratio:1;max-width:460px;
-}
-.net-svg{width:100%;height:100%}
-
-/* ── PROCESS STEPS ── */
-.process-steps{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
-  border:1px solid var(--border2);border-radius:16px;overflow:hidden;
-}
-.process-step{
-  padding:36px 28px;border-right:1px solid var(--border2);
-  position:relative;
-  transition:.3s;
-}
-.process-step:last-child{border-right:none}
-.process-step:hover{background:var(--bg3)}
-.step-num{
-  font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;
-  color:rgba(0,198,255,.12);line-height:1;margin-bottom:20px;
-}
-.process-step h3{font-size:.98rem;margin-bottom:10px}
-.process-step p{color:var(--muted);font-size:.86rem;line-height:1.6}
-.step-arrow{
-  position:absolute;right:-12px;top:50%;transform:translateY(-50%);
-  width:24px;height:24px;background:var(--surface);
-  border:1px solid var(--border2);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.7rem;color:var(--accent);z-index:1;
-}
-.process-step:last-child .step-arrow{display:none}
-
-/* ── SOLUTIONS TABS ── */
-.solutions-container{display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:start}
-.solutions-tabs{display:flex;flex-direction:column;gap:4px}
-.sol-tab{
-  display:flex;align-items:center;gap:12px;
-  padding:16px 20px;border-radius:10px;
-  border:1px solid transparent;
-  cursor:pointer;transition:.2s;
-  font-size:.9rem;font-weight:500;color:var(--muted);
-}
-.sol-tab:hover{background:var(--bg3);color:var(--text)}
-.sol-tab.active{
-  background:var(--bg3);color:var(--accent);
-  border-color:var(--border);
-}
-.sol-tab-icon{font-size:1.1rem;width:28px;text-align:center}
-.sol-panel{display:none}
-.sol-panel.active{display:block}
-.sol-panel-header{margin-bottom:28px}
-.sol-panel-header h3{font-size:1.5rem;font-family:'Syne',sans-serif;font-weight:700;margin-bottom:8px}
-.sol-panel-header p{color:var(--muted);font-size:.95rem}
-.sol-features{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.sol-feature{
-  background:var(--bg3);border:1px solid var(--border2);
-  border-radius:10px;padding:18px;
-  font-size:.88rem;
-}
-.sol-feature strong{display:block;margin-bottom:4px;font-size:.9rem}
-.sol-feature span{color:var(--muted)}
-
-/* ── AUDIT SECTION ── */
-.audit-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
-.audit-card{
-  background:var(--bg3);border:1px solid var(--border2);
-  border-radius:16px;padding:36px;
-}
-.audit-card.highlight{
-  border-color:rgba(0,198,255,.3);
-  background:linear-gradient(135deg,rgba(0,117,255,.08),var(--bg3));
-}
-.audit-list{margin-top:20px;display:flex;flex-direction:column;gap:12px}
-.audit-item{
-  display:flex;align-items:flex-start;gap:12px;
-  font-size:.92rem;color:var(--muted);
-}
-.audit-item::before{
-  content:'✓';
-  width:20px;height:20px;border-radius:50%;
-  background:rgba(0,255,163,.15);
-  color:var(--accent3);
-  display:flex;align-items:center;justify-content:center;
-  font-size:.72rem;font-weight:700;flex-shrink:0;
-  margin-top:2px;
-}
-.price-range{
-  margin-top:28px;padding:24px;
-  background:rgba(0,117,255,.08);border:1px solid rgba(0,117,255,.2);
-  border-radius:10px;
-}
-.price-val{
-  font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;
-  background:linear-gradient(90deg,var(--accent3),var(--accent));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.price-label{color:var(--muted);font-size:.82rem;margin-top:4px}
-
-/* ── KPI BAR ── */
-.kpi-bar{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  background:var(--bg3);border:1px solid var(--border2);border-radius:16px;
-  overflow:hidden;
-}
-.kpi-item{
-  padding:40px 28px;border-right:1px solid var(--border2);
-  text-align:center;
-}
-.kpi-item:last-child{border-right:none}
-.kpi-num{
-  font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;
-  background:linear-gradient(90deg,var(--text),var(--accent));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  line-height:1;margin-bottom:10px;
-}
-.kpi-label{color:var(--muted);font-size:.85rem}
-
-/* ── TESTIMONIALS ── */
-.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.testi-card{
-  background:var(--bg3);border:1px solid var(--border2);
-  border-radius:16px;padding:32px;
-}
-.testi-quote{
-  color:var(--text);font-size:.95rem;line-height:1.65;
-  font-style:italic;font-weight:300;
-  margin-bottom:24px;
-}
-.testi-quote::before{content:'\201C';color:var(--accent);font-size:2rem;line-height:0;vertical-align:-0.5em;margin-right:4px}
-.testi-author{display:flex;align-items:center;gap:14px}
-.testi-avatar{
-  width:42px;height:42px;border-radius:50%;
-  background:linear-gradient(135deg,var(--accent2),var(--accent3));
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Syne',sans-serif;font-weight:800;font-size:.9rem;color:#000;
-}
-.testi-name{font-weight:500;font-size:.9rem}
-.testi-role{color:var(--muted);font-size:.8rem}
-
-/* ── SECTORS ── */
-.sectors-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.sector-card{
-  background:var(--bg3);border:1px solid var(--border2);border-radius:12px;
-  padding:28px;display:flex;gap:16px;align-items:flex-start;
-  transition:.25s;
-}
-.sector-card:hover{border-color:var(--border);transform:translateY(-3px)}
-.sector-icon{font-size:1.6rem;line-height:1;flex-shrink:0}
-.sector-card h3{font-size:.98rem;margin-bottom:6px}
-.sector-card p{color:var(--muted);font-size:.84rem;line-height:1.55}
-
-/* ── NETWORK DIAGRAM ── */
-.network-section{background:var(--bg2);padding:100px 0}
-.diagram-wrap{
-  margin-top:48px;
-  border:1px solid var(--border2);border-radius:20px;
-  overflow:hidden;padding:40px;
-  background:var(--bg3);
-}
-.net-node{fill:var(--surface);stroke:rgba(0,198,255,.4);stroke-width:1.5}
-.net-node-core{fill:rgba(0,117,255,.2);stroke:var(--accent2);stroke-width:2}
-.net-line{stroke:rgba(0,198,255,.25);stroke-width:1.5;stroke-dasharray:6 4}
-.net-line-active{stroke:rgba(0,198,255,.7);stroke-width:2;stroke-dasharray:6 4;animation:flow 2.5s linear infinite}
-@keyframes flow{to{stroke-dashoffset:-20}}
-.net-label{fill:var(--muted);font-family:'DM Sans',sans-serif;font-size:11px}
-.net-label-bold{fill:var(--text);font-family:'Syne',sans-serif;font-size:12px;font-weight:700}
-
-/* ── CTA SECTION ── */
-.cta-section{
-  position:relative;overflow:hidden;
-  background:linear-gradient(135deg,var(--bg2),var(--bg3));
-  border-top:1px solid var(--border2);
-  border-bottom:1px solid var(--border2);
-  padding:120px 0;text-align:center;
-}
-.cta-section::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(0,117,255,.12),transparent);
-}
-.cta-section .container{position:relative;z-index:1}
-.cta-section h2{font-size:clamp(2rem,4vw,3.2rem);margin-bottom:16px}
-.cta-section p{color:var(--muted);max-width:480px;margin:0 auto 36px;font-size:1rem}
-.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-
-/* ── CONTACT SECTION ── */
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
-.contact-info{display:flex;flex-direction:column;gap:28px}
-.contact-item{display:flex;gap:16px;align-items:flex-start}
-.contact-icon{
-  width:44px;height:44px;border-radius:10px;
-  background:rgba(0,117,255,.12);border:1px solid rgba(0,117,255,.25);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;flex-shrink:0;
-}
-.contact-item h4{font-size:.92rem;margin-bottom:4px}
-.contact-item p{color:var(--muted);font-size:.88rem}
-.contact-form{
-  background:var(--bg3);border:1px solid var(--border2);
-  border-radius:16px;padding:36px;
-}
-.form-group{margin-bottom:18px}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-label{display:block;font-size:.8rem;font-weight:500;margin-bottom:8px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
-input,textarea,select{
-  width:100%;padding:12px 16px;
-  background:var(--surface);border:1px solid var(--border2);
-  border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.92rem;
-  transition:.2s;outline:none;
-}
-input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,198,255,.1)}
-select{cursor:pointer}
-textarea{resize:vertical;min-height:110px}
-select option{background:var(--surface)}
-
-/* ── FOOTER ── */
-footer{background:var(--bg);border-top:1px solid var(--border2);padding:80px 0 40px}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:64px;margin-bottom:60px}
-.footer-brand p{color:var(--muted);font-size:.9rem;margin-top:16px;max-width:260px;line-height:1.6}
-.footer-col h4{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px;color:var(--text)}
-.footer-links{display:flex;flex-direction:column;gap:10px}
-.footer-links a{color:var(--muted);font-size:.88rem;transition:.2s}
-.footer-links a:hover{color:var(--accent)}
-.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:32px;border-top:1px solid var(--border2)}
-.footer-bottom p{color:var(--muted);font-size:.82rem}
-.footer-badges{display:flex;gap:12px}
-.badge{
-  font-size:.72rem;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  padding:5px 12px;border-radius:99px;border:1px solid var(--border2);color:var(--muted);
-}
-
-/* ── ZERO TRUST SECTION ── */
-.zt-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-.zt-visual{
-  background:var(--bg3);border:1px solid var(--border2);
-  border-radius:16px;padding:32px;
-}
-.zt-principles{display:flex;flex-direction:column;gap:16px;margin-top:24px}
-.zt-principle{
-  display:flex;align-items:center;gap:14px;
-  padding:16px;background:var(--surface);border-radius:8px;
-  border-left:2px solid var(--accent2);
-  font-size:.9rem;
-}
-.zt-principle .num{
-  font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--accent);min-width:28px;
-}
-
-/* ── RESPONSIVE ── */
-@media(max-width:1024px){
-  .solutions-container{grid-template-columns:1fr}
-  .solutions-tabs{flex-direction:row;flex-wrap:wrap}
-  .sol-tab{padding:10px 16px}
-  .zt-grid,.audit-grid,.contact-grid,.services-hero{grid-template-columns:1fr;gap:40px}
-  .process-steps{grid-template-columns:1fr 1fr}
-  .kpi-bar{grid-template-columns:1fr 1fr}
-  .kpi-item:nth-child(2){border-right:none}
-  .footer-grid{grid-template-columns:1fr 1fr;gap:40px}
-}
-@media(max-width:768px){
-  .nav-links{display:none}
-  .hero-stats{flex-wrap:wrap;gap:28px}
-  .testimonials-grid,.sectors-grid{grid-template-columns:1fr}
-  .process-steps{grid-template-columns:1fr}
-  .step-arrow{display:none}
-  .sol-features{grid-template-columns:1fr}
-  .form-row{grid-template-columns:1fr}
-  .footer-grid{grid-template-columns:1fr}
-  .footer-bottom{flex-direction:column;gap:16px;text-align:center}
-  .kpi-bar{grid-template-columns:1fr 1fr}
-}
-
-/* ── ANIMATIONS ── */
-.reveal{opacity:0;transform:translateY(28px);transition:.7s ease}
-.reveal.visible{opacity:1;transform:none}
+.m-item{display:flex;align-items:center;gap:10px;white-space:nowrap;font-size:.77rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.m-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);opacity:.6}
+/* SERVICES */
+.services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:56px}
+@media(max-width:900px){.services-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.services-grid{grid-template-columns:1fr}}
+.svc-card{background:var(--bg3);padding:36px 28px;transition:.25s}
+.svc-card:hover{background:var(--surface)}
+.svc-icon{width:44px;height:44px;border-radius:8px;background:rgba(45,127,249,.1);border:1px solid rgba(45,127,249,.2);display:grid;place-items:center;margin-bottom:20px}
+.svc-icon svg{width:20px;height:20px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.svc-card h3{margin-bottom:8px;font-size:.95rem}
+.svc-card p{font-size:.86rem;color:var(--muted);line-height:1.65}
+/* SOLUTIONS */
+.sol-layout{display:grid;grid-template-columns:240px 1fr;gap:24px;margin-top:56px}
+@media(max-width:860px){.sol-layout{grid-template-columns:1fr}}
+.sol-nav{display:flex;flex-direction:column;gap:2px}
+@media(max-width:860px){.sol-nav{flex-direction:row;flex-wrap:wrap}}
+.sol-btn{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:8px;font-size:.875rem;font-weight:500;color:var(--muted);cursor:pointer;transition:.15s;border:1px solid transparent;background:none;text-align:left;width:100%;font-family:'Manrope',sans-serif}
+@media(max-width:860px){.sol-btn{width:auto}}
+.sol-btn:hover{color:var(--text);background:var(--bg3)}
+.sol-btn.active{color:#fff;background:var(--bg3);border-color:var(--line)}
+.sol-btn.active .sol-btn-dot{background:var(--accent)}
+.sol-btn-dot{width:6px;height:6px;border-radius:50%;background:var(--dim);flex-shrink:0;transition:.15s}
+.sol-panel{display:none}.sol-panel.active{display:block}
+.sol-panel-head{margin-bottom:28px}
+.sol-panel-head h3{font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:8px;font-family:'Playfair Display',serif}
+.sol-panel-head p{font-size:.9rem}
+.sol-features-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.sol-features-grid{grid-template-columns:1fr}}
+.sf{padding:18px 20px;background:var(--bg3);border:1px solid var(--line);border-radius:8px}
+.sf strong{display:block;font-size:.88rem;font-weight:600;color:#fff;margin-bottom:4px}
+.sf span{font-size:.82rem;color:var(--muted)}
+/* PROCESS */
+.process-row{display:grid;grid-template-columns:repeat(4,1fr);margin-top:56px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+@media(max-width:900px){.process-row{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.process-row{grid-template-columns:1fr}}
+.proc{padding:40px 28px;border-right:1px solid var(--line);transition:.2s}
+.proc:last-child{border-right:none}
+@media(max-width:900px){.proc:nth-child(2){border-right:none}.proc:nth-child(1),.proc:nth-child(2){border-bottom:1px solid var(--line)}}
+.proc:hover{background:var(--bg3)}
+.proc-n{font-size:2.5rem;font-weight:800;color:rgba(45,127,249,.12);line-height:1;margin-bottom:20px}
+.proc h3{font-size:.95rem;margin-bottom:10px}
+.proc p{font-size:.84rem;color:var(--muted);line-height:1.65}
+/* ARCH */
+.arch-section{background:var(--bg2)}
+.diagram-box{margin-top:48px;border:1px solid var(--line);border-radius:16px;background:var(--bg3);padding:40px 24px;overflow:hidden}
+.n{fill:var(--surface);stroke:rgba(45,127,249,.5);stroke-width:1.5}
+.n-core{fill:rgba(45,127,249,.15);stroke:var(--accent);stroke-width:1.8}
+.n-fw{fill:rgba(15,191,191,.08);stroke:var(--teal);stroke-width:1.5}
+.lnk{stroke:rgba(45,127,249,.35);stroke-width:1.5;stroke-dasharray:5 4;fill:none}
+.lnk-hot{stroke:var(--accent);stroke-width:1.8;stroke-dasharray:5 4;fill:none;animation:flow 2s linear infinite}
+.lnk-ha{stroke:#ef4444;stroke-width:1.5;stroke-dasharray:4 3;fill:none}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.lbl{font-family:'Manrope',sans-serif;font-size:11px;fill:var(--muted);text-anchor:middle;dominant-baseline:middle}
+.lbl-b{font-family:'Manrope',sans-serif;font-size:11.5px;font-weight:700;fill:var(--text);text-anchor:middle;dominant-baseline:middle}
+.lbl-sm{font-family:'Manrope',sans-serif;font-size:10px;fill:var(--dim);text-anchor:middle;dominant-baseline:middle}
+/* ZT */
+.zt-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+@media(max-width:860px){.zt-layout{grid-template-columns:1fr;gap:40px}}
+.zt-pillars{display:flex;flex-direction:column;gap:10px;margin-top:28px}
+.zt-pill{display:flex;align-items:center;gap:14px;padding:13px 16px;background:var(--bg3);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;font-size:.88rem;font-weight:500;color:var(--text)}
+.zt-pill-icon{width:28px;height:28px;border-radius:6px;background:rgba(45,127,249,.12);display:grid;place-items:center;flex-shrink:0}
+.zt-pill-icon svg{width:14px;height:14px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round}
+/* AUDIT */
+.audit-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:56px}
+@media(max-width:860px){.audit-layout{grid-template-columns:1fr}}
+.a-card{background:var(--bg3);border:1px solid var(--line);border-radius:var(--r);padding:36px}
+.a-card.featured{border-color:rgba(45,127,249,.3);background:linear-gradient(150deg,rgba(45,127,249,.06) 0%,var(--bg3) 60%)}
+.a-card h3{font-size:.95rem;margin-bottom:20px;color:#fff}
+.checklist{display:flex;flex-direction:column;gap:10px}
+.chk{display:flex;align-items:flex-start;gap:10px;font-size:.875rem;color:var(--muted)}
+.chk-mark{width:18px;height:18px;border-radius:50%;background:rgba(16,185,129,.15);flex-shrink:0;display:grid;place-items:center;margin-top:2px}
+.chk-mark svg{width:9px;height:9px;stroke:var(--green);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.budget-tiers{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.tier{padding:20px 22px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px}
+.tier:nth-child(2){border-left-color:var(--teal)}.tier:nth-child(3){border-left-color:var(--green)}
+.tier-label{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.tier-price{font-size:1.3rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:4px}
+.tier-desc{font-size:.78rem;color:var(--muted)}
+.free-card{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);border-radius:var(--r);padding:24px 28px;margin-top:20px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+@media(max-width:560px){.free-card{flex-direction:column;align-items:flex-start}}
+.free-label{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:4px}
+.free-title{font-size:1.3rem;font-weight:800;color:#fff}
+.free-sub{font-size:.8rem;color:var(--muted);margin-top:4px}
+/* KPI */
+.kpi-band{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.kpi-inner{display:grid;grid-template-columns:repeat(4,1fr);border-left:1px solid var(--line)}
+@media(max-width:700px){.kpi-inner{grid-template-columns:1fr 1fr}}
+.kpi{padding:44px 24px;border-right:1px solid var(--line);text-align:center}
+.kpi-n{font-size:2.1rem;font-weight:800;color:#fff;line-height:1;margin-bottom:8px}
+.kpi-n span{color:var(--accent)}
+.kpi-l{font-size:.8rem;color:var(--muted);font-weight:500}
+/* SECTORS */
+.sectors-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px}
+@media(max-width:860px){.sectors-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.sectors-grid{grid-template-columns:1fr}}
+.sec-card{background:var(--bg3);border:1px solid var(--line);border-radius:var(--r);padding:28px 24px;transition:.2s}
+.sec-card:hover{border-color:rgba(45,127,249,.3);transform:translateY(-2px)}
+.sec-icon{width:36px;height:36px;border-radius:8px;background:rgba(45,127,249,.1);display:grid;place-items:center;margin-bottom:16px}
+.sec-icon svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sec-card h3{font-size:.92rem;margin-bottom:8px}
+.sec-card p{font-size:.82rem;color:var(--muted);line-height:1.6}
+/* TESTIMONIALS */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px}
+@media(max-width:860px){.testi-grid{grid-template-columns:1fr}}
+.testi{background:var(--bg3);border:1px solid var(--line);border-radius:var(--r);padding:32px}
+.testi-q{font-size:.9rem;color:var(--text);line-height:1.7;font-weight:400;font-style:italic;margin-bottom:24px;position:relative;padding-top:24px}
+.testi-q::before{content:'"';position:absolute;top:-4px;left:0;font-size:2.4rem;font-family:'Playfair Display',serif;color:var(--accent);line-height:1;opacity:.6}
+.testi-auth{display:flex;align-items:center;gap:12px}
+.testi-av{width:38px;height:38px;border-radius:50%;background:var(--accent);display:grid;place-items:center;font-size:.8rem;font-weight:800;color:#fff;flex-shrink:0}
+.testi-name{font-size:.88rem;font-weight:600;color:#fff}
+.testi-role{font-size:.77rem;color:var(--muted)}
+/* CTA */
+.cta-banner{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:100px 0;text-align:center;position:relative;overflow:hidden}
+.cta-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 100% at 50% 50%,rgba(45,127,249,.08),transparent)}
+.cta-banner .wrap{position:relative;z-index:1}
+.cta-banner h2{margin-bottom:14px}
+.cta-banner p{max-width:480px;margin:0 auto 36px}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+/* CONTACT */
+.contact-layout{display:grid;grid-template-columns:1fr 1.4fr;gap:64px;align-items:start}
+@media(max-width:860px){.contact-layout{grid-template-columns:1fr;gap:40px}}
+.contact-info{display:flex;flex-direction:column;gap:24px;margin-top:32px}
+.ci{display:flex;gap:14px;align-items:flex-start}
+.ci-icon{width:40px;height:40px;border-radius:8px;background:rgba(45,127,249,.1);border:1px solid rgba(45,127,249,.2);display:grid;place-items:center;flex-shrink:0}
+.ci-icon svg{width:16px;height:16px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ci-title{font-size:.82rem;font-weight:700;color:#fff;margin-bottom:3px}
+.ci-val{font-size:.85rem;color:var(--muted)}
+.form-box{background:var(--bg3);border:1px solid var(--line);border-radius:var(--r);padding:40px}
+@media(max-width:560px){.form-box{padding:24px}}
+.form-box h3{font-size:1.05rem;margin-bottom:6px}
+.form-box>p{font-size:.82rem;margin-bottom:28px}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:560px){.f-row{grid-template-columns:1fr}}
+.f-group{margin-bottom:16px}
+label{display:block;font-size:.74rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);margin-bottom:7px}
+input,select,textarea{width:100%;padding:11px 14px;background:var(--surface);border:1px solid var(--line);border-radius:7px;color:var(--text);font-family:'Manrope',sans-serif;font-size:.88rem;transition:border-color .2s;outline:none}
+input::placeholder,textarea::placeholder{color:var(--dim)}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,127,249,.1)}
+select{cursor:pointer;appearance:none}select option{background:var(--surface)}
+textarea{resize:vertical;min-height:100px}
+.form-submit{width:100%;justify-content:center;padding:14px;font-size:.9rem}
+.form-note{font-size:.74rem;color:var(--dim);text-align:center;margin-top:12px}
+/* FOOTER */
+footer{background:var(--bg);border-top:1px solid var(--line);padding:72px 0 36px}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid var(--line);margin-bottom:32px}
+@media(max-width:900px){.footer-top{grid-template-columns:1fr 1fr;gap:32px}}
+@media(max-width:560px){.footer-top{grid-template-columns:1fr}}
+.f-brand p{font-size:.85rem;color:var(--muted);margin-top:14px;max-width:240px;line-height:1.6}
+.f-col h4{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text);margin-bottom:16px}
+.f-links{display:flex;flex-direction:column;gap:9px}
+.f-links a{font-size:.85rem;color:var(--muted);transition:color .2s}
+.f-links a:hover{color:var(--accent)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.footer-copy{font-size:.78rem;color:var(--dim)}
+.footer-badges{display:flex;gap:8px;flex-wrap:wrap}
+.badge{font-size:.68rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--line);border-radius:4px;color:var(--dim)}
+.reveal{opacity:0;transform:translateY(22px);transition:.65s ease}
+.reveal.on{opacity:1;transform:none}
 </style>
 </head>
 <body>
 
-<!-- ─────────────── NAV ─────────────── -->
 <nav id="nav">
-  <div class="logo">
-    <div class="logo-icon">N</div>
-    <span class="logo-name">Netgen <span>Systems</span></span>
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+      <span class="logo-text">Netgen <span>Systems</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#solutions">Solutions</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#audit">Budget</a></li>
+      <li><a href="#secteurs">Secteurs</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="btn btn-primary">Demander un audit</a>
   </div>
-  <ul class="nav-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#solutions">Solutions</a></li>
-    <li><a href="#architecture">Architecture</a></li>
-    <li><a href="#audit">Audit</a></li>
-    <li><a href="#secteurs">Secteurs</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <a href="#contact" class="btn btn-primary nav-cta">Demander un audit</a>
 </nav>
 
-<!-- ─────────────── HERO ─────────────── -->
 <section id="hero">
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
-  <div class="container">
-    <div class="hero-content">
-      <div class="tag">Ingénierie réseau & cybersécurité</div>
-      <h1 class="gradient-text">Infrastructure critique.<br>Sécurité avancée.</h1>
-      <p class="hero-sub">Nous concevons, déployons et supervisisons des architectures réseau haute disponibilité pour les organisations aux exigences les plus élevées en résilience, performance et cybersécurité.</p>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="eyebrow">Ingénierie réseau & cybersécurité</div>
+      <h1>Infrastructure critique.<br><span class="accent-word">Sécurité</span> avancée.</h1>
+      <p>Nous concevons, déployons et supervisons des architectures réseau haute disponibilité pour les organisations aux exigences les plus élevées.</p>
       <div class="hero-btns">
-        <a href="#contact" class="btn btn-primary">Demander un audit gratuit ↗</a>
-        <a href="#solutions" class="btn btn-outline">Voir nos solutions</a>
+        <a href="#contact" class="btn btn-primary">Demander un audit gratuit →</a>
+        <a href="#solutions" class="btn btn-ghost">Voir nos solutions</a>
       </div>
       <div class="hero-stats">
-        <div>
-          <div class="stat-val">99,99%</div>
-          <div class="stat-label">Uptime garanti SLA</div>
-        </div>
-        <div>
-          <div class="stat-val">−60%</div>
-          <div class="stat-label">Incidents de sécurité</div>
-        </div>
-        <div>
-          <div class="stat-val">×2</div>
-          <div class="stat-label">Performance réseau</div>
-        </div>
-        <div>
-          <div class="stat-val">150+</div>
-          <div class="stat-label">Projets déployés</div>
+        <div class="stat"><div class="stat-n">99,99%</div><div class="stat-l">Uptime SLA</div></div>
+        <div class="stat"><div class="stat-n">−60%</div><div class="stat-l">Incidents sécu</div></div>
+        <div class="stat"><div class="stat-n">×2</div><div class="stat-l">Performance</div></div>
+        <div class="stat"><div class="stat-n">150+</div><div class="stat-l">Projets livrés</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="rings">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+        <div class="ring-core">
+          <div class="ring-core-label">Disponibilité</div>
+          <div class="ring-core-val">99,99%</div>
         </div>
       </div>
     </div>
   </div>
-  <div class="scroll-badge">
-    <span>Découvrir</span>
-    <div class="scroll-line"></div>
-  </div>
 </section>
 
-<!-- ─────────────── MARQUEE ─────────────── -->
-<div class="marquee-wrap">
-  <div class="marquee-track" id="marqueeTrack">
-    <div class="marquee-item"><div class="marquee-dot"></div>Zero Trust Architecture</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>SD-WAN</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>SOC managé</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>Pentest & audit</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>Haute disponibilité</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>SIEM / SOAR</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>Firewall NGFW</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>Cloud hybride</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>Reprise d'activité (PRA)</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>Conformité ISO 27001</div>
-    <!-- duplicate for loop -->
-    <div class="marquee-item"><div class="marquee-dot"></div>Zero Trust Architecture</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>SD-WAN</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>SOC managé</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>Pentest & audit</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>Haute disponibilité</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>SIEM / SOAR</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>Firewall NGFW</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>Cloud hybride</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>Reprise d'activité (PRA)</div>
-    <div class="marquee-item"><div class="marquee-dot"></div>Conformité ISO 27001</div>
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <div class="m-item"><div class="m-dot"></div>Zero Trust</div>
+    <div class="m-item"><div class="m-dot"></div>SD-WAN</div>
+    <div class="m-item"><div class="m-dot"></div>SOC managé</div>
+    <div class="m-item"><div class="m-dot"></div>Pentest</div>
+    <div class="m-item"><div class="m-dot"></div>Haute disponibilité</div>
+    <div class="m-item"><div class="m-dot"></div>SIEM / SOAR</div>
+    <div class="m-item"><div class="m-dot"></div>NGFW</div>
+    <div class="m-item"><div class="m-dot"></div>Cloud hybride</div>
+    <div class="m-item"><div class="m-dot"></div>PRA / PCA</div>
+    <div class="m-item"><div class="m-dot"></div>ISO 27001</div>
+    <div class="m-item"><div class="m-dot"></div>Zero Trust</div>
+    <div class="m-item"><div class="m-dot"></div>SD-WAN</div>
+    <div class="m-item"><div class="m-dot"></div>SOC managé</div>
+    <div class="m-item"><div class="m-dot"></div>Pentest</div>
+    <div class="m-item"><div class="m-dot"></div>Haute disponibilité</div>
+    <div class="m-item"><div class="m-dot"></div>SIEM / SOAR</div>
+    <div class="m-item"><div class="m-dot"></div>NGFW</div>
+    <div class="m-item"><div class="m-dot"></div>Cloud hybride</div>
+    <div class="m-item"><div class="m-dot"></div>PRA / PCA</div>
+    <div class="m-item"><div class="m-dot"></div>ISO 27001</div>
   </div>
 </div>
 
-<!-- ─────────────── SERVICES ─────────────── -->
 <section class="section" id="services">
-  <div class="container">
-    <div class="services-hero">
-      <div>
-        <div class="reveal">
-          <div class="tag">Nos services</div>
-          <h2>Une expertise complète,<br>de la conception au run</h2>
-          <p style="color:var(--muted);margin-top:16px;font-size:.95rem;max-width:440px">De l'audit initial à la supervision 24/7, nous couvrons l'intégralité du cycle de vie de votre infrastructure réseau et sécurité.</p>
-        </div>
-        <div class="zt-principles reveal" style="margin-top:36px">
-          <div class="zt-principle"><span class="num">01</span>Audit & cartographie complète de l'existant</div>
-          <div class="zt-principle"><span class="num">02</span>Design sur mesure de l'architecture cible</div>
-          <div class="zt-principle"><span class="num">03</span>Déploiement avec migration sans coupure</div>
-          <div class="zt-principle"><span class="num">04</span>Supervision continue & support N1/N2/N3</div>
-        </div>
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Nos services</div>
+      <h2>Une expertise complète, de la conception au run</h2>
+    </div>
+    <div class="services-grid reveal">
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3>Cybersécurité</h3>
+        <p>Pentests, SIEM, SOC managé 24/7, réponse aux incidents et threat intelligence.</p>
       </div>
-      <div class="reveal">
-        <div class="cards-grid" style="grid-template-columns:1fr 1fr;gap:14px">
-          <div class="feature-card">
-            <div class="feature-icon">🛡️</div>
-            <h3>Cybersécurité</h3>
-            <p>Pentests, SIEM, SOC managé, réponse aux incidents.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">🌐</div>
-            <h3>Réseau</h3>
-            <p>LAN/WAN, SD-WAN, MPLS, routage avancé BGP/OSPF.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">☁️</div>
-            <h3>Cloud hybride</h3>
-            <p>Interconnexion multi-cloud, Azure, AWS, connectivité sécurisée.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">🔄</div>
-            <h3>Continuité</h3>
-            <p>PRA/PCA, réplication, failover automatique, tests de bascule.</p>
-          </div>
-        </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></div>
+        <h3>Réseau</h3>
+        <p>Architecture LAN/WAN, SD-WAN, MPLS, routage BGP/OSPF, switching haute densité.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg></div>
+        <h3>Cloud hybride</h3>
+        <p>Interconnexion multi-cloud, Azure, AWS, connectivité sécurisée, SASE.</p>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></div>
+        <h3>Continuité</h3>
+        <p>PRA/PCA, réplication, failover automatique, tests de bascule contractuels.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─────────────── SOLUTIONS (TABS) ─────────────── -->
-<section class="section" id="solutions" style="background:var(--bg2);padding:100px 0">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="tag">Solutions</div>
+<section class="section" id="solutions" style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Solutions</div>
       <h2>Des solutions adaptées à chaque besoin</h2>
-      <p>Chaque organisation a ses contraintes. Nos solutions s'adaptent à votre secteur, votre taille et votre niveau de maturité cyber.</p>
+      <p style="margin-top:10px;max-width:520px">Nos offres s'adaptent à votre secteur, votre taille et votre niveau de maturité cyber.</p>
     </div>
-    <div class="solutions-container reveal">
-      <div class="solutions-tabs">
-        <div class="sol-tab active" onclick="showTab('firewall')">
-          <span class="sol-tab-icon">🔥</span>Sécurité périmétrique
-        </div>
-        <div class="sol-tab" onclick="showTab('soc')">
-          <span class="sol-tab-icon">👁</span>SOC & détection
-        </div>
-        <div class="sol-tab" onclick="showTab('sdwan')">
-          <span class="sol-tab-icon">🌐</span>SD-WAN & WAN
-        </div>
-        <div class="sol-tab" onclick="showTab('zerotrust')">
-          <span class="sol-tab-icon">🔑</span>Zero Trust
-        </div>
-        <div class="sol-tab" onclick="showTab('cloud')">
-          <span class="sol-tab-icon">☁️</span>Cloud & hybride
-        </div>
-        <div class="sol-tab" onclick="showTab('pra')">
-          <span class="sol-tab-icon">🔄</span>PRA / Continuité
-        </div>
+    <div class="sol-layout reveal">
+      <div class="sol-nav">
+        <button class="sol-btn active" onclick="tab('fw',this)"><span class="sol-btn-dot"></span>Sécurité périmétrique</button>
+        <button class="sol-btn" onclick="tab('soc',this)"><span class="sol-btn-dot"></span>SOC & détection</button>
+        <button class="sol-btn" onclick="tab('sdwan',this)"><span class="sol-btn-dot"></span>SD-WAN & WAN</button>
+        <button class="sol-btn" onclick="tab('zt',this)"><span class="sol-btn-dot"></span>Zero Trust</button>
+        <button class="sol-btn" onclick="tab('cloud',this)"><span class="sol-btn-dot"></span>Cloud & hybride</button>
+        <button class="sol-btn" onclick="tab('pra',this)"><span class="sol-btn-dot"></span>PRA / Continuité</button>
       </div>
-
       <div>
-        <!-- Firewall -->
-        <div class="sol-panel active" id="tab-firewall">
-          <div class="sol-panel-header">
-            <h3>Sécurité périmétrique & NGFW</h3>
-            <p>Déploiement et configuration de pare-feux next-generation avec inspection applicative, IPS/IDS et filtrage URL avancé.</p>
-          </div>
-          <div class="sol-features">
-            <div class="sol-feature"><strong>NGFW managé</strong><span>Fortinet, Palo Alto, Cisco FTD — configuration, tuning, règles</span></div>
-            <div class="sol-feature"><strong>IPS / IDS</strong><span>Détection et prévention d'intrusions en temps réel</span></div>
-            <div class="sol-feature"><strong>Filtrage applicatif</strong><span>Deep Packet Inspection, contrôle applicatif L7</span></div>
-            <div class="sol-feature"><strong>VPN site-à-site & nomade</strong><span>IPSec, SSL-VPN, MFA intégrée</span></div>
-            <div class="sol-feature"><strong>Segmentation réseau</strong><span>VLAN, DMZ, micro-segmentation, ZTNA</span></div>
-            <div class="sol-feature"><strong>Reporting & conformité</strong><span>Tableaux de bord, rapports PCI-DSS, ISO 27001</span></div>
+        <div class="sol-panel active" id="p-fw">
+          <div class="sol-panel-head"><h3>Sécurité périmétrique & NGFW</h3><p>Déploiement de pare-feux next-generation avec inspection applicative, IPS/IDS et filtrage URL avancé.</p></div>
+          <div class="sol-features-grid">
+            <div class="sf"><strong>NGFW managé</strong><span>Fortinet, Palo Alto, Cisco FTD — configuration, tuning, règles</span></div>
+            <div class="sf"><strong>IPS / IDS</strong><span>Détection et prévention d'intrusions en temps réel</span></div>
+            <div class="sf"><strong>Filtrage applicatif</strong><span>Deep Packet Inspection, contrôle applicatif L7</span></div>
+            <div class="sf"><strong>VPN site-à-site & nomade</strong><span>IPSec, SSL-VPN, MFA intégrée</span></div>
+            <div class="sf"><strong>Segmentation réseau</strong><span>VLAN, DMZ, micro-segmentation, ZTNA</span></div>
+            <div class="sf"><strong>Reporting & conformité</strong><span>Tableaux de bord, rapports PCI-DSS, ISO 27001</span></div>
           </div>
         </div>
-
-        <!-- SOC -->
-        <div class="sol-panel" id="tab-soc">
-          <div class="sol-panel-header">
-            <h3>SOC managé & détection des menaces</h3>
-            <p>Centre opérationnel de sécurité disponible 24/7/365 avec corrélation d'événements, chasse aux menaces et réponse aux incidents.</p>
-          </div>
-          <div class="sol-features">
-            <div class="sol-feature"><strong>SIEM nouvelle génération</strong><span>Splunk, Microsoft Sentinel, corrélation multi-sources</span></div>
-            <div class="sol-feature"><strong>EDR / XDR</strong><span>CrowdStrike, SentinelOne, protection endpoints avancée</span></div>
-            <div class="sol-feature"><strong>Threat Hunting</strong><span>Recherche proactive des menaces avancées APT</span></div>
-            <div class="sol-feature"><strong>Réponse aux incidents</strong><span>Playbooks SOAR, containment, forensics, rapport</span></div>
-            <div class="sol-feature"><strong>Threat Intelligence</strong><span>Flux IoC, dark web monitoring, CTI opérationnelle</span></div>
-            <div class="sol-feature"><strong>Pentest réguliers</strong><span>Tests d'intrusion trimestriels inclus dans l'offre managée</span></div>
+        <div class="sol-panel" id="p-soc">
+          <div class="sol-panel-head"><h3>SOC managé & détection des menaces</h3><p>Centre opérationnel de sécurité 24/7/365 avec corrélation d'événements et réponse aux incidents.</p></div>
+          <div class="sol-features-grid">
+            <div class="sf"><strong>SIEM nouvelle génération</strong><span>Splunk, Microsoft Sentinel, corrélation multi-sources</span></div>
+            <div class="sf"><strong>EDR / XDR</strong><span>CrowdStrike, SentinelOne, protection endpoints avancée</span></div>
+            <div class="sf"><strong>Threat Hunting</strong><span>Recherche proactive des menaces avancées APT</span></div>
+            <div class="sf"><strong>Réponse aux incidents</strong><span>Playbooks SOAR, containment, forensics, rapport</span></div>
+            <div class="sf"><strong>Threat Intelligence</strong><span>Flux IoC, dark web monitoring, CTI opérationnelle</span></div>
+            <div class="sf"><strong>Pentests trimestriels</strong><span>Tests d'intrusion inclus dans l'offre managée</span></div>
           </div>
         </div>
-
-        <!-- SD-WAN -->
-        <div class="sol-panel" id="tab-sdwan">
-          <div class="sol-panel-header">
-            <h3>SD-WAN & interconnexion WAN</h3>
-            <p>Modernisation des liaisons inter-sites avec routage intelligent, optimisation applicative et réduction des coûts WAN.</p>
-          </div>
-          <div class="sol-features">
-            <div class="sol-feature"><strong>SD-WAN déployé</strong><span>Fortinet, Cisco Viptela, VMware VeloCloud</span></div>
-            <div class="sol-feature"><strong>Agrégation de liens</strong><span>MPLS + Internet + 4G/5G, failover automatique</span></div>
-            <div class="sol-feature"><strong>QoS applicatif</strong><span>Priorisation dynamique, SLA par application</span></div>
-            <div class="sol-feature"><strong>MPLS & leased lines</strong><span>Conception et négociation opérateur, BGP multihoming</span></div>
-            <div class="sol-feature"><strong>Routage avancé</strong><span>BGP, OSPF, EIGRP, redistribution, optimisation convergence</span></div>
-            <div class="sol-feature"><strong>Visibilité & analytics</strong><span>Monitoring temps réel, latence, jitter, perte de paquets</span></div>
+        <div class="sol-panel" id="p-sdwan">
+          <div class="sol-panel-head"><h3>SD-WAN & interconnexion WAN</h3><p>Modernisation des liaisons inter-sites avec routage intelligent et réduction des coûts WAN.</p></div>
+          <div class="sol-features-grid">
+            <div class="sf"><strong>SD-WAN déployé</strong><span>Fortinet, Cisco Viptela, VMware VeloCloud</span></div>
+            <div class="sf"><strong>Agrégation de liens</strong><span>MPLS + Internet + 4G/5G, failover automatique</span></div>
+            <div class="sf"><strong>QoS applicatif</strong><span>Priorisation dynamique, SLA par application</span></div>
+            <div class="sf"><strong>MPLS & leased lines</strong><span>Conception, négociation opérateur, BGP multihoming</span></div>
+            <div class="sf"><strong>Routage avancé</strong><span>BGP, OSPF, EIGRP, optimisation convergence</span></div>
+            <div class="sf"><strong>Analytics réseau</strong><span>Monitoring latence, jitter, perte de paquets</span></div>
           </div>
         </div>
-
-        <!-- Zero Trust -->
-        <div class="sol-panel" id="tab-zerotrust">
-          <div class="sol-panel-header">
-            <h3>Architecture Zero Trust</h3>
-            <p>Migration vers un modèle "ne jamais faire confiance, toujours vérifier" — identité, accès, microsegmentation.</p>
-          </div>
-          <div class="sol-features">
-            <div class="sol-feature"><strong>IAM & MFA</strong><span>Azure AD, Okta, authentification forte, SSO</span></div>
-            <div class="sol-feature"><strong>ZTNA (Zero Trust Network Access)</strong><span>Remplacement du VPN, accès contextuel aux ressources</span></div>
-            <div class="sol-feature"><strong>Microsegmentation</strong><span>Isolation des workloads, East-West traffic control</span></div>
-            <div class="sol-feature"><strong>PAM</strong><span>Gestion des accès privilégiés, coffre-fort de mots de passe</span></div>
-            <div class="sol-feature"><strong>Device posture</strong><span>Évaluation de conformité des terminaux avant accès</span></div>
-            <div class="sol-feature"><strong>Audit continu</strong><span>Visibilité totale, logs immutables, SIEM intégré</span></div>
+        <div class="sol-panel" id="p-zt">
+          <div class="sol-panel-head"><h3>Architecture Zero Trust</h3><p>Migration vers un modèle "ne jamais faire confiance, toujours vérifier" — identité, accès, microsegmentation.</p></div>
+          <div class="sol-features-grid">
+            <div class="sf"><strong>IAM & MFA</strong><span>Azure AD, Okta, authentification forte, SSO</span></div>
+            <div class="sf"><strong>ZTNA</strong><span>Remplacement du VPN, accès contextuel aux ressources</span></div>
+            <div class="sf"><strong>Microsegmentation</strong><span>Isolation des workloads, East-West traffic control</span></div>
+            <div class="sf"><strong>PAM</strong><span>Gestion des accès privilégiés, coffre-fort de mots de passe</span></div>
+            <div class="sf"><strong>Device posture</strong><span>Conformité des terminaux vérifiée avant tout accès</span></div>
+            <div class="sf"><strong>Audit continu</strong><span>Logs immutables, SIEM intégré, détection anomalies</span></div>
           </div>
         </div>
-
-        <!-- Cloud -->
-        <div class="sol-panel" id="tab-cloud">
-          <div class="sol-panel-header">
-            <h3>Infrastructure cloud & hybride</h3>
-            <p>Conception et sécurisation de vos environnements multi-cloud avec connectivité performante et gouvernance centralisée.</p>
-          </div>
-          <div class="sol-features">
-            <div class="sol-feature"><strong>Azure / AWS networking</strong><span>VNet peering, Transit Gateway, ExpressRoute, Direct Connect</span></div>
-            <div class="sol-feature"><strong>Cloud Security Posture</strong><span>CSPM, conformité continue, remédiation automatique</span></div>
-            <div class="sol-feature"><strong>Kubernetes & conteneurs</strong><span>Network policies, service mesh Istio, CNI sécurisé</span></div>
-            <div class="sol-feature"><strong>SASE</strong><span>Secure Access Service Edge, Zscaler, Cloudflare One</span></div>
-            <div class="sol-feature"><strong>DevSecOps</strong><span>Intégration sécurité dans la CI/CD, IaC sécurisée</span></div>
-            <div class="sol-feature"><strong>FinOps réseau</strong><span>Optimisation des coûts egress, rightsizing des liens</span></div>
+        <div class="sol-panel" id="p-cloud">
+          <div class="sol-panel-head"><h3>Infrastructure cloud & hybride</h3><p>Conception et sécurisation de vos environnements multi-cloud avec connectivité performante.</p></div>
+          <div class="sol-features-grid">
+            <div class="sf"><strong>Azure / AWS networking</strong><span>VNet peering, Transit Gateway, ExpressRoute, Direct Connect</span></div>
+            <div class="sf"><strong>Cloud Security Posture</strong><span>CSPM, conformité continue, remédiation automatique</span></div>
+            <div class="sf"><strong>Kubernetes & conteneurs</strong><span>Network policies, service mesh Istio, CNI sécurisé</span></div>
+            <div class="sf"><strong>SASE</strong><span>Secure Access Service Edge, Zscaler, Cloudflare One</span></div>
+            <div class="sf"><strong>DevSecOps</strong><span>Sécurité intégrée dans la CI/CD, IaC sécurisée</span></div>
+            <div class="sf"><strong>FinOps réseau</strong><span>Optimisation coûts egress, rightsizing des liens</span></div>
           </div>
         </div>
-
-        <!-- PRA -->
-        <div class="sol-panel" id="tab-pra">
-          <div class="sol-panel-header">
-            <h3>Plan de Reprise d'Activité (PRA / PCA)</h3>
-            <p>Conception et test de vos dispositifs de continuité pour garantir la reprise d'activité dans les délais contractuels.</p>
-          </div>
-          <div class="sol-features">
-            <div class="sol-feature"><strong>BIA & analyse des risques</strong><span>Identification des actifs critiques, RTO/RPO par service</span></div>
-            <div class="sol-feature"><strong>Réplication & backup</strong><span>Veeam, Zerto, Cohesity — sauvegarde et réplication temps réel</span></div>
-            <div class="sol-feature"><strong>Failover automatisé</strong><span>Bascule hot-standby, tests de bascule non-disruptifs</span></div>
-            <div class="sol-feature"><strong>Site de secours</strong><span>Conception du site DR, connectivité dark fiber ou cloud</span></div>
-            <div class="sol-feature"><strong>Tests annuels & exercices</strong><span>Simulation d'incident complète, rapport de maturité</span></div>
-            <div class="sol-feature"><strong>Documentation</strong><span>Runbooks, procédures de crise, formation des équipes</span></div>
+        <div class="sol-panel" id="p-pra">
+          <div class="sol-panel-head"><h3>Plan de Reprise d'Activité (PRA / PCA)</h3><p>Conception et test de vos dispositifs de continuité pour garantir la reprise dans les délais contractuels.</p></div>
+          <div class="sol-features-grid">
+            <div class="sf"><strong>BIA & analyse des risques</strong><span>Actifs critiques identifiés, RTO/RPO par service</span></div>
+            <div class="sf"><strong>Réplication & backup</strong><span>Veeam, Zerto, Cohesity — sauvegarde temps réel</span></div>
+            <div class="sf"><strong>Failover automatisé</strong><span>Hot-standby, tests de bascule non-disruptifs</span></div>
+            <div class="sf"><strong>Site de secours</strong><span>Conception site DR, connectivité dark fiber ou cloud</span></div>
+            <div class="sf"><strong>Tests annuels</strong><span>Simulation d'incident complète, rapport de maturité</span></div>
+            <div class="sf"><strong>Documentation</strong><span>Runbooks, procédures de crise, formation des équipes</span></div>
           </div>
         </div>
       </div>
@@ -771,521 +429,283 @@ footer{background:var(--bg);border-top:1px solid var(--border2);padding:80px 0 4
   </div>
 </section>
 
-<!-- ─────────────── ARCHITECTURE DIAGRAM ─────────────── -->
-<div class="network-section" id="architecture">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="tag">Architecture réseau</div>
+<section class="section arch-section" id="architecture">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Architecture réseau</div>
       <h2>Infrastructure multi-couche haute disponibilité</h2>
-      <p>Nous concevons des architectures redondantes, segmentées et supervisées — du cœur de réseau jusqu'aux postes de travail.</p>
+      <p style="margin-top:10px;max-width:560px">Architectures redondantes, segmentées et supervisées — du cœur de réseau jusqu'aux terminaux.</p>
     </div>
-    <div class="diagram-wrap reveal">
-      <svg viewBox="0 0 960 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+    <div class="diagram-box reveal">
+      <svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
         <!-- Internet -->
-        <rect x="390" y="20" width="180" height="44" rx="8" class="net-node-core"/>
-        <text x="480" y="47" text-anchor="middle" class="net-label-bold">INTERNET</text>
-
-        <!-- FW pair -->
-        <rect x="280" y="108" width="150" height="40" rx="6" class="net-node"/>
-        <text x="355" y="133" text-anchor="middle" class="net-label-bold">FW-01 (actif)</text>
-        <rect x="530" y="108" width="150" height="40" rx="6" class="net-node"/>
-        <text x="605" y="133" text-anchor="middle" class="net-label-bold">FW-02 (passif)</text>
-        <!-- HA link -->
-        <line x1="430" y1="128" x2="530" y2="128" stroke="var(--danger)" stroke-width="1.5" stroke-dasharray="4 3" opacity=".6"/>
-        <text x="480" y="122" text-anchor="middle" class="net-label" fill="var(--danger)">HA sync</text>
-
-        <!-- Core switches -->
-        <rect x="200" y="208" width="160" height="40" rx="6" class="net-node"/>
-        <text x="280" y="233" text-anchor="middle" class="net-label-bold">CORE-SW-A</text>
-        <rect x="600" y="208" width="160" height="40" rx="6" class="net-node"/>
-        <text x="680" y="233" text-anchor="middle" class="net-label-bold">CORE-SW-B</text>
-
+        <rect x="310" y="14" width="240" height="38" rx="7" class="n-core"/>
+        <text x="430" y="33" class="lbl-b">INTERNET</text>
+        <!-- FW -->
+        <rect x="110" y="90" width="155" height="36" rx="6" class="n-fw"/>
+        <text x="187" y="108" class="lbl-b">FW-01 (actif)</text>
+        <rect x="595" y="90" width="155" height="36" rx="6" class="n-fw"/>
+        <text x="672" y="108" class="lbl-b">FW-02 (passif)</text>
+        <!-- HA -->
+        <line x1="265" y1="108" x2="595" y2="108" class="lnk-ha"/>
+        <text x="430" y="103" class="lbl-sm" style="fill:#ef4444;opacity:.8">HA sync</text>
+        <!-- Core -->
+        <rect x="80" y="180" width="175" height="36" rx="6" class="n"/>
+        <text x="167" y="198" class="lbl-b">CORE-SW-A</text>
+        <rect x="605" y="180" width="175" height="36" rx="6" class="n"/>
+        <text x="692" y="198" class="lbl-b">CORE-SW-B</text>
+        <!-- Inter-core -->
+        <line x1="255" y1="198" x2="605" y2="198" class="lnk" stroke-dasharray="6 8" opacity=".4"/>
+        <text x="430" y="192" class="lbl-sm">Lien inter-core (LAG)</text>
         <!-- Distribution -->
-        <rect x="60" y="308" width="130" height="36" rx="6" class="net-node"/>
-        <text x="125" y="331" text-anchor="middle" class="net-label">DIST-SW LAN</text>
-        <rect x="230" y="308" width="130" height="36" rx="6" class="net-node"/>
-        <text x="295" y="331" text-anchor="middle" class="net-label">DIST-SW DMZ</text>
-        <rect x="600" y="308" width="130" height="36" rx="6" class="net-node"/>
-        <text x="665" y="331" text-anchor="middle" class="net-label">DIST-SW WAN</text>
-        <rect x="770" y="308" width="130" height="36" rx="6" class="net-node"/>
-        <text x="835" y="331" text-anchor="middle" class="net-label">DIST-SW OOB</text>
-
-        <!-- Access/endpoints -->
-        <rect x="40" y="400" width="100" height="32" rx="5" class="net-node" opacity=".7"/>
-        <text x="90" y="421" text-anchor="middle" class="net-label">VLAN Users</text>
-        <rect x="160" y="400" width="100" height="32" rx="5" class="net-node" opacity=".7"/>
-        <text x="210" y="421" text-anchor="middle" class="net-label">VLAN Serveurs</text>
-        <rect x="230" y="400" width="120" height="32" rx="5" class="net-node" opacity=".7"/>
-        <text x="290" y="421" text-anchor="middle" class="net-label">Serveurs Web/App</text>
-        <rect x="580" y="400" width="110" height="32" rx="5" class="net-node" opacity=".7"/>
-        <text x="635" y="421" text-anchor="middle" class="net-label">SD-WAN / MPLS</text>
-        <rect x="750" y="400" width="110" height="32" rx="5" class="net-node" opacity=".7"/>
-        <text x="805" y="421" text-anchor="middle" class="net-label">Mgmt OOB</text>
-
-        <!-- ─ Lines ─ -->
-        <!-- Internet → FW -->
-        <line x1="430" y1="64" x2="355" y2="108" class="net-line-active"/>
-        <line x1="530" y1="64" x2="605" y2="108" class="net-line-active"/>
-        <!-- FW → Core -->
-        <line x1="355" y1="148" x2="280" y2="208" class="net-line-active"/>
-        <line x1="605" y1="148" x2="680" y2="208" class="net-line-active"/>
-        <!-- Cross-link core -->
-        <line x1="360" y1="228" x2="600" y2="228" class="net-line" stroke-dasharray="4 8" opacity=".4"/>
-        <!-- Core → Distribution -->
-        <line x1="280" y1="248" x2="125" y2="308" class="net-line"/>
-        <line x1="280" y1="248" x2="295" y2="308" class="net-line"/>
-        <line x1="680" y1="248" x2="665" y2="308" class="net-line"/>
-        <line x1="680" y1="248" x2="835" y2="308" class="net-line"/>
-        <!-- Distribution → Access -->
-        <line x1="125" y1="344" x2="90" y2="400" class="net-line"/>
-        <line x1="125" y1="344" x2="210" y2="400" class="net-line"/>
-        <line x1="295" y1="344" x2="290" y2="400" class="net-line"/>
-        <line x1="665" y1="344" x2="635" y2="400" class="net-line"/>
-        <line x1="835" y1="344" x2="805" y2="400" class="net-line"/>
-
-        <!-- Labels -->
-        <text x="480" y="232" text-anchor="middle" class="net-label" opacity=".5">Lien inter-core (lag)</text>
+        <rect x="10" y="274" width="135" height="32" rx="5" class="n"/>
+        <text x="77" y="290" class="lbl">DIST-SW LAN</text>
+        <rect x="165" y="274" width="135" height="32" rx="5" class="n"/>
+        <text x="232" y="290" class="lbl">DIST-SW DMZ</text>
+        <rect x="550" y="274" width="135" height="32" rx="5" class="n"/>
+        <text x="617" y="290" class="lbl">DIST-SW WAN</text>
+        <rect x="715" y="274" width="135" height="32" rx="5" class="n"/>
+        <text x="782" y="290" class="lbl">DIST-SW OOB</text>
+        <!-- Access -->
+        <rect x="10" y="354" width="110" height="28" rx="4" class="n" opacity=".7"/>
+        <text x="65" y="368" class="lbl">VLAN Users</text>
+        <rect x="132" y="354" width="110" height="28" rx="4" class="n" opacity=".7"/>
+        <text x="187" y="368" class="lbl">VLAN Serveurs</text>
+        <rect x="258" y="354" width="110" height="28" rx="4" class="n" opacity=".7"/>
+        <text x="313" y="368" class="lbl">Web / App</text>
+        <rect x="530" y="354" width="120" height="28" rx="4" class="n" opacity=".7"/>
+        <text x="590" y="368" class="lbl">SD-WAN / MPLS</text>
+        <rect x="668" y="354" width="110" height="28" rx="4" class="n" opacity=".7"/>
+        <text x="723" y="368" class="lbl">Mgmt OOB</text>
+        <!-- Lines: Internet→FW -->
+        <line x1="370" y1="52" x2="187" y2="90" class="lnk-hot"/>
+        <line x1="490" y1="52" x2="672" y2="90" class="lnk-hot"/>
+        <!-- FW→Core -->
+        <line x1="187" y1="126" x2="167" y2="180" class="lnk-hot"/>
+        <line x1="672" y1="126" x2="692" y2="180" class="lnk-hot"/>
+        <!-- Core-A→Dist -->
+        <line x1="140" y1="216" x2="77" y2="274" class="lnk"/>
+        <line x1="190" y1="216" x2="232" y2="274" class="lnk"/>
+        <!-- Core-B→Dist -->
+        <line x1="660" y1="216" x2="617" y2="274" class="lnk"/>
+        <line x1="715" y1="216" x2="782" y2="274" class="lnk"/>
+        <!-- Dist→Access -->
+        <line x1="77" y1="306" x2="65" y2="354" class="lnk"/>
+        <line x1="77" y1="306" x2="187" y2="354" class="lnk"/>
+        <line x1="232" y1="306" x2="313" y2="354" class="lnk"/>
+        <line x1="617" y1="306" x2="590" y2="354" class="lnk"/>
+        <line x1="782" y1="306" x2="723" y2="354" class="lnk"/>
       </svg>
     </div>
   </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Méthodologie</div>
+      <h2>Notre processus en 4 étapes</h2>
+    </div>
+    <div class="process-row reveal">
+      <div class="proc"><div class="proc-n">01</div><h3>Audit & découverte</h3><p>Cartographie réseau, analyse des flux, identification des risques. Rapport remis sous 10 jours.</p></div>
+      <div class="proc"><div class="proc-n">02</div><h3>Design architecture</h3><p>Schéma cible, choix technologiques argumentés, dossier HLD + LLD et chiffrage à prix fixe.</p></div>
+      <div class="proc"><div class="proc-n">03</div><h3>Déploiement</h3><p>Migration progressive, rollback planifié, zéro coupure garantie contractuellement, recette et tests.</p></div>
+      <div class="proc"><div class="proc-n">04</div><h3>Run & supervision</h3><p>Monitoring 24/7, astreinte N3, gestion des incidents, revues trimestrielles.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="zt-layout">
+      <div class="reveal">
+        <div class="eyebrow">Zero Trust</div>
+        <h2>Ne jamais faire confiance. Toujours vérifier.</h2>
+        <p style="margin-top:14px;max-width:420px">Le périmètre réseau n'existe plus. Notre approche Zero Trust sécurise chaque accès, chaque identité, chaque flux.</p>
+        <a href="#contact" class="btn btn-primary" style="margin-top:28px">Évaluer ma maturité ZT</a>
+      </div>
+      <div class="reveal">
+        <div class="eyebrow">Piliers</div>
+        <div class="zt-pillars">
+          <div class="zt-pill"><div class="zt-pill-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>Identité vérifiée en permanence — MFA, passwordless</div>
+          <div class="zt-pill"><div class="zt-pill-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>Conformité des terminaux avant tout accès</div>
+          <div class="zt-pill"><div class="zt-pill-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>Accès au moindre privilège — ZTNA remplace le VPN</div>
+          <div class="zt-pill"><div class="zt-pill-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>Inspection & log de chaque flux, IA d'anomalies</div>
+          <div class="zt-pill"><div class="zt-pill-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>Microsegmentation — isolation des workloads critiques</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="audit">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Audit & Budget</div>
+      <h2>Transparent sur les coûts, précis dans les livrables</h2>
+      <p style="margin-top:10px;max-width:520px">Chaque mission commence par un audit gratuit. Le chiffrage final est fixe : pas de surcoût caché.</p>
+    </div>
+    <div class="audit-layout reveal">
+      <div class="a-card featured">
+        <h3>Ce que comprend chaque mission</h3>
+        <div class="checklist">
+          <div class="chk"><div class="chk-mark"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Cartographie réseau et inventaire des actifs</div>
+          <div class="chk"><div class="chk-mark"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Audit de sécurité (vulnérabilités, mauvaises configurations)</div>
+          <div class="chk"><div class="chk-mark"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Analyse de risques et plan de remédiation priorisé</div>
+          <div class="chk"><div class="chk-mark"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Plan de migration avec RTO/RPO définis</div>
+          <div class="chk"><div class="chk-mark"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Dossier d'architecture cible (HLD + LLD)</div>
+          <div class="chk"><div class="chk-mark"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Chiffrage détaillé à prix fixe</div>
+          <div class="chk"><div class="chk-mark"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Formation des équipes internes incluse</div>
+          <div class="chk"><div class="chk-mark"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Documentation opérationnelle (runbooks)</div>
+        </div>
+      </div>
+      <div>
+        <div class="a-card">
+          <h3>Fourchettes budgétaires indicatives</h3>
+          <div class="budget-tiers">
+            <div class="tier"><div class="tier-label">PME / ETI</div><div class="tier-price">50 000 € – 150 000 €</div><div class="tier-desc">Réseau + sécurité périmétrique</div></div>
+            <div class="tier"><div class="tier-label">Grande entreprise</div><div class="tier-price">150 000 € – 500 000 €</div><div class="tier-desc">Architecture complète multi-sites</div></div>
+            <div class="tier"><div class="tier-label">Infrastructure critique</div><div class="tier-price">500 000 € – 800 000 €</div><div class="tier-desc">SOC, PRA, Zero Trust complet</div></div>
+          </div>
+        </div>
+        <div class="free-card">
+          <div class="free-left">
+            <div class="free-label">Offre de démarrage</div>
+            <div class="free-title">Audit initial gratuit</div>
+            <div class="free-sub">Premier état des lieux remis sous 5 jours ouvrés, sans engagement.</div>
+          </div>
+          <a href="#contact" class="btn btn-primary" style="flex-shrink:0">Demander →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="kpi-band section-sm">
+  <div class="wrap">
+    <div class="kpi-inner reveal">
+      <div class="kpi"><div class="kpi-n">99<span>,99%</span></div><div class="kpi-l">Uptime garanti (SLA contractuel)</div></div>
+      <div class="kpi"><div class="kpi-n">−<span>60%</span></div><div class="kpi-l">Réduction des incidents de sécurité</div></div>
+      <div class="kpi"><div class="kpi-n">×<span>2</span></div><div class="kpi-l">Gain de performance réseau moyen</div></div>
+      <div class="kpi"><div class="kpi-n">150<span>+</span></div><div class="kpi-l">Projets déployés en Europe</div></div>
+    </div>
+  </div>
 </div>
 
-<!-- ─────────────── PROCESS ─────────────── -->
-<section class="section">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="tag">Méthodologie</div>
-      <h2>Notre processus projet en 4 étapes</h2>
-    </div>
-    <div class="process-steps reveal">
-      <div class="process-step">
-        <div class="step-num">01</div>
-        <h3>Audit & découverte</h3>
-        <p>Cartographie de l'existant, analyse des flux, identification des risques et des points de défaillance. Rapport de maturité remis sous 10 jours.</p>
-        <div class="step-arrow">→</div>
-      </div>
-      <div class="process-step">
-        <div class="step-num">02</div>
-        <h3>Design d'architecture</h3>
-        <p>Conception du schéma cible, choix technologiques argumentés, dossier d'architecture détaillé et chiffrage précis.</p>
-        <div class="step-arrow">→</div>
-      </div>
-      <div class="process-step">
-        <div class="step-num">03</div>
-        <h3>Déploiement</h3>
-        <p>Migration progressive avec rollback planifié, zéro coupure de service garantie contractuellement, recette et tests de charge.</p>
-        <div class="step-arrow">→</div>
-      </div>
-      <div class="process-step">
-        <div class="step-num">04</div>
-        <h3>Run & supervision</h3>
-        <p>Monitoring 24/7, astreinte N3, gestion des incidents, revues trimestrielles de capacité et de sécurité.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─────────────── ZERO TRUST ─────────────── -->
-<section class="section" style="background:var(--bg2)">
-  <div class="container">
-    <div class="zt-grid">
-      <div class="reveal">
-        <div class="tag">Zero Trust</div>
-        <h2>Ne jamais faire confiance.<br>Toujours vérifier.</h2>
-        <p style="color:var(--muted);margin-top:16px;font-size:.95rem">Le périmètre réseau n'existe plus. Notre approche Zero Trust sécurise chaque accès, chaque identité, chaque flux — qu'il vienne de l'intérieur ou de l'extérieur.</p>
-        <a href="#contact" class="btn btn-primary" style="margin-top:32px">Évaluer ma maturité ZT</a>
-      </div>
-      <div class="reveal">
-        <div class="zt-visual">
-          <h4 style="margin-bottom:4px">Piliers Zero Trust</h4>
-          <div class="zt-principles">
-            <div class="zt-principle"><span class="num">🔑</span>Identité vérifiée en permanence — MFA, passwordless</div>
-            <div class="zt-principle"><span class="num">📱</span>Conformité des terminaux avant tout accès (posture check)</div>
-            <div class="zt-principle"><span class="num">🔒</span>Accès au moindre privilège — ZTNA remplace le VPN</div>
-            <div class="zt-principle"><span class="num">🧩</span>Microsegmentation — isolation des workloads critiques</div>
-            <div class="zt-principle"><span class="num">📊</span>Inspection & log de chaque flux, détection anomalie par IA</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─────────────── AUDIT & BUDGET ─────────────── -->
-<section class="section" id="audit">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="tag">Audit & Budget</div>
-      <h2>Transparent sur les coûts, précis dans les livrables</h2>
-      <p>Chaque mission commence par un audit gratuit. Le chiffrage final est fixe : pas de surcoût caché.</p>
-    </div>
-    <div class="audit-grid reveal">
-      <div class="audit-card highlight">
-        <h4>Ce que comprend chaque mission</h4>
-        <div class="audit-list">
-          <div class="audit-item">Cartographie réseau et inventaire des actifs</div>
-          <div class="audit-item">Audit de sécurité (vulnérabilités, mauvaises configurations)</div>
-          <div class="audit-item">Analyse de risques et plan de remédiation priorisé</div>
-          <div class="audit-item">Plan de migration avec RTO/RPO définis</div>
-          <div class="audit-item">Dossier d'architecture cible (HLD + LLD)</div>
-          <div class="audit-item">Chiffrage détaillé à prix fixe</div>
-          <div class="audit-item">Formation des équipes internes incluse</div>
-          <div class="audit-item">Documentation opérationnelle (runbooks)</div>
-        </div>
-      </div>
-      <div>
-        <div class="audit-card" style="margin-bottom:20px">
-          <h4>Fourchettes budgétaires indicatives</h4>
-          <div style="display:flex;flex-direction:column;gap:16px;margin-top:20px">
-            <div style="padding:16px;background:var(--surface);border-radius:8px;border-left:2px solid var(--accent2)">
-              <div style="font-family:'Syne',sans-serif;font-weight:700">PME / ETI</div>
-              <div class="price-val">50 000 € – 150 000 €</div>
-              <div class="price-label">Réseau + sécurité périmétrique</div>
-            </div>
-            <div style="padding:16px;background:var(--surface);border-radius:8px;border-left:2px solid var(--accent)">
-              <div style="font-family:'Syne',sans-serif;font-weight:700">Grande entreprise</div>
-              <div class="price-val">150 000 € – 500 000 €</div>
-              <div class="price-label">Architecture complète multi-sites</div>
-            </div>
-            <div style="padding:16px;background:var(--surface);border-radius:8px;border-left:2px solid var(--accent3)">
-              <div style="font-family:'Syne',sans-serif;font-weight:700">Infrastructure critique</div>
-              <div class="price-val">500 000 € – 800 000 €</div>
-              <div class="price-label">SOC, PRA, Zero Trust complet</div>
-            </div>
-          </div>
-        </div>
-        <div class="audit-card" style="background:rgba(0,255,163,.04);border-color:rgba(0,255,163,.2)">
-          <h4>Audit initial</h4>
-          <div class="price-val" style="margin-top:12px">Gratuit</div>
-          <div class="price-label">Premier état des lieux sans engagement — remis sous 5 jours ouvrés.</div>
-          <a href="#contact" class="btn btn-primary" style="margin-top:20px;width:100%;justify-content:center">Demander mon audit →</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─────────────── KPI ─────────────── -->
-<section style="background:var(--bg2);padding:80px 0">
-  <div class="container">
-    <div class="kpi-bar reveal">
-      <div class="kpi-item">
-        <div class="kpi-num">99,99%</div>
-        <div class="kpi-label">Uptime garanti (SLA contractuel)</div>
-      </div>
-      <div class="kpi-item">
-        <div class="kpi-num">−60%</div>
-        <div class="kpi-label">Réduction des incidents de sécurité</div>
-      </div>
-      <div class="kpi-item">
-        <div class="kpi-num">×2</div>
-        <div class="kpi-label">Gain de performance réseau moyen</div>
-      </div>
-      <div class="kpi-item">
-        <div class="kpi-num">150+</div>
-        <div class="kpi-label">Projets déployés en Europe</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─────────────── SECTEURS ─────────────── -->
 <section class="section" id="secteurs">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="tag">Secteurs</div>
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Secteurs</div>
       <h2>Expertise sectorielle</h2>
-      <p>Chaque industrie a ses contraintes réglementaires et opérationnelles. Nous les connaissons.</p>
+      <p style="margin-top:10px;max-width:480px">Chaque industrie a ses contraintes réglementaires. Nous les maîtrisons.</p>
     </div>
     <div class="sectors-grid reveal">
-      <div class="sector-card">
-        <div class="sector-icon">🏦</div>
-        <div>
-          <h3>Banque & Finance</h3>
-          <p>Conformité DORA, SWIFT CSP, segmentation stricte, supervision des flux sensibles.</p>
-        </div>
-      </div>
-      <div class="sector-card">
-        <div class="sector-icon">🏥</div>
-        <div>
-          <h3>Santé</h3>
-          <p>HDS, PGSSI-S, protection des données patients, résilience des systèmes critiques.</p>
-        </div>
-      </div>
-      <div class="sector-card">
-        <div class="sector-icon">🏭</div>
-        <div>
-          <h3>Industrie & OT</h3>
-          <p>Sécurisation des réseaux OT/IT, segmentation IT/OT, conformité IEC 62443.</p>
-        </div>
-      </div>
-      <div class="sector-card">
-        <div class="sector-icon">🏛️</div>
-        <div>
-          <h3>Secteur public</h3>
-          <p>Référentiel ANSSI, qualification SecNumCloud, interconnexions interministérielles.</p>
-        </div>
-      </div>
-      <div class="sector-card">
-        <div class="sector-icon">🛒</div>
-        <div>
-          <h3>Retail & e-commerce</h3>
-          <p>PCI-DSS, protection des flux de paiement, disponibilité maximale Black Friday.</p>
-        </div>
-      </div>
-      <div class="sector-card">
-        <div class="sector-icon">📡</div>
-        <div>
-          <h3>Télécoms & MSP</h3>
-          <p>Cœur de réseau opérateur, peering, backbone IP, infrastructure multi-tenant.</p>
-        </div>
-      </div>
+      <div class="sec-card"><div class="sec-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div><h3>Banque & Finance</h3><p>Conformité DORA, SWIFT CSP, segmentation stricte, supervision des flux sensibles.</p></div>
+      <div class="sec-card"><div class="sec-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><h3>Santé</h3><p>HDS, PGSSI-S, protection des données patients, résilience des systèmes critiques.</p></div>
+      <div class="sec-card"><div class="sec-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><h3>Industrie & OT</h3><p>Sécurisation réseaux OT/IT, segmentation IT/OT, conformité IEC 62443.</p></div>
+      <div class="sec-card"><div class="sec-icon"><svg viewBox="0 0 24 24"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg></div><h3>Secteur public</h3><p>Référentiel ANSSI, qualification SecNumCloud, interconnexions interministérielles.</p></div>
+      <div class="sec-card"><div class="sec-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div><h3>Retail & e-commerce</h3><p>PCI-DSS, protection des flux de paiement, disponibilité maximale.</p></div>
+      <div class="sec-card"><div class="sec-icon"><svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div><h3>Télécoms & MSP</h3><p>Cœur de réseau opérateur, peering, backbone IP, infrastructure multi-tenant.</p></div>
     </div>
   </div>
 </section>
 
-<!-- ─────────────── TESTIMONIALS ─────────────── -->
-<section style="background:var(--bg2);padding:100px 0">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="tag">Témoignages</div>
+<section class="section" style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Témoignages</div>
       <h2>Ce que disent nos clients</h2>
     </div>
-    <div class="testimonials-grid reveal">
-      <div class="testi-card">
-        <p class="testi-quote">Netgen Systems a transformé notre infrastructure en 4 mois. La migration SD-WAN s'est faite sans aucune interruption de service. Résultat : −45% de latence inter-sites.</p>
-        <div class="testi-author">
-          <div class="testi-avatar">ML</div>
-          <div>
-            <div class="testi-name">Marc Lefebvre</div>
-            <div class="testi-role">DSI — Groupe industriel, 3 000 collaborateurs</div>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <p class="testi-quote">L'audit de sécurité a révélé des failles critiques que nous n'aurions jamais détectées seuls. Le SOC managé nous donne enfin une visibilité complète sur nos environnements.</p>
-        <div class="testi-author">
-          <div class="testi-avatar">SC</div>
-          <div>
-            <div class="testi-name">Sophie Carrière</div>
-            <div class="testi-role">RSSI — Établissement bancaire régional</div>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <p class="testi-quote">La mise en place du PRA a été exemplaire. Lors du test de bascule annuel, l'ensemble des systèmes critiques a repris en moins de 12 minutes. Contrat RTO respecté.</p>
-        <div class="testi-author">
-          <div class="testi-avatar">TD</div>
-          <div>
-            <div class="testi-name">Thomas Dumont</div>
-            <div class="testi-role">Directeur IT — CHU région Île-de-France</div>
-          </div>
-        </div>
-      </div>
+    <div class="testi-grid reveal">
+      <div class="testi"><p class="testi-q">Netgen Systems a transformé notre infrastructure en 4 mois. La migration SD-WAN s'est faite sans aucune interruption. Résultat : −45% de latence inter-sites.</p><div class="testi-auth"><div class="testi-av">ML</div><div><div class="testi-name">Marc Lefebvre</div><div class="testi-role">DSI — Groupe industriel, 3 000 collaborateurs</div></div></div></div>
+      <div class="testi"><p class="testi-q">L'audit a révélé des failles critiques que nous n'aurions jamais détectées seuls. Le SOC managé nous donne enfin une visibilité complète sur nos environnements.</p><div class="testi-auth"><div class="testi-av" style="background:var(--teal)">SC</div><div><div class="testi-name">Sophie Carrière</div><div class="testi-role">RSSI — Établissement bancaire régional</div></div></div></div>
+      <div class="testi"><p class="testi-q">La mise en place du PRA a été exemplaire. Lors du test de bascule, l'ensemble des systèmes critiques a repris en moins de 12 minutes. RTO contractuel respecté.</p><div class="testi-auth"><div class="testi-av" style="background:var(--green)">TD</div><div><div class="testi-name">Thomas Dumont</div><div class="testi-role">Directeur IT — CHU Île-de-France</div></div></div></div>
     </div>
   </div>
 </section>
 
-<!-- ─────────────── CTA ─────────────── -->
-<section class="cta-section">
-  <div class="container">
-    <div class="tag">Prêt à démarrer ?</div>
-    <h2 class="gradient-text">Votre infrastructure mérite mieux.</h2>
+<div class="cta-banner">
+  <div class="wrap">
+    <div class="eyebrow" style="justify-content:center">Prêt à démarrer ?</div>
+    <h2>Votre infrastructure mérite mieux.</h2>
     <p>Un audit gratuit, sans engagement, pour identifier les priorités et construire une feuille de route réaliste.</p>
     <div class="cta-btns">
-      <a href="#contact" class="btn btn-primary">Demander un audit gratuit ↗</a>
-      <a href="mailto:contact@netgen-systems.fr" class="btn btn-outline">contact@netgen-systems.fr</a>
+      <a href="#contact" class="btn btn-primary">Demander un audit gratuit →</a>
+      <a href="mailto:contact@netgen-systems.fr" class="btn btn-ghost">contact@netgen-systems.fr</a>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ─────────────── CONTACT ─────────────── -->
 <section class="section" id="contact">
-  <div class="container">
-    <div class="contact-grid">
+  <div class="wrap">
+    <div class="contact-layout">
       <div>
         <div class="reveal">
-          <div class="tag">Contact</div>
+          <div class="eyebrow">Contact</div>
           <h2>Parlons de votre projet</h2>
-          <p style="color:var(--muted);margin-top:14px;font-size:.95rem">Notre équipe revient vers vous sous 24h ouvrées pour planifier un premier échange technique.</p>
+          <p style="margin-top:12px">Notre équipe revient vers vous sous 24h ouvrées pour planifier un premier échange technique.</p>
         </div>
-        <div class="contact-info reveal" style="margin-top:44px">
-          <div class="contact-item">
-            <div class="contact-icon">📧</div>
-            <div>
-              <h4>Email</h4>
-              <p>contact@netgen-systems.fr</p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="contact-icon">📞</div>
-            <div>
-              <h4>Téléphone</h4>
-              <p>+33 (0)1 XX XX XX XX</p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="contact-icon">📍</div>
-            <div>
-              <h4>Siège social</h4>
-              <p>Paris, France — Interventions Europe entière</p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="contact-icon">⏱️</div>
-            <div>
-              <h4>Astreinte</h4>
-              <p>Support critique 24/7/365 pour les clients managés</p>
-            </div>
-          </div>
+        <div class="contact-info reveal">
+          <div class="ci"><div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><div class="ci-title">Email</div><div class="ci-val">contact@netgen-systems.fr</div></div></div>
+          <div class="ci"><div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.89 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.82 1.2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><div class="ci-title">Téléphone</div><div class="ci-val">+33 (0)1 XX XX XX XX</div></div></div>
+          <div class="ci"><div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="ci-title">Siège social</div><div class="ci-val">Paris, France — Interventions Europe entière</div></div></div>
+          <div class="ci"><div class="ci-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="ci-title">Astreinte</div><div class="ci-val">Support critique 24/7/365 pour les clients managés</div></div></div>
         </div>
       </div>
       <div class="reveal">
-        <div class="contact-form">
-          <h3 style="margin-bottom:6px;font-size:1.1rem">Demande d'audit ou de devis</h3>
-          <p style="color:var(--muted);font-size:.85rem;margin-bottom:28px">Réponse sous 24h ouvrées garantie.</p>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Prénom</label>
-              <input type="text" placeholder="Jean">
-            </div>
-            <div class="form-group">
-              <label>Nom</label>
-              <input type="text" placeholder="Dupont">
-            </div>
+        <div class="form-box">
+          <h3>Demande d'audit ou de devis</h3>
+          <p>Réponse sous 24h ouvrées garantie.</p>
+          <div class="f-row">
+            <div class="f-group"><label>Prénom</label><input type="text" placeholder="Jean"></div>
+            <div class="f-group"><label>Nom</label><input type="text" placeholder="Dupont"></div>
           </div>
-          <div class="form-group">
-            <label>Email professionnel</label>
-            <input type="email" placeholder="jean.dupont@entreprise.fr">
+          <div class="f-group"><label>Email professionnel</label><input type="email" placeholder="jean.dupont@entreprise.fr"></div>
+          <div class="f-row">
+            <div class="f-group"><label>Société</label><input type="text" placeholder="Votre entreprise"></div>
+            <div class="f-group"><label>Taille</label><select><option>— Choisir —</option><option>Moins de 50</option><option>50 – 250</option><option>250 – 1 000</option><option>1 000 – 5 000</option><option>Plus de 5 000</option></select></div>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Société</label>
-              <input type="text" placeholder="Nom de votre entreprise">
-            </div>
-            <div class="form-group">
-              <label>Taille de l'entreprise</label>
-              <select>
-                <option>Moins de 50 personnes</option>
-                <option>50 – 250</option>
-                <option>250 – 1 000</option>
-                <option>1 000 – 5 000</option>
-                <option>Plus de 5 000</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Besoin principal</label>
-            <select>
-              <option>Audit de sécurité</option>
-              <option>Architecture réseau</option>
-              <option>SOC managé</option>
-              <option>SD-WAN</option>
-              <option>Zero Trust</option>
-              <option>PRA / Continuité</option>
-              <option>Autre</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Description du projet</label>
-            <textarea placeholder="Décrivez votre contexte, vos contraintes et vos objectifs…"></textarea>
-          </div>
-          <button class="btn btn-primary" style="width:100%;justify-content:center;padding:15px" onclick="handleSubmit()">Envoyer ma demande →</button>
-          <p style="color:var(--muted);font-size:.75rem;margin-top:14px;text-align:center">Vos données restent confidentielles et ne sont jamais transmises à des tiers.</p>
+          <div class="f-group"><label>Besoin principal</label><select><option>— Choisir —</option><option>Audit de sécurité</option><option>Architecture réseau</option><option>SOC managé</option><option>SD-WAN</option><option>Zero Trust</option><option>PRA / Continuité</option><option>Autre</option></select></div>
+          <div class="f-group"><label>Description du projet</label><textarea placeholder="Contexte, contraintes, objectifs…"></textarea></div>
+          <button class="btn btn-primary form-submit" onclick="submitForm(this)">Envoyer ma demande →</button>
+          <div class="form-note">Vos données sont confidentielles et ne sont jamais transmises à des tiers.</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─────────────── FOOTER ─────────────── -->
 <footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="logo">
-          <div class="logo-icon">N</div>
-          <span class="logo-name">Netgen <span>Systems</span></span>
-        </div>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="f-brand">
+        <div class="logo"><div class="logo-mark"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><span class="logo-text">Netgen <span>Systems</span></span></div>
         <p>Ingénierie réseau et cybersécurité pour les organisations aux exigences les plus élevées.</p>
       </div>
-      <div class="footer-col">
-        <h4>Solutions</h4>
-        <ul class="footer-links">
-          <li><a href="#solutions">Sécurité périmétrique</a></li>
-          <li><a href="#solutions">SOC managé</a></li>
-          <li><a href="#solutions">SD-WAN</a></li>
-          <li><a href="#solutions">Zero Trust</a></li>
-          <li><a href="#solutions">Cloud hybride</a></li>
-          <li><a href="#solutions">PRA / PCA</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Entreprise</h4>
-        <ul class="footer-links">
-          <li><a href="#">À propos</a></li>
-          <li><a href="#secteurs">Secteurs</a></li>
-          <li><a href="#">Références</a></li>
-          <li><a href="#">Certifications</a></li>
-          <li><a href="#">Blog technique</a></li>
-          <li><a href="#">Recrutement</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Ressources</h4>
-        <ul class="footer-links">
-          <li><a href="#">Livre blanc SD-WAN</a></li>
-          <li><a href="#">Guide Zero Trust</a></li>
-          <li><a href="#">Checklist DORA</a></li>
-          <li><a href="#">Veille cyber</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a href="#">Mentions légales</a></li>
-        </ul>
-      </div>
+      <div class="f-col"><h4>Solutions</h4><ul class="f-links"><li><a href="#solutions">Sécurité périmétrique</a></li><li><a href="#solutions">SOC managé</a></li><li><a href="#solutions">SD-WAN</a></li><li><a href="#solutions">Zero Trust</a></li><li><a href="#solutions">Cloud hybride</a></li><li><a href="#solutions">PRA / PCA</a></li></ul></div>
+      <div class="f-col"><h4>Entreprise</h4><ul class="f-links"><li><a href="#">À propos</a></li><li><a href="#secteurs">Secteurs</a></li><li><a href="#">Références</a></li><li><a href="#">Certifications</a></li><li><a href="#">Blog technique</a></li><li><a href="#">Recrutement</a></li></ul></div>
+      <div class="f-col"><h4>Ressources</h4><ul class="f-links"><li><a href="#">Livre blanc SD-WAN</a></li><li><a href="#">Guide Zero Trust</a></li><li><a href="#">Checklist DORA</a></li><li><a href="#">Veille cyber</a></li><li><a href="#contact">Contact</a></li><li><a href="#">Mentions légales</a></li></ul></div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 Netgen Systems — Tous droits réservés</p>
-      <div class="footer-badges">
-        <span class="badge">ISO 27001</span>
-        <span class="badge">ANSSI</span>
-        <span class="badge">Cisco Partner</span>
-        <span class="badge">Fortinet</span>
-      </div>
+      <span class="footer-copy">© 2025 Netgen Systems — Tous droits réservés</span>
+      <div class="footer-badges"><span class="badge">ISO 27001</span><span class="badge">ANSSI</span><span class="badge">Cisco Partner</span><span class="badge">Fortinet NSE</span></div>
     </div>
   </div>
 </footer>
 
 <script>
-/* ── TABS ── */
-function showTab(id) {
-  document.querySelectorAll('.sol-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.sol-panel').forEach(p => p.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  document.getElementById('tab-' + id).classList.add('active');
+function tab(id,el){
+  document.querySelectorAll('.sol-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.sol-panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('p-'+id).classList.add('active');
 }
-
-/* ── SCROLL REVEAL ── */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('visible'), i * 80);
-    }
-  });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-/* ── FORM ── */
-function handleSubmit() {
-  const btn = document.querySelector('.contact-form .btn-primary');
-  btn.textContent = '✓ Demande envoyée — Réponse sous 24h';
-  btn.style.background = 'linear-gradient(135deg,var(--accent3),var(--accent2))';
-}
-
-/* ── NAV SCROLL ── */
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').style.background =
-    window.scrollY > 50 ? 'rgba(4,7,15,.95)' : 'rgba(4,7,15,.75)';
-});
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),i*90);io.unobserve(e.target)}});
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+function submitForm(btn){btn.textContent='✓ Demande envoyée — Réponse sous 24h';btn.style.background='#10b981';btn.disabled=true}
+window.addEventListener('scroll',()=>{document.getElementById('nav').style.background=window.scrollY>40?'rgba(6,12,24,.97)':'rgba(6,12,24,.9)'});
 </script>
 </body>
 </html>
