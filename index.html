@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netgen Systems — Architecture Réseau & Cybersécurité</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+/* ── DESIGN TOKENS ── */
+:root{
+  --bg:#04070f;
+  --bg2:#070d1a;
+  --bg3:#0b1225;
+  --surface:#0e1830;
+  --accent:#00c6ff;
+  --accent2:#0075ff;
+  --accent3:#00ffa3;
+  --danger:#ff3e6c;
+  --text:#dce8f5;
+  --muted:#6b809a;
+  --border:rgba(0,198,255,0.12);
+  --border2:rgba(255,255,255,0.06);
+  --glow-blue:0 0 80px rgba(0,117,255,0.2);
+  --glow-cyan:0 0 40px rgba(0,198,255,0.25);
+  --r:12px;
+}
+
+/* ── RESET ── */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  font-size:16px;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  line-height:1.65;
+}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+img{max-width:100%;display:block}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--accent2);border-radius:2px}
+
+/* ── TYPOGRAPHY ── */
+h1,h2,h3,h4,.logo-name{font-family:'Syne',sans-serif}
+h1{font-size:clamp(2.4rem,6vw,4.8rem);font-weight:800;line-height:1.05;letter-spacing:-0.02em}
+h2{font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:700;letter-spacing:-0.01em}
+h3{font-size:1.15rem;font-weight:700}
+h4{font-size:.85rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+
+/* ── UTILS ── */
+.container{max-width:1160px;margin:auto;padding:0 6%}
+.section{padding:120px 0}
+.tag{
+  display:inline-block;
+  font-family:'Syne',sans-serif;
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--accent);
+  border:1px solid var(--border);
+  border-radius:99px;
+  padding:5px 14px;
+  margin-bottom:22px;
+}
+.gradient-text{
+  background:linear-gradient(90deg,#fff 30%,var(--accent));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.gradient-text-green{
+  background:linear-gradient(90deg,var(--accent3),var(--accent));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:.04em;
+  padding:13px 26px;border-radius:var(--r);
+  border:none;cursor:pointer;transition:.25s ease;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  color:#000;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--glow-cyan)}
+.btn-outline{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--text);
+}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;width:100%;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 6%;
+  background:rgba(4,7,15,.75);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border2);
+  transition:.3s;
+}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{
+  width:36px;height:36px;border-radius:9px;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:#000;
+  flex-shrink:0;
+}
+.logo-name{font-weight:700;font-size:1rem;letter-spacing:.02em}
+.logo-name span{color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{font-size:.88rem;color:var(--muted);transition:.2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{margin-left:8px}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding-top:100px;
+  position:relative;
+  overflow:hidden;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(var(--border2) 1px,transparent 1px),
+    linear-gradient(90deg,var(--border2) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 70% at 50% 40%,black,transparent);
+}
+.hero-glow{
+  position:absolute;top:-10%;left:50%;transform:translateX(-50%);
+  width:800px;height:500px;
+  background:radial-gradient(ellipse,rgba(0,117,255,.18) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-content{position:relative;z-index:1;max-width:780px}
+.hero-sub{color:var(--muted);font-size:1.05rem;max-width:560px;margin:18px 0 36px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.hero-stats{
+  display:flex;gap:48px;margin-top:72px;
+  padding-top:36px;border-top:1px solid var(--border2);
+}
+.stat-val{
+  font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;
+  background:linear-gradient(90deg,var(--text),var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.stat-label{font-size:.82rem;color:var(--muted);margin-top:4px}
+
+/* ── SCROLL BADGE ── */
+.scroll-badge{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  color:var(--muted);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;
+}
+.scroll-line{
+  width:1px;height:52px;
+  background:linear-gradient(var(--accent),transparent);
+  animation:scrollAnim 1.8s ease-in-out infinite;
+}
+@keyframes scrollAnim{0%,100%{opacity:.3;transform:scaleY(0.6) translateY(-8px)}50%{opacity:1;transform:scaleY(1) translateY(0)}}
+
+/* ── MARQUEE ── */
+.marquee-wrap{
+  border-top:1px solid var(--border2);
+  border-bottom:1px solid var(--border2);
+  background:var(--bg2);
+  overflow:hidden;
+  padding:16px 0;
+}
+.marquee-track{
+  display:flex;gap:60px;
+  animation:marquee 25s linear infinite;
+  width:max-content;
+}
+.marquee-track:hover{animation-play-state:paused}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{
+  display:flex;align-items:center;gap:10px;
+  font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;
+  color:var(--muted);white-space:nowrap;text-transform:uppercase;
+}
+.marquee-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
+
+/* ── SECTION HEADER ── */
+.section-header{margin-bottom:64px}
+.section-header p{color:var(--muted);max-width:520px;margin-top:14px;font-size:1rem}
+
+/* ── CARDS GRID ── */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+
+/* ── FEATURE CARD ── */
+.feature-card{
+  background:var(--bg3);
+  border:1px solid var(--border2);
+  border-radius:16px;
+  padding:32px;
+  transition:.3s ease;
+  position:relative;overflow:hidden;
+}
+.feature-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 0 0,rgba(0,198,255,.06),transparent 60%);
+  opacity:0;transition:.3s;
+}
+.feature-card:hover{border-color:var(--border);transform:translateY(-4px);box-shadow:var(--glow-blue)}
+.feature-card:hover::before{opacity:1}
+.feature-icon{
+  width:46px;height:46px;border-radius:10px;
+  background:rgba(0,117,255,.15);border:1px solid rgba(0,117,255,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;margin-bottom:20px;
+}
+.feature-card h3{margin-bottom:10px;font-size:1.05rem}
+.feature-card p{color:var(--muted);font-size:.92rem;line-height:1.6}
+
+/* ── SERVICES HERO SECTION ── */
+.services-hero{
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+}
+.services-visual{
+  position:relative;
+  aspect-ratio:1;max-width:460px;
+}
+.net-svg{width:100%;height:100%}
+
+/* ── PROCESS STEPS ── */
+.process-steps{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border:1px solid var(--border2);border-radius:16px;overflow:hidden;
+}
+.process-step{
+  padding:36px 28px;border-right:1px solid var(--border2);
+  position:relative;
+  transition:.3s;
+}
+.process-step:last-child{border-right:none}
+.process-step:hover{background:var(--bg3)}
+.step-num{
+  font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;
+  color:rgba(0,198,255,.12);line-height:1;margin-bottom:20px;
+}
+.process-step h3{font-size:.98rem;margin-bottom:10px}
+.process-step p{color:var(--muted);font-size:.86rem;line-height:1.6}
+.step-arrow{
+  position:absolute;right:-12px;top:50%;transform:translateY(-50%);
+  width:24px;height:24px;background:var(--surface);
+  border:1px solid var(--border2);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;color:var(--accent);z-index:1;
+}
+.process-step:last-child .step-arrow{display:none}
+
+/* ── SOLUTIONS TABS ── */
+.solutions-container{display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:start}
+.solutions-tabs{display:flex;flex-direction:column;gap:4px}
+.sol-tab{
+  display:flex;align-items:center;gap:12px;
+  padding:16px 20px;border-radius:10px;
+  border:1px solid transparent;
+  cursor:pointer;transition:.2s;
+  font-size:.9rem;font-weight:500;color:var(--muted);
+}
+.sol-tab:hover{background:var(--bg3);color:var(--text)}
+.sol-tab.active{
+  background:var(--bg3);color:var(--accent);
+  border-color:var(--border);
+}
+.sol-tab-icon{font-size:1.1rem;width:28px;text-align:center}
+.sol-panel{display:none}
+.sol-panel.active{display:block}
+.sol-panel-header{margin-bottom:28px}
+.sol-panel-header h3{font-size:1.5rem;font-family:'Syne',sans-serif;font-weight:700;margin-bottom:8px}
+.sol-panel-header p{color:var(--muted);font-size:.95rem}
+.sol-features{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sol-feature{
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:10px;padding:18px;
+  font-size:.88rem;
+}
+.sol-feature strong{display:block;margin-bottom:4px;font-size:.9rem}
+.sol-feature span{color:var(--muted)}
+
+/* ── AUDIT SECTION ── */
+.audit-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.audit-card{
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:16px;padding:36px;
+}
+.audit-card.highlight{
+  border-color:rgba(0,198,255,.3);
+  background:linear-gradient(135deg,rgba(0,117,255,.08),var(--bg3));
+}
+.audit-list{margin-top:20px;display:flex;flex-direction:column;gap:12px}
+.audit-item{
+  display:flex;align-items:flex-start;gap:12px;
+  font-size:.92rem;color:var(--muted);
+}
+.audit-item::before{
+  content:'✓';
+  width:20px;height:20px;border-radius:50%;
+  background:rgba(0,255,163,.15);
+  color:var(--accent3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:700;flex-shrink:0;
+  margin-top:2px;
+}
+.price-range{
+  margin-top:28px;padding:24px;
+  background:rgba(0,117,255,.08);border:1px solid rgba(0,117,255,.2);
+  border-radius:10px;
+}
+.price-val{
+  font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;
+  background:linear-gradient(90deg,var(--accent3),var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.price-label{color:var(--muted);font-size:.82rem;margin-top:4px}
+
+/* ── KPI BAR ── */
+.kpi-bar{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:var(--bg3);border:1px solid var(--border2);border-radius:16px;
+  overflow:hidden;
+}
+.kpi-item{
+  padding:40px 28px;border-right:1px solid var(--border2);
+  text-align:center;
+}
+.kpi-item:last-child{border-right:none}
+.kpi-num{
+  font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;
+  background:linear-gradient(90deg,var(--text),var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1;margin-bottom:10px;
+}
+.kpi-label{color:var(--muted);font-size:.85rem}
+
+/* ── TESTIMONIALS ── */
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi-card{
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:16px;padding:32px;
+}
+.testi-quote{
+  color:var(--text);font-size:.95rem;line-height:1.65;
+  font-style:italic;font-weight:300;
+  margin-bottom:24px;
+}
+.testi-quote::before{content:'\201C';color:var(--accent);font-size:2rem;line-height:0;vertical-align:-0.5em;margin-right:4px}
+.testi-author{display:flex;align-items:center;gap:14px}
+.testi-avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent2),var(--accent3));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:.9rem;color:#000;
+}
+.testi-name{font-weight:500;font-size:.9rem}
+.testi-role{color:var(--muted);font-size:.8rem}
+
+/* ── SECTORS ── */
+.sectors-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.sector-card{
+  background:var(--bg3);border:1px solid var(--border2);border-radius:12px;
+  padding:28px;display:flex;gap:16px;align-items:flex-start;
+  transition:.25s;
+}
+.sector-card:hover{border-color:var(--border);transform:translateY(-3px)}
+.sector-icon{font-size:1.6rem;line-height:1;flex-shrink:0}
+.sector-card h3{font-size:.98rem;margin-bottom:6px}
+.sector-card p{color:var(--muted);font-size:.84rem;line-height:1.55}
+
+/* ── NETWORK DIAGRAM ── */
+.network-section{background:var(--bg2);padding:100px 0}
+.diagram-wrap{
+  margin-top:48px;
+  border:1px solid var(--border2);border-radius:20px;
+  overflow:hidden;padding:40px;
+  background:var(--bg3);
+}
+.net-node{fill:var(--surface);stroke:rgba(0,198,255,.4);stroke-width:1.5}
+.net-node-core{fill:rgba(0,117,255,.2);stroke:var(--accent2);stroke-width:2}
+.net-line{stroke:rgba(0,198,255,.25);stroke-width:1.5;stroke-dasharray:6 4}
+.net-line-active{stroke:rgba(0,198,255,.7);stroke-width:2;stroke-dasharray:6 4;animation:flow 2.5s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-20}}
+.net-label{fill:var(--muted);font-family:'DM Sans',sans-serif;font-size:11px}
+.net-label-bold{fill:var(--text);font-family:'Syne',sans-serif;font-size:12px;font-weight:700}
+
+/* ── CTA SECTION ── */
+.cta-section{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--bg2),var(--bg3));
+  border-top:1px solid var(--border2);
+  border-bottom:1px solid var(--border2);
+  padding:120px 0;text-align:center;
+}
+.cta-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(0,117,255,.12),transparent);
+}
+.cta-section .container{position:relative;z-index:1}
+.cta-section h2{font-size:clamp(2rem,4vw,3.2rem);margin-bottom:16px}
+.cta-section p{color:var(--muted);max-width:480px;margin:0 auto 36px;font-size:1rem}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* ── CONTACT SECTION ── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.contact-info{display:flex;flex-direction:column;gap:28px}
+.contact-item{display:flex;gap:16px;align-items:flex-start}
+.contact-icon{
+  width:44px;height:44px;border-radius:10px;
+  background:rgba(0,117,255,.12);border:1px solid rgba(0,117,255,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0;
+}
+.contact-item h4{font-size:.92rem;margin-bottom:4px}
+.contact-item p{color:var(--muted);font-size:.88rem}
+.contact-form{
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:16px;padding:36px;
+}
+.form-group{margin-bottom:18px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+label{display:block;font-size:.8rem;font-weight:500;margin-bottom:8px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+input,textarea,select{
+  width:100%;padding:12px 16px;
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.92rem;
+  transition:.2s;outline:none;
+}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,198,255,.1)}
+select{cursor:pointer}
+textarea{resize:vertical;min-height:110px}
+select option{background:var(--surface)}
+
+/* ── FOOTER ── */
+footer{background:var(--bg);border-top:1px solid var(--border2);padding:80px 0 40px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:64px;margin-bottom:60px}
+.footer-brand p{color:var(--muted);font-size:.9rem;margin-top:16px;max-width:260px;line-height:1.6}
+.footer-col h4{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px;color:var(--text)}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{color:var(--muted);font-size:.88rem;transition:.2s}
+.footer-links a:hover{color:var(--accent)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:32px;border-top:1px solid var(--border2)}
+.footer-bottom p{color:var(--muted);font-size:.82rem}
+.footer-badges{display:flex;gap:12px}
+.badge{
+  font-size:.72rem;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:5px 12px;border-radius:99px;border:1px solid var(--border2);color:var(--muted);
+}
+
+/* ── ZERO TRUST SECTION ── */
+.zt-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.zt-visual{
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:16px;padding:32px;
+}
+.zt-principles{display:flex;flex-direction:column;gap:16px;margin-top:24px}
+.zt-principle{
+  display:flex;align-items:center;gap:14px;
+  padding:16px;background:var(--surface);border-radius:8px;
+  border-left:2px solid var(--accent2);
+  font-size:.9rem;
+}
+.zt-principle .num{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--accent);min-width:28px;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .solutions-container{grid-template-columns:1fr}
+  .solutions-tabs{flex-direction:row;flex-wrap:wrap}
+  .sol-tab{padding:10px 16px}
+  .zt-grid,.audit-grid,.contact-grid,.services-hero{grid-template-columns:1fr;gap:40px}
+  .process-steps{grid-template-columns:1fr 1fr}
+  .kpi-bar{grid-template-columns:1fr 1fr}
+  .kpi-item:nth-child(2){border-right:none}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:40px}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hero-stats{flex-wrap:wrap;gap:28px}
+  .testimonials-grid,.sectors-grid{grid-template-columns:1fr}
+  .process-steps{grid-template-columns:1fr}
+  .step-arrow{display:none}
+  .sol-features{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;gap:16px;text-align:center}
+  .kpi-bar{grid-template-columns:1fr 1fr}
+}
+
+/* ── ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(28px);transition:.7s ease}
+.reveal.visible{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- ─────────────── NAV ─────────────── -->
+<nav id="nav">
+  <div class="logo">
+    <div class="logo-icon">N</div>
+    <span class="logo-name">Netgen <span>Systems</span></span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#solutions">Solutions</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#audit">Audit</a></li>
+    <li><a href="#secteurs">Secteurs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="btn btn-primary nav-cta">Demander un audit</a>
+</nav>
+
+<!-- ─────────────── HERO ─────────────── -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="tag">Ingénierie réseau & cybersécurité</div>
+      <h1 class="gradient-text">Infrastructure critique.<br>Sécurité avancée.</h1>
+      <p class="hero-sub">Nous concevons, déployons et supervisisons des architectures réseau haute disponibilité pour les organisations aux exigences les plus élevées en résilience, performance et cybersécurité.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn btn-primary">Demander un audit gratuit ↗</a>
+        <a href="#solutions" class="btn btn-outline">Voir nos solutions</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-val">99,99%</div>
+          <div class="stat-label">Uptime garanti SLA</div>
+        </div>
+        <div>
+          <div class="stat-val">−60%</div>
+          <div class="stat-label">Incidents de sécurité</div>
+        </div>
+        <div>
+          <div class="stat-val">×2</div>
+          <div class="stat-label">Performance réseau</div>
+        </div>
+        <div>
+          <div class="stat-val">150+</div>
+          <div class="stat-label">Projets déployés</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-badge">
+    <span>Découvrir</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ─────────────── MARQUEE ─────────────── -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marqueeTrack">
+    <div class="marquee-item"><div class="marquee-dot"></div>Zero Trust Architecture</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>SD-WAN</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>SOC managé</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Pentest & audit</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Haute disponibilité</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>SIEM / SOAR</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Firewall NGFW</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Cloud hybride</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Reprise d'activité (PRA)</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Conformité ISO 27001</div>
+    <!-- duplicate for loop -->
+    <div class="marquee-item"><div class="marquee-dot"></div>Zero Trust Architecture</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>SD-WAN</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>SOC managé</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Pentest & audit</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Haute disponibilité</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>SIEM / SOAR</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Firewall NGFW</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Cloud hybride</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Reprise d'activité (PRA)</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Conformité ISO 27001</div>
+  </div>
+</div>
+
+<!-- ─────────────── SERVICES ─────────────── -->
+<section class="section" id="services">
+  <div class="container">
+    <div class="services-hero">
+      <div>
+        <div class="reveal">
+          <div class="tag">Nos services</div>
+          <h2>Une expertise complète,<br>de la conception au run</h2>
+          <p style="color:var(--muted);margin-top:16px;font-size:.95rem;max-width:440px">De l'audit initial à la supervision 24/7, nous couvrons l'intégralité du cycle de vie de votre infrastructure réseau et sécurité.</p>
+        </div>
+        <div class="zt-principles reveal" style="margin-top:36px">
+          <div class="zt-principle"><span class="num">01</span>Audit & cartographie complète de l'existant</div>
+          <div class="zt-principle"><span class="num">02</span>Design sur mesure de l'architecture cible</div>
+          <div class="zt-principle"><span class="num">03</span>Déploiement avec migration sans coupure</div>
+          <div class="zt-principle"><span class="num">04</span>Supervision continue & support N1/N2/N3</div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="cards-grid" style="grid-template-columns:1fr 1fr;gap:14px">
+          <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3>Cybersécurité</h3>
+            <p>Pentests, SIEM, SOC managé, réponse aux incidents.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🌐</div>
+            <h3>Réseau</h3>
+            <p>LAN/WAN, SD-WAN, MPLS, routage avancé BGP/OSPF.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">☁️</div>
+            <h3>Cloud hybride</h3>
+            <p>Interconnexion multi-cloud, Azure, AWS, connectivité sécurisée.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔄</div>
+            <h3>Continuité</h3>
+            <p>PRA/PCA, réplication, failover automatique, tests de bascule.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── SOLUTIONS (TABS) ─────────────── -->
+<section class="section" id="solutions" style="background:var(--bg2);padding:100px 0">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag">Solutions</div>
+      <h2>Des solutions adaptées à chaque besoin</h2>
+      <p>Chaque organisation a ses contraintes. Nos solutions s'adaptent à votre secteur, votre taille et votre niveau de maturité cyber.</p>
+    </div>
+    <div class="solutions-container reveal">
+      <div class="solutions-tabs">
+        <div class="sol-tab active" onclick="showTab('firewall')">
+          <span class="sol-tab-icon">🔥</span>Sécurité périmétrique
+        </div>
+        <div class="sol-tab" onclick="showTab('soc')">
+          <span class="sol-tab-icon">👁</span>SOC & détection
+        </div>
+        <div class="sol-tab" onclick="showTab('sdwan')">
+          <span class="sol-tab-icon">🌐</span>SD-WAN & WAN
+        </div>
+        <div class="sol-tab" onclick="showTab('zerotrust')">
+          <span class="sol-tab-icon">🔑</span>Zero Trust
+        </div>
+        <div class="sol-tab" onclick="showTab('cloud')">
+          <span class="sol-tab-icon">☁️</span>Cloud & hybride
+        </div>
+        <div class="sol-tab" onclick="showTab('pra')">
+          <span class="sol-tab-icon">🔄</span>PRA / Continuité
+        </div>
+      </div>
+
+      <div>
+        <!-- Firewall -->
+        <div class="sol-panel active" id="tab-firewall">
+          <div class="sol-panel-header">
+            <h3>Sécurité périmétrique & NGFW</h3>
+            <p>Déploiement et configuration de pare-feux next-generation avec inspection applicative, IPS/IDS et filtrage URL avancé.</p>
+          </div>
+          <div class="sol-features">
+            <div class="sol-feature"><strong>NGFW managé</strong><span>Fortinet, Palo Alto, Cisco FTD — configuration, tuning, règles</span></div>
+            <div class="sol-feature"><strong>IPS / IDS</strong><span>Détection et prévention d'intrusions en temps réel</span></div>
+            <div class="sol-feature"><strong>Filtrage applicatif</strong><span>Deep Packet Inspection, contrôle applicatif L7</span></div>
+            <div class="sol-feature"><strong>VPN site-à-site & nomade</strong><span>IPSec, SSL-VPN, MFA intégrée</span></div>
+            <div class="sol-feature"><strong>Segmentation réseau</strong><span>VLAN, DMZ, micro-segmentation, ZTNA</span></div>
+            <div class="sol-feature"><strong>Reporting & conformité</strong><span>Tableaux de bord, rapports PCI-DSS, ISO 27001</span></div>
+          </div>
+        </div>
+
+        <!-- SOC -->
+        <div class="sol-panel" id="tab-soc">
+          <div class="sol-panel-header">
+            <h3>SOC managé & détection des menaces</h3>
+            <p>Centre opérationnel de sécurité disponible 24/7/365 avec corrélation d'événements, chasse aux menaces et réponse aux incidents.</p>
+          </div>
+          <div class="sol-features">
+            <div class="sol-feature"><strong>SIEM nouvelle génération</strong><span>Splunk, Microsoft Sentinel, corrélation multi-sources</span></div>
+            <div class="sol-feature"><strong>EDR / XDR</strong><span>CrowdStrike, SentinelOne, protection endpoints avancée</span></div>
+            <div class="sol-feature"><strong>Threat Hunting</strong><span>Recherche proactive des menaces avancées APT</span></div>
+            <div class="sol-feature"><strong>Réponse aux incidents</strong><span>Playbooks SOAR, containment, forensics, rapport</span></div>
+            <div class="sol-feature"><strong>Threat Intelligence</strong><span>Flux IoC, dark web monitoring, CTI opérationnelle</span></div>
+            <div class="sol-feature"><strong>Pentest réguliers</strong><span>Tests d'intrusion trimestriels inclus dans l'offre managée</span></div>
+          </div>
+        </div>
+
+        <!-- SD-WAN -->
+        <div class="sol-panel" id="tab-sdwan">
+          <div class="sol-panel-header">
+            <h3>SD-WAN & interconnexion WAN</h3>
+            <p>Modernisation des liaisons inter-sites avec routage intelligent, optimisation applicative et réduction des coûts WAN.</p>
+          </div>
+          <div class="sol-features">
+            <div class="sol-feature"><strong>SD-WAN déployé</strong><span>Fortinet, Cisco Viptela, VMware VeloCloud</span></div>
+            <div class="sol-feature"><strong>Agrégation de liens</strong><span>MPLS + Internet + 4G/5G, failover automatique</span></div>
+            <div class="sol-feature"><strong>QoS applicatif</strong><span>Priorisation dynamique, SLA par application</span></div>
+            <div class="sol-feature"><strong>MPLS & leased lines</strong><span>Conception et négociation opérateur, BGP multihoming</span></div>
+            <div class="sol-feature"><strong>Routage avancé</strong><span>BGP, OSPF, EIGRP, redistribution, optimisation convergence</span></div>
+            <div class="sol-feature"><strong>Visibilité & analytics</strong><span>Monitoring temps réel, latence, jitter, perte de paquets</span></div>
+          </div>
+        </div>
+
+        <!-- Zero Trust -->
+        <div class="sol-panel" id="tab-zerotrust">
+          <div class="sol-panel-header">
+            <h3>Architecture Zero Trust</h3>
+            <p>Migration vers un modèle "ne jamais faire confiance, toujours vérifier" — identité, accès, microsegmentation.</p>
+          </div>
+          <div class="sol-features">
+            <div class="sol-feature"><strong>IAM & MFA</strong><span>Azure AD, Okta, authentification forte, SSO</span></div>
+            <div class="sol-feature"><strong>ZTNA (Zero Trust Network Access)</strong><span>Remplacement du VPN, accès contextuel aux ressources</span></div>
+            <div class="sol-feature"><strong>Microsegmentation</strong><span>Isolation des workloads, East-West traffic control</span></div>
+            <div class="sol-feature"><strong>PAM</strong><span>Gestion des accès privilégiés, coffre-fort de mots de passe</span></div>
+            <div class="sol-feature"><strong>Device posture</strong><span>Évaluation de conformité des terminaux avant accès</span></div>
+            <div class="sol-feature"><strong>Audit continu</strong><span>Visibilité totale, logs immutables, SIEM intégré</span></div>
+          </div>
+        </div>
+
+        <!-- Cloud -->
+        <div class="sol-panel" id="tab-cloud">
+          <div class="sol-panel-header">
+            <h3>Infrastructure cloud & hybride</h3>
+            <p>Conception et sécurisation de vos environnements multi-cloud avec connectivité performante et gouvernance centralisée.</p>
+          </div>
+          <div class="sol-features">
+            <div class="sol-feature"><strong>Azure / AWS networking</strong><span>VNet peering, Transit Gateway, ExpressRoute, Direct Connect</span></div>
+            <div class="sol-feature"><strong>Cloud Security Posture</strong><span>CSPM, conformité continue, remédiation automatique</span></div>
+            <div class="sol-feature"><strong>Kubernetes & conteneurs</strong><span>Network policies, service mesh Istio, CNI sécurisé</span></div>
+            <div class="sol-feature"><strong>SASE</strong><span>Secure Access Service Edge, Zscaler, Cloudflare One</span></div>
+            <div class="sol-feature"><strong>DevSecOps</strong><span>Intégration sécurité dans la CI/CD, IaC sécurisée</span></div>
+            <div class="sol-feature"><strong>FinOps réseau</strong><span>Optimisation des coûts egress, rightsizing des liens</span></div>
+          </div>
+        </div>
+
+        <!-- PRA -->
+        <div class="sol-panel" id="tab-pra">
+          <div class="sol-panel-header">
+            <h3>Plan de Reprise d'Activité (PRA / PCA)</h3>
+            <p>Conception et test de vos dispositifs de continuité pour garantir la reprise d'activité dans les délais contractuels.</p>
+          </div>
+          <div class="sol-features">
+            <div class="sol-feature"><strong>BIA & analyse des risques</strong><span>Identification des actifs critiques, RTO/RPO par service</span></div>
+            <div class="sol-feature"><strong>Réplication & backup</strong><span>Veeam, Zerto, Cohesity — sauvegarde et réplication temps réel</span></div>
+            <div class="sol-feature"><strong>Failover automatisé</strong><span>Bascule hot-standby, tests de bascule non-disruptifs</span></div>
+            <div class="sol-feature"><strong>Site de secours</strong><span>Conception du site DR, connectivité dark fiber ou cloud</span></div>
+            <div class="sol-feature"><strong>Tests annuels & exercices</strong><span>Simulation d'incident complète, rapport de maturité</span></div>
+            <div class="sol-feature"><strong>Documentation</strong><span>Runbooks, procédures de crise, formation des équipes</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── ARCHITECTURE DIAGRAM ─────────────── -->
+<div class="network-section" id="architecture">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag">Architecture réseau</div>
+      <h2>Infrastructure multi-couche haute disponibilité</h2>
+      <p>Nous concevons des architectures redondantes, segmentées et supervisées — du cœur de réseau jusqu'aux postes de travail.</p>
+    </div>
+    <div class="diagram-wrap reveal">
+      <svg viewBox="0 0 960 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+        <!-- Internet -->
+        <rect x="390" y="20" width="180" height="44" rx="8" class="net-node-core"/>
+        <text x="480" y="47" text-anchor="middle" class="net-label-bold">INTERNET</text>
+
+        <!-- FW pair -->
+        <rect x="280" y="108" width="150" height="40" rx="6" class="net-node"/>
+        <text x="355" y="133" text-anchor="middle" class="net-label-bold">FW-01 (actif)</text>
+        <rect x="530" y="108" width="150" height="40" rx="6" class="net-node"/>
+        <text x="605" y="133" text-anchor="middle" class="net-label-bold">FW-02 (passif)</text>
+        <!-- HA link -->
+        <line x1="430" y1="128" x2="530" y2="128" stroke="var(--danger)" stroke-width="1.5" stroke-dasharray="4 3" opacity=".6"/>
+        <text x="480" y="122" text-anchor="middle" class="net-label" fill="var(--danger)">HA sync</text>
+
+        <!-- Core switches -->
+        <rect x="200" y="208" width="160" height="40" rx="6" class="net-node"/>
+        <text x="280" y="233" text-anchor="middle" class="net-label-bold">CORE-SW-A</text>
+        <rect x="600" y="208" width="160" height="40" rx="6" class="net-node"/>
+        <text x="680" y="233" text-anchor="middle" class="net-label-bold">CORE-SW-B</text>
+
+        <!-- Distribution -->
+        <rect x="60" y="308" width="130" height="36" rx="6" class="net-node"/>
+        <text x="125" y="331" text-anchor="middle" class="net-label">DIST-SW LAN</text>
+        <rect x="230" y="308" width="130" height="36" rx="6" class="net-node"/>
+        <text x="295" y="331" text-anchor="middle" class="net-label">DIST-SW DMZ</text>
+        <rect x="600" y="308" width="130" height="36" rx="6" class="net-node"/>
+        <text x="665" y="331" text-anchor="middle" class="net-label">DIST-SW WAN</text>
+        <rect x="770" y="308" width="130" height="36" rx="6" class="net-node"/>
+        <text x="835" y="331" text-anchor="middle" class="net-label">DIST-SW OOB</text>
+
+        <!-- Access/endpoints -->
+        <rect x="40" y="400" width="100" height="32" rx="5" class="net-node" opacity=".7"/>
+        <text x="90" y="421" text-anchor="middle" class="net-label">VLAN Users</text>
+        <rect x="160" y="400" width="100" height="32" rx="5" class="net-node" opacity=".7"/>
+        <text x="210" y="421" text-anchor="middle" class="net-label">VLAN Serveurs</text>
+        <rect x="230" y="400" width="120" height="32" rx="5" class="net-node" opacity=".7"/>
+        <text x="290" y="421" text-anchor="middle" class="net-label">Serveurs Web/App</text>
+        <rect x="580" y="400" width="110" height="32" rx="5" class="net-node" opacity=".7"/>
+        <text x="635" y="421" text-anchor="middle" class="net-label">SD-WAN / MPLS</text>
+        <rect x="750" y="400" width="110" height="32" rx="5" class="net-node" opacity=".7"/>
+        <text x="805" y="421" text-anchor="middle" class="net-label">Mgmt OOB</text>
+
+        <!-- ─ Lines ─ -->
+        <!-- Internet → FW -->
+        <line x1="430" y1="64" x2="355" y2="108" class="net-line-active"/>
+        <line x1="530" y1="64" x2="605" y2="108" class="net-line-active"/>
+        <!-- FW → Core -->
+        <line x1="355" y1="148" x2="280" y2="208" class="net-line-active"/>
+        <line x1="605" y1="148" x2="680" y2="208" class="net-line-active"/>
+        <!-- Cross-link core -->
+        <line x1="360" y1="228" x2="600" y2="228" class="net-line" stroke-dasharray="4 8" opacity=".4"/>
+        <!-- Core → Distribution -->
+        <line x1="280" y1="248" x2="125" y2="308" class="net-line"/>
+        <line x1="280" y1="248" x2="295" y2="308" class="net-line"/>
+        <line x1="680" y1="248" x2="665" y2="308" class="net-line"/>
+        <line x1="680" y1="248" x2="835" y2="308" class="net-line"/>
+        <!-- Distribution → Access -->
+        <line x1="125" y1="344" x2="90" y2="400" class="net-line"/>
+        <line x1="125" y1="344" x2="210" y2="400" class="net-line"/>
+        <line x1="295" y1="344" x2="290" y2="400" class="net-line"/>
+        <line x1="665" y1="344" x2="635" y2="400" class="net-line"/>
+        <line x1="835" y1="344" x2="805" y2="400" class="net-line"/>
+
+        <!-- Labels -->
+        <text x="480" y="232" text-anchor="middle" class="net-label" opacity=".5">Lien inter-core (lag)</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────── PROCESS ─────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag">Méthodologie</div>
+      <h2>Notre processus projet en 4 étapes</h2>
+    </div>
+    <div class="process-steps reveal">
+      <div class="process-step">
+        <div class="step-num">01</div>
+        <h3>Audit & découverte</h3>
+        <p>Cartographie de l'existant, analyse des flux, identification des risques et des points de défaillance. Rapport de maturité remis sous 10 jours.</p>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <h3>Design d'architecture</h3>
+        <p>Conception du schéma cible, choix technologiques argumentés, dossier d'architecture détaillé et chiffrage précis.</p>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <h3>Déploiement</h3>
+        <p>Migration progressive avec rollback planifié, zéro coupure de service garantie contractuellement, recette et tests de charge.</p>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">04</div>
+        <h3>Run & supervision</h3>
+        <p>Monitoring 24/7, astreinte N3, gestion des incidents, revues trimestrielles de capacité et de sécurité.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── ZERO TRUST ─────────────── -->
+<section class="section" style="background:var(--bg2)">
+  <div class="container">
+    <div class="zt-grid">
+      <div class="reveal">
+        <div class="tag">Zero Trust</div>
+        <h2>Ne jamais faire confiance.<br>Toujours vérifier.</h2>
+        <p style="color:var(--muted);margin-top:16px;font-size:.95rem">Le périmètre réseau n'existe plus. Notre approche Zero Trust sécurise chaque accès, chaque identité, chaque flux — qu'il vienne de l'intérieur ou de l'extérieur.</p>
+        <a href="#contact" class="btn btn-primary" style="margin-top:32px">Évaluer ma maturité ZT</a>
+      </div>
+      <div class="reveal">
+        <div class="zt-visual">
+          <h4 style="margin-bottom:4px">Piliers Zero Trust</h4>
+          <div class="zt-principles">
+            <div class="zt-principle"><span class="num">🔑</span>Identité vérifiée en permanence — MFA, passwordless</div>
+            <div class="zt-principle"><span class="num">📱</span>Conformité des terminaux avant tout accès (posture check)</div>
+            <div class="zt-principle"><span class="num">🔒</span>Accès au moindre privilège — ZTNA remplace le VPN</div>
+            <div class="zt-principle"><span class="num">🧩</span>Microsegmentation — isolation des workloads critiques</div>
+            <div class="zt-principle"><span class="num">📊</span>Inspection & log de chaque flux, détection anomalie par IA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── AUDIT & BUDGET ─────────────── -->
+<section class="section" id="audit">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag">Audit & Budget</div>
+      <h2>Transparent sur les coûts, précis dans les livrables</h2>
+      <p>Chaque mission commence par un audit gratuit. Le chiffrage final est fixe : pas de surcoût caché.</p>
+    </div>
+    <div class="audit-grid reveal">
+      <div class="audit-card highlight">
+        <h4>Ce que comprend chaque mission</h4>
+        <div class="audit-list">
+          <div class="audit-item">Cartographie réseau et inventaire des actifs</div>
+          <div class="audit-item">Audit de sécurité (vulnérabilités, mauvaises configurations)</div>
+          <div class="audit-item">Analyse de risques et plan de remédiation priorisé</div>
+          <div class="audit-item">Plan de migration avec RTO/RPO définis</div>
+          <div class="audit-item">Dossier d'architecture cible (HLD + LLD)</div>
+          <div class="audit-item">Chiffrage détaillé à prix fixe</div>
+          <div class="audit-item">Formation des équipes internes incluse</div>
+          <div class="audit-item">Documentation opérationnelle (runbooks)</div>
+        </div>
+      </div>
+      <div>
+        <div class="audit-card" style="margin-bottom:20px">
+          <h4>Fourchettes budgétaires indicatives</h4>
+          <div style="display:flex;flex-direction:column;gap:16px;margin-top:20px">
+            <div style="padding:16px;background:var(--surface);border-radius:8px;border-left:2px solid var(--accent2)">
+              <div style="font-family:'Syne',sans-serif;font-weight:700">PME / ETI</div>
+              <div class="price-val">50 000 € – 150 000 €</div>
+              <div class="price-label">Réseau + sécurité périmétrique</div>
+            </div>
+            <div style="padding:16px;background:var(--surface);border-radius:8px;border-left:2px solid var(--accent)">
+              <div style="font-family:'Syne',sans-serif;font-weight:700">Grande entreprise</div>
+              <div class="price-val">150 000 € – 500 000 €</div>
+              <div class="price-label">Architecture complète multi-sites</div>
+            </div>
+            <div style="padding:16px;background:var(--surface);border-radius:8px;border-left:2px solid var(--accent3)">
+              <div style="font-family:'Syne',sans-serif;font-weight:700">Infrastructure critique</div>
+              <div class="price-val">500 000 € – 800 000 €</div>
+              <div class="price-label">SOC, PRA, Zero Trust complet</div>
+            </div>
+          </div>
+        </div>
+        <div class="audit-card" style="background:rgba(0,255,163,.04);border-color:rgba(0,255,163,.2)">
+          <h4>Audit initial</h4>
+          <div class="price-val" style="margin-top:12px">Gratuit</div>
+          <div class="price-label">Premier état des lieux sans engagement — remis sous 5 jours ouvrés.</div>
+          <a href="#contact" class="btn btn-primary" style="margin-top:20px;width:100%;justify-content:center">Demander mon audit →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── KPI ─────────────── -->
+<section style="background:var(--bg2);padding:80px 0">
+  <div class="container">
+    <div class="kpi-bar reveal">
+      <div class="kpi-item">
+        <div class="kpi-num">99,99%</div>
+        <div class="kpi-label">Uptime garanti (SLA contractuel)</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-num">−60%</div>
+        <div class="kpi-label">Réduction des incidents de sécurité</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-num">×2</div>
+        <div class="kpi-label">Gain de performance réseau moyen</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-num">150+</div>
+        <div class="kpi-label">Projets déployés en Europe</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── SECTEURS ─────────────── -->
+<section class="section" id="secteurs">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag">Secteurs</div>
+      <h2>Expertise sectorielle</h2>
+      <p>Chaque industrie a ses contraintes réglementaires et opérationnelles. Nous les connaissons.</p>
+    </div>
+    <div class="sectors-grid reveal">
+      <div class="sector-card">
+        <div class="sector-icon">🏦</div>
+        <div>
+          <h3>Banque & Finance</h3>
+          <p>Conformité DORA, SWIFT CSP, segmentation stricte, supervision des flux sensibles.</p>
+        </div>
+      </div>
+      <div class="sector-card">
+        <div class="sector-icon">🏥</div>
+        <div>
+          <h3>Santé</h3>
+          <p>HDS, PGSSI-S, protection des données patients, résilience des systèmes critiques.</p>
+        </div>
+      </div>
+      <div class="sector-card">
+        <div class="sector-icon">🏭</div>
+        <div>
+          <h3>Industrie & OT</h3>
+          <p>Sécurisation des réseaux OT/IT, segmentation IT/OT, conformité IEC 62443.</p>
+        </div>
+      </div>
+      <div class="sector-card">
+        <div class="sector-icon">🏛️</div>
+        <div>
+          <h3>Secteur public</h3>
+          <p>Référentiel ANSSI, qualification SecNumCloud, interconnexions interministérielles.</p>
+        </div>
+      </div>
+      <div class="sector-card">
+        <div class="sector-icon">🛒</div>
+        <div>
+          <h3>Retail & e-commerce</h3>
+          <p>PCI-DSS, protection des flux de paiement, disponibilité maximale Black Friday.</p>
+        </div>
+      </div>
+      <div class="sector-card">
+        <div class="sector-icon">📡</div>
+        <div>
+          <h3>Télécoms & MSP</h3>
+          <p>Cœur de réseau opérateur, peering, backbone IP, infrastructure multi-tenant.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── TESTIMONIALS ─────────────── -->
+<section style="background:var(--bg2);padding:100px 0">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag">Témoignages</div>
+      <h2>Ce que disent nos clients</h2>
+    </div>
+    <div class="testimonials-grid reveal">
+      <div class="testi-card">
+        <p class="testi-quote">Netgen Systems a transformé notre infrastructure en 4 mois. La migration SD-WAN s'est faite sans aucune interruption de service. Résultat : −45% de latence inter-sites.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">ML</div>
+          <div>
+            <div class="testi-name">Marc Lefebvre</div>
+            <div class="testi-role">DSI — Groupe industriel, 3 000 collaborateurs</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <p class="testi-quote">L'audit de sécurité a révélé des failles critiques que nous n'aurions jamais détectées seuls. Le SOC managé nous donne enfin une visibilité complète sur nos environnements.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">SC</div>
+          <div>
+            <div class="testi-name">Sophie Carrière</div>
+            <div class="testi-role">RSSI — Établissement bancaire régional</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <p class="testi-quote">La mise en place du PRA a été exemplaire. Lors du test de bascule annuel, l'ensemble des systèmes critiques a repris en moins de 12 minutes. Contrat RTO respecté.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">TD</div>
+          <div>
+            <div class="testi-name">Thomas Dumont</div>
+            <div class="testi-role">Directeur IT — CHU région Île-de-France</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── CTA ─────────────── -->
+<section class="cta-section">
+  <div class="container">
+    <div class="tag">Prêt à démarrer ?</div>
+    <h2 class="gradient-text">Votre infrastructure mérite mieux.</h2>
+    <p>Un audit gratuit, sans engagement, pour identifier les priorités et construire une feuille de route réaliste.</p>
+    <div class="cta-btns">
+      <a href="#contact" class="btn btn-primary">Demander un audit gratuit ↗</a>
+      <a href="mailto:contact@netgen-systems.fr" class="btn btn-outline">contact@netgen-systems.fr</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── CONTACT ─────────────── -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <div class="reveal">
+          <div class="tag">Contact</div>
+          <h2>Parlons de votre projet</h2>
+          <p style="color:var(--muted);margin-top:14px;font-size:.95rem">Notre équipe revient vers vous sous 24h ouvrées pour planifier un premier échange technique.</p>
+        </div>
+        <div class="contact-info reveal" style="margin-top:44px">
+          <div class="contact-item">
+            <div class="contact-icon">📧</div>
+            <div>
+              <h4>Email</h4>
+              <p>contact@netgen-systems.fr</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div>
+              <h4>Téléphone</h4>
+              <p>+33 (0)1 XX XX XX XX</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div>
+              <h4>Siège social</h4>
+              <p>Paris, France — Interventions Europe entière</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">⏱️</div>
+            <div>
+              <h4>Astreinte</h4>
+              <p>Support critique 24/7/365 pour les clients managés</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="contact-form">
+          <h3 style="margin-bottom:6px;font-size:1.1rem">Demande d'audit ou de devis</h3>
+          <p style="color:var(--muted);font-size:.85rem;margin-bottom:28px">Réponse sous 24h ouvrées garantie.</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Prénom</label>
+              <input type="text" placeholder="Jean">
+            </div>
+            <div class="form-group">
+              <label>Nom</label>
+              <input type="text" placeholder="Dupont">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email professionnel</label>
+            <input type="email" placeholder="jean.dupont@entreprise.fr">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Société</label>
+              <input type="text" placeholder="Nom de votre entreprise">
+            </div>
+            <div class="form-group">
+              <label>Taille de l'entreprise</label>
+              <select>
+                <option>Moins de 50 personnes</option>
+                <option>50 – 250</option>
+                <option>250 – 1 000</option>
+                <option>1 000 – 5 000</option>
+                <option>Plus de 5 000</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Besoin principal</label>
+            <select>
+              <option>Audit de sécurité</option>
+              <option>Architecture réseau</option>
+              <option>SOC managé</option>
+              <option>SD-WAN</option>
+              <option>Zero Trust</option>
+              <option>PRA / Continuité</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Description du projet</label>
+            <textarea placeholder="Décrivez votre contexte, vos contraintes et vos objectifs…"></textarea>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;padding:15px" onclick="handleSubmit()">Envoyer ma demande →</button>
+          <p style="color:var(--muted);font-size:.75rem;margin-top:14px;text-align:center">Vos données restent confidentielles et ne sont jamais transmises à des tiers.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── FOOTER ─────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-icon">N</div>
+          <span class="logo-name">Netgen <span>Systems</span></span>
+        </div>
+        <p>Ingénierie réseau et cybersécurité pour les organisations aux exigences les plus élevées.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul class="footer-links">
+          <li><a href="#solutions">Sécurité périmétrique</a></li>
+          <li><a href="#solutions">SOC managé</a></li>
+          <li><a href="#solutions">SD-WAN</a></li>
+          <li><a href="#solutions">Zero Trust</a></li>
+          <li><a href="#solutions">Cloud hybride</a></li>
+          <li><a href="#solutions">PRA / PCA</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Entreprise</h4>
+        <ul class="footer-links">
+          <li><a href="#">À propos</a></li>
+          <li><a href="#secteurs">Secteurs</a></li>
+          <li><a href="#">Références</a></li>
+          <li><a href="#">Certifications</a></li>
+          <li><a href="#">Blog technique</a></li>
+          <li><a href="#">Recrutement</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Ressources</h4>
+        <ul class="footer-links">
+          <li><a href="#">Livre blanc SD-WAN</a></li>
+          <li><a href="#">Guide Zero Trust</a></li>
+          <li><a href="#">Checklist DORA</a></li>
+          <li><a href="#">Veille cyber</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#">Mentions légales</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Netgen Systems — Tous droits réservés</p>
+      <div class="footer-badges">
+        <span class="badge">ISO 27001</span>
+        <span class="badge">ANSSI</span>
+        <span class="badge">Cisco Partner</span>
+        <span class="badge">Fortinet</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── TABS ── */
+function showTab(id) {
+  document.querySelectorAll('.sol-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.sol-panel').forEach(p => p.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+/* ── SCROLL REVEAL ── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ── FORM ── */
+function handleSubmit() {
+  const btn = document.querySelector('.contact-form .btn-primary');
+  btn.textContent = '✓ Demande envoyée — Réponse sous 24h';
+  btn.style.background = 'linear-gradient(135deg,var(--accent3),var(--accent2))';
+}
+
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').style.background =
+    window.scrollY > 50 ? 'rgba(4,7,15,.95)' : 'rgba(4,7,15,.75)';
+});
+</script>
+</body>
+</html>
