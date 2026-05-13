@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quentin Farrokhian — Réseaux & Cybersécurité</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     CONFIGURATION — Modifie ces variables pour personnaliser
+  ============================================================ */
+  :root {
+    --color-bg:       #0a0d0f;
+    --color-surface:  #0f1419;
+    --color-border:   #1e2d3d;
+    --color-accent:   #00d4ff;        /* Couleur principale */
+    --color-accent2:  #00ff88;        /* Couleur secondaire */
+    --color-accent3:  #ff6b35;        /* Couleur tertiaire */
+    --color-text:     #c9d1d9;
+    --color-muted:    #6e7681;
+    --color-white:    #f0f6fc;
+
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-display: 'Syne', sans-serif;
+
+    /* ---- Contenu — Modifie ici ---- */
+    --name:           "QUENTIN FARROKHIAN";
+    --tagline:        "Réseaux & Cybersécurité";
+    --location:       "Toulon / Marseille / Annecy";
+  }
+
+  /* ============================================================
+     RESET & BASE
+  ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ============================================================
+     CUSTOM CURSOR
+  ============================================================ */
+  .cursor {
+    position: fixed; top: 0; left: 0; z-index: 9999;
+    pointer-events: none;
+  }
+  .cursor-dot {
+    width: 8px; height: 8px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+  }
+  .cursor-ring {
+    position: fixed; top: 0; left: 0;
+    width: 32px; height: 32px;
+    border: 1px solid var(--color-accent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.2s, height 0.2s, border-color 0.2s;
+    pointer-events: none; z-index: 9998;
+    opacity: 0.6;
+  }
+  .cursor-ring.hovered {
+    width: 48px; height: 48px;
+    border-color: var(--color-accent2);
+    opacity: 1;
+  }
+
+  /* ============================================================
+     SCAN LINE OVERLAY
+  ============================================================ */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 9990;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+  }
+
+  /* ============================================================
+     MATRIX RAIN (canvas)
+  ============================================================ */
+  #matrix-bg {
+    position: fixed; inset: 0; z-index: 0;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  /* ============================================================
+     NAV
+  ============================================================ */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2.5rem;
+    background: rgba(10,13,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1rem; font-weight: 800;
+    color: var(--color-accent);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--color-accent2); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--color-muted);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0; right: 100%;
+    height: 1px; background: var(--color-accent);
+    transition: right 0.25s ease;
+  }
+  .nav-links a:hover { color: var(--color-accent); }
+  .nav-links a:hover::after { right: 0; }
+  .nav-status {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.7rem; color: var(--color-muted);
+  }
+  .status-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--color-accent2);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  /* ============================================================
+     HERO
+  ============================================================ */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 6rem 2.5rem 3rem;
+    overflow: hidden;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: center;
+    max-width: 1200px; margin: 0 auto; width: 100%;
+  }
+  .hero-terminal {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(0,212,255,0.08), 0 0 0 1px rgba(0,212,255,0.05);
+  }
+  .terminal-header {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: #161b22;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .terminal-btn {
+    width: 12px; height: 12px; border-radius: 50%;
+  }
+  .t-red   { background: #ff5f57; }
+  .t-yellow{ background: #febc2e; }
+  .t-green { background: #28c840; }
+  .terminal-title {
+    margin-left: 0.5rem;
+    font-size: 0.7rem; color: var(--color-muted);
+    flex: 1; text-align: center;
+  }
+  .terminal-body {
+    padding: 1.5rem;
+    min-height: 340px;
+    font-size: 0.82rem;
+  }
+  .t-line { margin-bottom: 0.3rem; }
+  .t-prompt { color: var(--color-accent2); }
+  .t-cmd    { color: var(--color-white); }
+  .t-output { color: var(--color-text); padding-left: 1.2rem; }
+  .t-highlight { color: var(--color-accent); }
+  .t-warn { color: var(--color-accent3); }
+  .t-cursor-blink {
+    display: inline-block;
+    width: 8px; height: 1.1em;
+    background: var(--color-accent);
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .hero-info { }
+  .hero-label {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--color-accent); margin-bottom: 0.75rem;
+  }
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--color-white);
+    margin-bottom: 0.5rem;
+  }
+  .hero-name span { color: var(--color-accent); }
+  .hero-subtitle {
+    font-family: var(--font-display);
+    font-size: 1.1rem; font-weight: 400;
+    color: var(--color-accent2);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
+  }
+  .hero-desc {
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    max-width: 440px;
+    /* ---- Modifie cette description ---- */
+  }
+  .hero-badges {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  .badge {
+    font-size: 0.7rem; letter-spacing: 0.05em;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    color: var(--color-muted);
+    transition: all 0.2s;
+  }
+  .badge:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: rgba(0,212,255,0.05);
+  }
+  .badge.primary {
+    border-color: var(--color-accent2);
+    color: var(--color-accent2);
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-weight: 700;
+  }
+  .btn-primary:hover {
+    background: #fff; color: var(--color-bg);
+    box-shadow: 0 0 20px rgba(0,212,255,0.4);
+  }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+  }
+  .btn-outline:hover {
+    border-color: var(--color-accent2);
+    color: var(--color-accent2);
+  }
+
+  /* ============================================================
+     SECTION GENERIC
+  ============================================================ */
+  section { position: relative; z-index: 1; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 5rem 2.5rem; }
+  .section-header {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 3.5rem;
+  }
+  .section-num {
+    font-size: 0.65rem; color: var(--color-accent);
+    letter-spacing: 0.15em;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.8rem; font-weight: 800;
+    color: var(--color-white);
+    letter-spacing: -0.02em;
+  }
+  .section-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--color-border), transparent);
+  }
+
+  /* ============================================================
+     ABOUT
+  ============================================================ */
+  #about { background: var(--color-surface); border-top: 1px solid var(--color-border); }
+  .about-grid {
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: 4rem; align-items: start;
+  }
+  .about-text p {
+    color: var(--color-text);
+    font-size: 0.88rem;
+    line-height: 1.9;
+    margin-bottom: 1rem;
+  }
+  .about-text p strong { color: var(--color-accent); font-weight: 500; }
+  .about-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+  .stat-box {
+    padding: 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    text-align: center;
+    transition: all 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .stat-box::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 100%; height: 2px;
+    background: var(--color-accent);
+    transition: right 0.3s ease;
+  }
+  .stat-box:hover::before { right: 0; }
+  .stat-box:hover { border-color: var(--color-accent); background: rgba(0,212,255,0.03); }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 2rem; font-weight: 800;
+    color: var(--color-accent);
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.7rem; color: var(--color-muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .info-list { margin-top: 1.5rem; }
+  .info-item {
+    display: flex; gap: 0.75rem; align-items: flex-start;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(30,45,61,0.5);
+    font-size: 0.82rem;
+  }
+  .info-key { color: var(--color-accent2); min-width: 80px; }
+  .info-val { color: var(--color-text); }
+
+  /* ============================================================
+     EXPERIENCE
+  ============================================================ */
+  .timeline { position: relative; }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 140px; top: 0; bottom: 0;
+    width: 1px; background: var(--color-border);
+  }
+  .tl-item {
+    display: grid; grid-template-columns: 140px 1fr;
+    gap: 2rem; margin-bottom: 3rem;
+    position: relative;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute; left: 133px; top: 8px;
+    width: 14px; height: 14px;
+    border: 1px solid var(--color-accent);
+    background: var(--color-bg);
+    border-radius: 50%;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  .tl-item:hover::before {
+    background: var(--color-accent);
+    box-shadow: 0 0 16px var(--color-accent);
+  }
+  .tl-date {
+    text-align: right;
+    padding-top: 4px;
+    font-size: 0.7rem; color: var(--color-muted);
+    line-height: 1.5;
+  }
+  .tl-date .year { color: var(--color-accent); font-size: 0.8rem; }
+  .tl-content {
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    background: var(--color-surface);
+    transition: border-color 0.25s, transform 0.25s;
+  }
+  .tl-content:hover {
+    border-color: rgba(0,212,255,0.3);
+    transform: translateX(4px);
+  }
+  .tl-company {
+    font-size: 0.7rem; color: var(--color-accent2);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+  .tl-role {
+    font-family: var(--font-display);
+    font-size: 1rem; font-weight: 700;
+    color: var(--color-white); margin-bottom: 0.3rem;
+  }
+  .tl-type {
+    display: inline-block; font-size: 0.65rem;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--color-accent3);
+    color: var(--color-accent3); border-radius: 2px;
+    margin-bottom: 0.75rem; letter-spacing: 0.05em;
+  }
+  .tl-list { list-style: none; }
+  .tl-list li {
+    font-size: 0.8rem; color: var(--color-muted);
+    padding: 0.2rem 0; padding-left: 1rem; position: relative;
+  }
+  .tl-list li::before {
+    content: '›'; position: absolute; left: 0;
+    color: var(--color-accent);
+  }
+  .tl-tags {
+    display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.75rem;
+  }
+  .tl-tag {
+    font-size: 0.65rem; padding: 0.2rem 0.5rem;
+    background: rgba(0,212,255,0.06);
+    border: 1px solid rgba(0,212,255,0.15);
+    color: var(--color-accent); border-radius: 2px;
+  }
+
+  /* ============================================================
+     SKILLS
+  ============================================================ */
+  #skills { background: var(--color-surface); border-top: 1px solid var(--color-border); }
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  }
+  .skill-category {
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    transition: all 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .skill-category::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--color-accent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .skill-category:hover { border-color: rgba(0,212,255,0.3); background: rgba(0,212,255,0.02); }
+  .skill-category:hover::after { transform: scaleX(1); }
+  .skill-cat-icon {
+    font-size: 1.5rem; margin-bottom: 0.75rem;
+    display: block;
+  }
+  .skill-cat-title {
+    font-family: var(--font-display);
+    font-size: 0.85rem; font-weight: 700;
+    color: var(--color-white); margin-bottom: 1rem;
+    letter-spacing: 0.03em;
+  }
+  .skill-items { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .skill-item {
+    font-size: 0.7rem; padding: 0.25rem 0.6rem;
+    border: 1px solid var(--color-border);
+    border-radius: 2px; color: var(--color-muted);
+    transition: all 0.15s;
+  }
+  .skill-item:hover {
+    border-color: var(--color-accent2);
+    color: var(--color-accent2);
+    background: rgba(0,255,136,0.04);
+  }
+  /* Langues */
+  .lang-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;
+    margin-top: 2.5rem;
+  }
+  .lang-card {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--color-border); border-radius: 4px;
+  }
+  .lang-flag { font-size: 1.5rem; }
+  .lang-name { color: var(--color-white); font-size: 0.85rem; margin-bottom: 0.15rem; }
+  .lang-level { font-size: 0.7rem; color: var(--color-muted); }
+  .lang-level span { color: var(--color-accent2); }
+
+  /* ============================================================
+     PROJETS
+  ============================================================ */
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  }
+  .project-card {
+    padding: 1.5rem;
+    border: 1px solid var(--color-border); border-radius: 4px;
+    background: var(--color-surface);
+    transition: all 0.25s; position: relative;
+    overflow: hidden;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(0,212,255,0.04), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .project-card:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-4px); }
+  .project-card:hover::before { opacity: 1; }
+  .project-num {
+    font-size: 0.65rem; color: var(--color-muted);
+    letter-spacing: 0.1em; margin-bottom: 1rem;
+  }
+  .project-title {
+    font-family: var(--font-display);
+    font-size: 0.95rem; font-weight: 700;
+    color: var(--color-white); margin-bottom: 0.75rem;
+    line-height: 1.4;
+  }
+  .project-desc {
+    font-size: 0.78rem; color: var(--color-muted);
+    line-height: 1.7; margin-bottom: 1rem;
+  }
+  .project-stack { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .proj-tag {
+    font-size: 0.65rem; padding: 0.2rem 0.5rem;
+    background: rgba(255,107,53,0.08);
+    border: 1px solid rgba(255,107,53,0.2);
+    color: var(--color-accent3); border-radius: 2px;
+  }
+
+  /* ============================================================
+     FORMATION
+  ============================================================ */
+  #education { background: var(--color-surface); border-top: 1px solid var(--color-border); }
+  .edu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .edu-card {
+    padding: 1.5rem;
+    border: 1px solid var(--color-border); border-radius: 4px;
+    position: relative; overflow: hidden;
+    transition: all 0.25s;
+  }
+  .edu-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; width: 3px; height: 0;
+    background: var(--color-accent);
+    transition: height 0.35s ease;
+  }
+  .edu-card:hover { border-color: rgba(0,212,255,0.3); }
+  .edu-card:hover::before { height: 100%; }
+  .edu-period {
+    font-size: 0.68rem; color: var(--color-accent);
+    letter-spacing: 0.1em; margin-bottom: 0.5rem;
+  }
+  .edu-degree {
+    font-family: var(--font-display);
+    font-size: 0.9rem; font-weight: 700;
+    color: var(--color-white); margin-bottom: 0.25rem; line-height: 1.4;
+  }
+  .edu-school { font-size: 0.78rem; color: var(--color-accent2); margin-bottom: 0.25rem; }
+  .edu-location { font-size: 0.72rem; color: var(--color-muted); }
+
+  /* ============================================================
+     CONTACT
+  ============================================================ */
+  #contact { border-top: 1px solid var(--color-border); }
+  .contact-wrapper {
+    text-align: center; max-width: 680px; margin: 0 auto;
+    padding: 5rem 2.5rem;
+  }
+  .contact-pre {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--color-accent); margin-bottom: 1rem;
+  }
+  .contact-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
+    color: var(--color-white); line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+  .contact-desc { color: var(--color-muted); font-size: 0.85rem; margin-bottom: 2.5rem; }
+  .contact-links {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .contact-link {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--color-border); border-radius: 2px;
+    color: var(--color-text); text-decoration: none;
+    font-size: 0.8rem; transition: all 0.2s;
+  }
+  .contact-link:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: rgba(0,212,255,0.05);
+  }
+  .contact-link .icon { font-size: 1rem; }
+
+  /* ============================================================
+     FOOTER
+  ============================================================ */
+  footer {
+    padding: 2rem 2.5rem;
+    border-top: 1px solid var(--color-border);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.7rem; color: var(--color-muted);
+    position: relative; z-index: 1;
+  }
+
+  /* ============================================================
+     REVEAL ANIMATIONS
+  ============================================================ */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+  @media (max-width: 900px) {
+    .hero-grid, .about-grid, .skills-grid,
+    .projects-grid, .edu-grid { grid-template-columns: 1fr; }
+    .timeline::before { left: 0; }
+    .tl-item { grid-template-columns: 1fr; padding-left: 1.5rem; }
+    .tl-item::before { left: -7px; }
+    .tl-date { text-align: left; }
+    .lang-grid { grid-template-columns: 1fr 1fr; }
+    nav { padding: 1rem; }
+    .nav-links { gap: 1rem; }
+  }
+
+  /* Glitch effect on hero name */
+  @keyframes glitch1 {
+    0%,98%,100%{clip-path:none;transform:none}
+    99%{clip-path:polygon(0 20%,100% 20%,100% 30%,0 30%);transform:translateX(-4px)}
+  }
+  @keyframes glitch2 {
+    0%,97%,100%{clip-path:none;transform:none}
+    98%{clip-path:polygon(0 65%,100% 65%,100% 75%,0 75%);transform:translateX(4px);color:var(--color-accent3)}
+  }
+  .hero-name {
+    animation: glitch1 7s infinite, glitch2 11s infinite;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     ÉCRAN DE MOT DE PASSE — Modifie le mot de passe dans le JS ci-dessous
+============================================================ -->
+<div id="lock-screen" style="
+  position:fixed;inset:0;z-index:99999;
+  background:#0a0d0f;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:1.5rem;
+  font-family:'JetBrains Mono',monospace;
+">
+  <div style="
+    border:1px solid #1e2d3d;border-radius:8px;
+    background:#0f1419;padding:2.5rem 2rem;
+    width:100%;max-width:380px;
+    box-shadow:0 0 60px rgba(0,212,255,0.08);
+    text-align:center;
+  ">
+    <div style="font-size:2rem;margin-bottom:0.5rem;">&#x1F512;</div>
+    <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#f0f6fc;margin-bottom:0.25rem;">Acc&egrave;s restreint</div>
+    <div style="font-size:0.72rem;color:#6e7681;margin-bottom:1.5rem;letter-spacing:0.05em;">Entrez le mot de passe pour acc&eacute;der au portfolio</div>
+    <input id="lock-input" type="password" placeholder="Mot de passe..." autocomplete="off" style="
+      width:100%;padding:0.7rem 1rem;
+      background:#0a0d0f;border:1px solid #1e2d3d;
+      border-radius:4px;color:#f0f6fc;
+      font-family:'JetBrains Mono',monospace;font-size:0.85rem;
+      outline:none;margin-bottom:0.75rem;box-sizing:border-box;
+      transition:border-color 0.2s;
+    ">
+    <button onclick="checkPassword()" style="
+      width:100%;padding:0.7rem;
+      background:#00d4ff;color:#0a0d0f;
+      border:none;border-radius:4px;
+      font-family:'JetBrains Mono',monospace;font-size:0.78rem;
+      font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+      cursor:pointer;transition:all 0.2s;
+    " onmouseover="this.style.background='#fff'" onmouseout="this.style.background='#00d4ff'">
+      &rarr; Acc&eacute;der
+    </button>
+    <div id="lock-error" style="
+      margin-top:0.75rem;font-size:0.72rem;
+      color:#ff6b35;opacity:0;transition:opacity 0.3s;
+      letter-spacing:0.05em;
+    ">&#x26A0; Mot de passe incorrect</div>
+  </div>
+  <div style="font-size:0.65rem;color:#2a3a4a;letter-spacing:0.1em;">QUENTIN FARROKHIAN &mdash; PORTFOLIO</div>
+</div>
+
+<script>
+  // ---- Modifie le mot de passe ici ----
+  var ACCESS_PASSWORD = "QuentinPF2026!";
+
+  var lockInput = document.getElementById("lock-input");
+  lockInput.addEventListener("focus", function(){ lockInput.style.borderColor="#00d4ff"; });
+  lockInput.addEventListener("blur",  function(){ lockInput.style.borderColor="#1e2d3d"; });
+  lockInput.addEventListener("keydown", function(e){ if(e.key==="Enter") checkPassword(); });
+
+  function checkPassword() {
+    if(lockInput.value === ACCESS_PASSWORD) {
+      var screen = document.getElementById("lock-screen");
+      screen.style.transition = "opacity 0.5s ease";
+      screen.style.opacity = "0";
+      setTimeout(function(){ screen.remove(); }, 500);
+    } else {
+      var err = document.getElementById("lock-error");
+      err.style.opacity = "1";
+      lockInput.style.borderColor = "#ff6b35";
+      lockInput.value = "";
+      lockInput.focus();
+      setTimeout(function(){ err.style.opacity="0"; lockInput.style.borderColor="#1e2d3d"; }, 2500);
+    }
+  }
+</script>
+
+
+<!-- Canvas Matrix Rain -->
+<canvas id="matrix-bg"></canvas>
+
+<!-- Custom Cursor -->
+<div class="cursor cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ============================================================
+     NAV
+============================================================ -->
+<nav>
+  <a href="#" class="nav-logo">QF<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Expériences</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#education">Formation</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    <!-- ---- Modifie le statut actuel ---- -->
+    Disponible pour opportunités
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section class="hero" id="home">
+  <div class="hero-grid">
+    <div class="hero-info reveal">
+      <div class="hero-label">// Initializing profile...</div>
+      <!-- ---- Modifie ton prénom / nom ---- -->
+      <h1 class="hero-name">QUENTIN<br><span>FARROKHIAN</span></h1>
+      <!-- ---- Modifie le sous-titre ---- -->
+      <div class="hero-subtitle">Réseaux & Cybersécurité</div>
+      <!-- ---- Modifie la description courte ---- -->
+      <p class="hero-desc">
+        Étudiant en alternance passionné par les infrastructures réseaux et la sécurité informatique.
+        Je construis, protège et optimise des systèmes. Actuellement en BUT R&T – Parcours Cyber
+        à l'Université Aix-Marseille (Luminy), en alternance chez <strong style="color:var(--color-accent2)">La Mutuelle Verte</strong>.
+      </p>
+      <div class="hero-badges">
+        <!-- ---- Modifie / ajoute des badges ---- -->
+        <span class="badge primary">Alternance</span>
+        <span class="badge">Cisco CCNA 1-2-3</span>
+        <span class="badge">VMware ESXi</span>
+        <span class="badge">Active Directory</span>
+        <span class="badge">Cybersécurité</span>
+        <span class="badge">Toulon · Marseille</span>
+      </div>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">↗ Me contacter</a>
+        <a href="#experience" class="btn btn-outline">→ Voir le parcours</a>
+      </div>
+    </div>
+
+    <div class="hero-terminal reveal" style="transition-delay:0.2s">
+      <div class="terminal-header">
+        <div class="terminal-btn t-red"></div>
+        <div class="terminal-btn t-yellow"></div>
+        <div class="terminal-btn t-green"></div>
+        <span class="terminal-title">qfarrokhpro — bash</span>
+      </div>
+      <div class="terminal-body" id="terminal-body">
+        <!-- Rempli dynamiquement par JS -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ABOUT
+============================================================ -->
+<section id="about">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-num">01</span>
+      <h2 class="section-title">À Propos</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <!-- ---- Modifie les paragraphes de présentation ---- -->
+        <p>
+          Je m'appelle <strong>Quentin Farrokhian</strong>, étudiant en dernière année de BUT Réseaux &amp; Télécommunications, parcours Cybersécurité.
+          Depuis mes débuts en informatique, j'ai toujours été fasciné par ce qui se passe
+          <strong>sous le capot</strong> : les paquets qui transitent, les protocoles qui orchestrent,
+          les failles qu'il faut anticiper.
+        </p>
+        <p>
+          Mon alternance chez <strong>La Mutuelle Verte</strong> à Toulon m'a plongé dans le concret :
+          administration réseau Cisco, sécurisation 802.1x, scripting Python/PowerShell,
+          gestion VMware/ESXi, Active Directory. Chaque jour apporte son lot de défis techniques que j'aborde
+          avec méthode et curiosité.
+        </p>
+        <p>
+          En dehors du labo, je suis un <strong>TOEIC 880</strong>, amateur d'automobile,
+          de rugby et de musculation. Le soir, je code des projets perso ou j'explore de nouvelles
+          certifications. Je prépare mon entrée en Master pour aller encore plus loin dans la
+          <strong>sécurité des systèmes d'information</strong>.
+        </p>
+        <div class="info-list">
+          <!-- ---- Modifie les informations clés ---- -->
+          <div class="info-item"><span class="info-key">Email</span><span class="info-val">qfarrokhpro@gmail.com</span></div>
+          <div class="info-item"><span class="info-key">Tel</span><span class="info-val">+33 7 68 58 27 71</span></div>
+          <div class="info-item"><span class="info-key">Localisation</span><span class="info-val">Toulon · Marseille · Annecy</span></div>
+          <div class="info-item"><span class="info-key">Statut</span><span class="info-val">Alternant — BUT R&T Cyber</span></div>
+          <div class="info-item"><span class="info-key">Permis</span><span class="info-val">B – Véhiculé</span></div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.15s">
+        <div class="about-stats">
+          <!-- ---- Modifie les statistiques ---- -->
+          <div class="stat-box">
+            <span class="stat-num">3+</span>
+            <span class="stat-label">Ans d'XP</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">785</span>
+            <span class="stat-label">TOEIC Score</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">4</span>
+            <span class="stat-label">Langues</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">10+</span>
+            <span class="stat-label">Technologies</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     EXPERIENCE
+============================================================ -->
+<section id="experience">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Expériences</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="timeline">
+
+      <!-- ---- Modifie chaque expérience ci-dessous ---- -->
+
+      <div class="tl-item reveal">
+        <div class="tl-date">
+          <span class="year">2025</span><br>
+          Sept.<br>→ Auj.
+        </div>
+        <div class="tl-content">
+          <div class="tl-company">La Mutuelle Verte · Toulon</div>
+          <div class="tl-role">Administrateur Réseaux & Systèmes</div>
+          <div class="tl-type">Alternance</div>
+          <ul class="tl-list">
+            <li>Support utilisateur informatique et téléphonie niveau 1 &amp; 2</li>
+            <li>Installation et maintenance postes (clients léger, lourd, portables)</li>
+            <li>Maintenance des machines virtuelles (Windows 11 / Server 2022-2025)</li>
+            <li>Administration Active Directory : users, GPO, OU</li>
+            <li>Déploiement et gestion infrastructure virtuelle VMware ESXi / vCenter</li>
+          </ul>
+          <div class="tl-tags">
+            <span class="tl-tag">VMware ESXi</span>
+            <span class="tl-tag">Active Directory</span>
+            <span class="tl-tag">Windows Server</span>
+            <span class="tl-tag">GPO</span>
+            <span class="tl-tag">vCenter</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-date">
+          <span class="year">2025</span><br>
+          Avr.<br>→ Août
+        </div>
+        <div class="tl-content">
+          <div class="tl-company">La Mutuelle Verte · Toulon</div>
+          <div class="tl-role">Administrateur Réseaux & Systèmes</div>
+          <div class="tl-type">Stage / CDD</div>
+          <ul class="tl-list">
+            <li>Analyse, diagnostic et résolution de dysfonctionnements réseau</li>
+            <li>Monitoring &amp; gestion du parc informatique (PRTG – GLPI)</li>
+            <li>Scripting Python &amp; PowerShell pour automatisation</li>
+            <li>Configuration et sécurisation de switchs Cisco (VLAN, 802.1x, NPS)</li>
+            <li>Gestion des droits d'accès applicatifs</li>
+            <li>Gestion des sauvegardes et de la bandothèque Veeam</li>
+          </ul>
+          <div class="tl-tags">
+            <span class="tl-tag">Cisco</span>
+            <span class="tl-tag">VLAN</span>
+            <span class="tl-tag">802.1x</span>
+            <span class="tl-tag">PRTG</span>
+            <span class="tl-tag">Veeam</span>
+            <span class="tl-tag">Python</span>
+            <span class="tl-tag">PowerShell</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-date">
+          <span class="year">2024</span><br>
+          Avr.<br>→ Mar. 25
+        </div>
+        <div class="tl-content">
+          <div class="tl-company">BDE R&T · Annecy</div>
+          <div class="tl-role">Responsable Communication</div>
+          <div class="tl-type">Association</div>
+          <ul class="tl-list">
+            <li>Gestion et animation des réseaux sociaux (Instagram, Twitter)</li>
+            <li>Organisation des soirées et animations étudiantes</li>
+            <li>Gestion du merchandising et design graphique</li>
+            <li>Coordination des partenariats et événements</li>
+          </ul>
+          <div class="tl-tags">
+            <span class="tl-tag">Communication</span>
+            <span class="tl-tag">Design</span>
+            <span class="tl-tag">Event</span>
+            <span class="tl-tag">Social Media</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SKILLS
+============================================================ -->
+<section id="skills">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Compétences</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <!-- ---- Modifie / ajoute des catégories et skills ---- -->
+
+      <div class="skill-category reveal">
+        <span class="skill-cat-icon">🌐</span>
+        <div class="skill-cat-title">Réseaux</div>
+        <div class="skill-items">
+          <span class="skill-item">Cisco CCNA 1-2-3</span>
+          <span class="skill-item">CCNP</span>
+          <span class="skill-item">TCP/IP</span>
+          <span class="skill-item">VLAN</span>
+          <span class="skill-item">802.1x</span>
+          <span class="skill-item">Stormshield CSNA</span>
+          <span class="skill-item">Stormshield CSNE</span>
+          <span class="skill-item">NPS</span>
+        </div>
+      </div>
+
+      <div class="skill-category reveal" style="transition-delay:0.1s">
+        <span class="skill-cat-icon">🔐</span>
+        <div class="skill-cat-title">Cybersécurité</div>
+        <div class="skill-items">
+          <span class="skill-item">SIEM Wazuh</span>
+          <span class="skill-item">Graylog</span>
+          <span class="skill-item">Wireshark</span>
+          <span class="skill-item">OSINT</span>
+          <span class="skill-item">CyberOps</span>
+          <span class="skill-item">RAID</span>
+          <span class="skill-item">Veeam</span>
+        </div>
+      </div>
+
+      <div class="skill-category reveal" style="transition-delay:0.2s">
+        <span class="skill-cat-icon">🖥️</span>
+        <div class="skill-cat-title">Virtualisation</div>
+        <div class="skill-items">
+          <span class="skill-item">VMware ESXi</span>
+          <span class="skill-item">vCenter</span>
+          <span class="skill-item">Hyper-V</span>
+          <span class="skill-item">Proxmox</span>
+          <span class="skill-item">VirtualBox</span>
+          <span class="skill-item">Docker</span>
+          <span class="skill-item">GNS3</span>
+          <span class="skill-item">Eve-NG</span>
+          <span class="skill-item">AWS</span>
+        </div>
+      </div>
+
+      <div class="skill-category reveal" style="transition-delay:0.05s">
+        <span class="skill-cat-icon">🖧</span>
+        <div class="skill-cat-title">Windows Server</div>
+        <div class="skill-items">
+          <span class="skill-item">Active Directory</span>
+          <span class="skill-item">DHCP</span>
+          <span class="skill-item">DNS</span>
+          <span class="skill-item">GPO</span>
+          <span class="skill-item">Serveur Fichier</span>
+          <span class="skill-item">Serveur Mail</span>
+          <span class="skill-item">PRTG</span>
+          <span class="skill-item">GLPI</span>
+        </div>
+      </div>
+
+      <div class="skill-category reveal" style="transition-delay:0.15s">
+        <span class="skill-cat-icon">⌨️</span>
+        <div class="skill-cat-title">Scripting & Dev</div>
+        <div class="skill-items">
+          <span class="skill-item">Python</span>
+          <span class="skill-item">PowerShell</span>
+          <span class="skill-item">Bash</span>
+          <span class="skill-item">HTML/CSS</span>
+          <span class="skill-item">PHP</span>
+          <span class="skill-item">JavaScript</span>
+          <span class="skill-item">SQL</span>
+          <span class="skill-item">AJAX</span>
+          <span class="skill-item">JSON</span>
+        </div>
+      </div>
+
+      <div class="skill-category reveal" style="transition-delay:0.25s">
+        <span class="skill-cat-icon">🔧</span>
+        <div class="skill-cat-title">Monitoring & Outils</div>
+        <div class="skill-items">
+          <span class="skill-item">PRTG</span>
+          <span class="skill-item">GLPI</span>
+          <span class="skill-item">Veeam</span>
+          <span class="skill-item">Graylog</span>
+          <span class="skill-item">Apache Cordova</span>
+          <span class="skill-item">Git</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Langues -->
+    <div class="section-header reveal" style="margin-top:3.5rem">
+      <span class="section-num" style="color:var(--color-accent2)">→</span>
+      <h3 class="section-title" style="font-size:1.2rem">Langues</h3>
+      <div class="section-line"></div>
+    </div>
+    <div class="lang-grid reveal">
+      <!-- ---- Modifie / ajoute des langues ---- -->
+      <div class="lang-card">
+        <span class="lang-flag">🇫🇷</span>
+        <div>
+          <div class="lang-name">Français</div>
+          <div class="lang-level"><span>Natif</span></div>
+        </div>
+      </div>
+      <div class="lang-card">
+        <span class="lang-flag">🇬🇧</span>
+        <div>
+          <div class="lang-name">Anglais</div>
+          <div class="lang-level">TOEIC <span>785</span></div>
+        </div>
+      </div>
+      <div class="lang-card">
+        <span class="lang-flag">🇪🇸</span>
+        <div>
+          <div class="lang-name">Espagnol</div>
+          <div class="lang-level">Niveau <span>Terminale</span></div>
+        </div>
+      </div>
+      <div class="lang-card">
+        <span class="lang-flag">🇨🇳</span>
+        <div>
+          <div class="lang-name">Mandarin</div>
+          <div class="lang-level">Niveau <span>HSK 2</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PROJETS
+============================================================ -->
+<section id="projects">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Projets</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="projects-grid">
+      <!-- ---- Modifie / ajoute des projets ---- -->
+
+      <div class="project-card reveal">
+        <div class="project-num">PROJECT_01</div>
+        <div class="project-title">Générateur de configs Cisco</div>
+        <p class="project-desc">
+          Application web interactive permettant de générer des templates de configurations
+          de switchs et routeurs Cisco (fichiers .cfg) via une interface visuelle.
+          Gain de temps significatif pour le déploiement réseau.
+        </p>
+        <div class="project-stack">
+          <span class="proj-tag">HTML/CSS</span>
+          <span class="proj-tag">JavaScript</span>
+          <span class="proj-tag">PHP</span>
+          <span class="proj-tag">Cisco IOS</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal" style="transition-delay:0.1s">
+        <div class="project-num">PROJECT_02</div>
+        <div class="project-title">App Bibliothèque Cordova</div>
+        <p class="project-desc">
+          Application mobile développée avec Apache Cordova permettant de gérer
+          une bibliothèque en ligne, partager ses lectures et découvrir des recommandations.
+          Synchronisation BDD en temps réel.
+        </p>
+        <div class="project-stack">
+          <span class="proj-tag">Apache Cordova</span>
+          <span class="proj-tag">JavaScript</span>
+          <span class="proj-tag">SQL</span>
+          <span class="proj-tag">AJAX</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal" style="transition-delay:0.2s">
+        <div class="project-num">PROJECT_03</div>
+        <div class="project-title">Site Web Camping Sécurisé</div>
+        <p class="project-desc">
+          Site web dynamique et fonctionnel pour un camping, connecté à une base de données,
+          avec authentification sécurisée, système de réservation et panneau d'administration.
+        </p>
+        <div class="project-stack">
+          <span class="proj-tag">PHP</span>
+          <span class="proj-tag">SQL</span>
+          <span class="proj-tag">HTML/CSS</span>
+          <span class="proj-tag">JavaScript</span>
+          <span class="proj-tag">Sécurité</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FORMATION
+============================================================ -->
+<section id="education">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Formation</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="edu-grid">
+      <!-- ---- Modifie / ajoute des formations ---- -->
+
+      <div class="edu-card reveal">
+        <div class="edu-period">2025 → 2026</div>
+        <div class="edu-degree">BUT Réseaux Informatique &amp; Télécommunications — Parcours Cyber</div>
+        <div class="edu-school">Université Aix-Marseille</div>
+        <div class="edu-location">📍 Luminy, Marseille</div>
+      </div>
+
+      <div class="edu-card reveal" style="transition-delay:0.1s">
+        <div class="edu-period">2023 → 2025</div>
+        <div class="edu-degree">BUT Réseaux Informatique &amp; Télécommunications — Parcours Cyber</div>
+        <div class="edu-school">Université Savoie Mont-Blanc</div>
+        <div class="edu-location">📍 Annecy</div>
+      </div>
+
+      <div class="edu-card reveal" style="transition-delay:0.2s">
+        <div class="edu-period">2020 → 2023</div>
+        <div class="edu-degree">Baccalauréat Scientifique (SVT – Physique Chimie)</div>
+        <div class="edu-school">Externat Saint Joseph</div>
+        <div class="edu-location">📍 Toulon</div>
+      </div>
+
+    </div>
+
+    <!-- Loisirs -->
+    <div class="section-header reveal" style="margin-top:3.5rem">
+      <span class="section-num" style="color:var(--color-accent3)">→</span>
+      <h3 class="section-title" style="font-size:1.2rem">Loisirs</h3>
+      <div class="section-line"></div>
+    </div>
+    <div class="hero-badges reveal">
+      <!-- ---- Modifie / ajoute des loisirs ---- -->
+      <span class="badge">🏋️ Musculation</span>
+      <span class="badge">🏉 Rugby</span>
+      <span class="badge">⛷️ Ski</span>
+      <span class="badge">🚗 Automobile</span>
+      <span class="badge">🎮 Jeux-Vidéos</span>
+      <span class="badge">💻 Programmation</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT
+============================================================ -->
+<section id="contact">
+  <div class="contact-wrapper">
+    <div class="contact-pre reveal">// Let's connect</div>
+    <!-- ---- Modifie l'appel à l'action ---- -->
+    <h2 class="contact-title reveal">Prêt à collaborer&nbsp;?</h2>
+    <p class="contact-desc reveal">
+      Je suis toujours ouvert à de nouvelles opportunités, des projets intéressants
+      ou simplement échanger autour des réseaux et de la cybersécurité.
+    </p>
+    <div class="contact-links reveal">
+      <!-- ---- Modifie email / téléphone / liens ---- -->
+      <a href="mailto:qfarrokhpro@gmail.com" class="contact-link">
+        <span class="icon">✉</span> qfarrokhpro@gmail.com
+      </a>
+      <a href="tel:+33768582771" class="contact-link">
+        <span class="icon">📞</span> +33 7 68 58 27 71
+      </a>
+      <!-- Ajoute LinkedIn, GitHub si tu en as -->
+      <!-- <a href="https://linkedin.com/in/ton-profil" class="contact-link" target="_blank">
+        <span class="icon">🔗</span> LinkedIn
+      </a> -->
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <span>© 2026 Quentin Farrokhian</span>
+  <span style="color:var(--color-accent)">Réseaux & Cybersécurité</span>
+  <span>Toulon · Marseille</span>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+/* ---- CURSOR ---- */
+const dot  = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  dot.style.left  = e.clientX + 'px'; dot.style.top  = e.clientY + 'px';
+  ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px';
+});
+document.querySelectorAll('a,button,.skill-category,.project-card,.tl-content,.stat-box').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
+});
+
+/* ---- MATRIX RAIN ---- */
+(function(){
+  const c = document.getElementById('matrix-bg');
+  const ctx = c.getContext('2d');
+  function resize(){ c.width = window.innerWidth; c.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const fontSize = 13;
+  let drops = [];
+  function init(){
+    drops = [];
+    const cols = Math.floor(c.width / fontSize);
+    for(let i = 0; i < cols; i++) drops[i] = Math.random() * -100;
+  }
+  init(); window.addEventListener('resize', init);
+  setInterval(() => {
+    ctx.fillStyle = 'rgba(10,13,15,0.04)';
+    ctx.fillRect(0, 0, c.width, c.height);
+    ctx.fillStyle = '#00d4ff';
+    ctx.font = fontSize + 'px JetBrains Mono';
+    drops.forEach((y, i) => {
+      const ch = chars[Math.floor(Math.random() * chars.length)];
+      ctx.fillText(ch, i * fontSize, y * fontSize);
+      if(y * fontSize > c.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    });
+  }, 60);
+})();
+
+/* ---- TERMINAL TYPEWRITER ---- */
+(function(){
+  const lines = [
+    // ---- Modifie les lignes du terminal ----
+    { type: 'prompt', text: 'whoami' },
+    { type: 'output', text: 'quentin.farrokhian — Admin Réseaux & Systèmes' },
+    { type: 'prompt', text: 'cat profile.txt' },
+    { type: 'output', text: '[status]    Alternant @ La Mutuelle Verte', delay: 200 },
+    { type: 'output', text: '[diplôme]   BUT R&T Parcours Cyber – Luminy', delay: 400 },
+    { type: 'output', text: '[passion]   Réseaux / Cybersécurité / Infra', delay: 600 },
+    { type: 'prompt', text: 'nmap -sV --top-skills' },
+    { type: 'output', text: '22/tcp   open  ssh         Cisco IOS' },
+    { type: 'output', text: '80/tcp   open  http        PHP/SQL/JS' },
+    { type: 'output', text: '443/tcp  open  https       TLS 1.3' },
+    { type: 'output', text: '3389/tcp open  rdp         Windows Server' },
+    { type: 'prompt', text: 'ping -c 1 avenir.pro', last: true },
+    { type: 'output', text: 'PONG from master.cyber — time=0.42ms' },
+  ];
+
+  const container = document.getElementById('terminal-body');
+  let li = 0;
+
+  function addLine(line) {
+    const div = document.createElement('div');
+    div.className = 't-line';
+    if(line.type === 'prompt') {
+      div.innerHTML = `<span class="t-prompt">quentin@portfolio:~$ </span><span class="t-cmd"></span>`;
+    } else {
+      div.innerHTML = `<div class="t-output" style="opacity:0"></div>`;
+    }
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+
+    if(line.type === 'prompt') {
+      const cmdEl = div.querySelector('.t-cmd');
+      let ci = 0;
+      const iv = setInterval(() => {
+        cmdEl.textContent = line.text.slice(0, ci++);
+        if(ci > line.text.length) {
+          clearInterval(iv);
+          setTimeout(() => nextLine(), 400);
+        }
+      }, 45);
+    } else {
+      const out = div.querySelector('.t-output');
+      out.style.opacity = '1';
+      out.textContent = line.text;
+      setTimeout(() => nextLine(), 180);
+    }
+  }
+
+  function nextLine() {
+    if(li >= lines.length) {
+      const cursor = document.createElement('div');
+      cursor.className = 't-line';
+      cursor.innerHTML = `<span class="t-prompt">quentin@portfolio:~$ </span><span class="t-cursor-blink"></span>`;
+      container.appendChild(cursor);
+      return;
+    }
+    const line = lines[li++];
+    setTimeout(() => addLine(line), line.delay || 0);
+  }
+
+  setTimeout(() => nextLine(), 800);
+})();
+
+/* ---- SCROLL REVEAL ---- */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
